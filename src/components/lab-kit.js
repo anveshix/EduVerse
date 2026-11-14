@@ -217,6 +217,13 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
 
   return {
     el, state: S, reset, draw,
+    // Presets from companion activities must update both the model and its controls.
+    setState(patch) {
+      for (const c of spec.controls) {
+        if (Object.prototype.hasOwnProperty.call(patch, c.id)) S[c.id] = patch[c.id];
+      }
+      sync();
+    },
     enable3d: () => auto3d?.enable?.(),
     disable3d: () => auto3d?.disable?.(),
     relabel() { preds.forEach((p) => p.relabel()); exitEls.forEach((q) => q.relabel()); relabelBi(el); i18n.apply(el); ta.placeholder = t('reflect.ph'); auto3d?.relabel?.(); draw(); },
@@ -255,7 +262,7 @@ export function createThreeLab(spec, themeId, create3dView, opts = {}) {
   const lab = createLab(spec, themeId, {
     ...opts,
     skipAuto3d: true,
-    onDraw: (S) => stage3d?.update(S),
+    onDraw: (S) => { stage3d?.update(S); opts.onDraw?.(S); },
   });
   stage3d = attachThreeStage(lab.el, () => lab.state, create3dView, { themeId, ...opts });
   return {

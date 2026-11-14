@@ -81,19 +81,28 @@ export function predict(def, { done = {}, onDone } = {}) {
   function commit(choice) {
     const actual = def.run();
     const ok = actual === choice;
-    done[def.id] = { choice, ok };
-    if (ok) { store.awardStar(`pred:${def.id}:${stem.textContent.slice(0, 18)}`); playWin(); }
+    // Save the explanation at experiment time so revisiting it never reruns or changes the model.
+    const explanation = def.explain();
+    done[def.id] = { choice, ok, actual, explanation };
+    if (ok) { if (!state?.ok) store.awardStar(`pred:${def.id}:${stem.textContent.slice(0, 18)}`); playWin(); }
     else playTry();
     onDone?.(def.id, done[def.id]);
-    showResult(choice, actual, ok);
+    showResult(choice, actual, ok, explanation);
   }
-  function showResult(choice, actual, ok) {
+  function showResult(choice, actual, ok, explanation) {
     render(choice);
     [...opts.children].forEach((b, i) => { const id = def.options[i].id; b.classList.toggle('right', id === actual); b.classList.toggle('wrong', id === choice && !ok); });
     fb.className = 'feedback ' + (ok ? 'ok' : 'try');
-    fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(def.explain(), { block: true });
+    fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(explanation, { block: true });
   }
-  render(state?.choice || null);
+  if (state?.choice && state.actual && state.explanation?.en && state.explanation?.hi) showResult(state.choice, state.actual, state.ok, state.explanation);
+  else {
+    render(null);
+    if (state?.choice) {
+      fb.className = 'feedback hint';
+      fb.innerHTML = biHtml({ en: 'Your earlier prediction was saved without its explanation. Choose again to review the result.', hi: 'आपका पिछला अनुमान स्पष्टीकरण के बिना सहेजा गया था। परिणाम समझने के लिए फिर चुनें।' }, { block: true });
+    }
+  }
   root.append(h('div', { class: 'predict-tag', 'data-k': 'predict.tag' }, t('predict.tag')), stem, opts, fb);
   root.relabel = () => { relabelBi(root); i18n.apply(root); };
   return root;
@@ -106,6 +115,19 @@ export function mcq(def, { done = {}, onDone } = {}) {
   const opts = h('div', { class: 'predict-opts', role: 'radiogroup' });
   const hint = h('button', { type: 'button', class: 'btn ghost', 'data-k': 'mcq.hint', onclick: () => { playTap(); fb.className = 'feedback hint'; fb.innerHTML = biHtml(def.hint); } }, t('mcq.hint'));
   let attempts = done[def.id]?.attempts || 0, solved = !!done[def.id]?.ok;
+  function showResult(option, ok) {
+    [...opts.children].forEach((button, i) => {
+      const selected = def.options[i].id === option.id;
+      button.classList.toggle('right', selected && ok);
+      button.classList.toggle('wrong', selected && !ok);
+      button.setAttribute('aria-checked', String(selected));
+      button.disabled = ok;
+    });
+    hint.disabled = ok;
+    const why = ok ? def.explain : (option.why || def.explain);
+    fb.className = 'feedback ' + (ok ? 'ok' : 'try');
+    fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(why, { block: true }) + (ok ? '' : `<div class="again" data-k="mcq.again">${esc(t('mcq.again'))}</div>`);
+  }
   def.options.forEach((o) => {
     const b = h('button', { type: 'button', role: 'radio', class: 'opt', 'aria-checked': 'false' });
     b.innerHTML = biHtml(o);
@@ -113,17 +135,20 @@ export function mcq(def, { done = {}, onDone } = {}) {
       if (solved) return;
       attempts++;
       const ok = o.id === def.correct;
-      [...opts.children].forEach((x) => x.classList.remove('wrong'));
-      if (ok) { solved = true; b.classList.add('right'); store.awardStar(`mcq:${def.id}:${def.stem.en.slice(0, 18)}`); playWin(); }
-      else { b.classList.add('wrong'); playTry(); }
+      if (ok) { solved = true; store.awardStar(`mcq:${def.id}:${def.stem.en.slice(0, 18)}`); playWin(); }
+      else playTry();
       done[def.id] = { attempts, ok: solved || false };
       onDone?.(def.id, done[def.id]);
-      const why = ok ? def.explain : (o.why || def.explain);
-      fb.className = 'feedback ' + (ok ? 'ok' : 'try');
-      fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(why, { block: true }) + (ok ? '' : `<div class="again" data-k="mcq.again">${esc(t('mcq.again'))}</div>`);
+      showResult(o, ok);
     });
     opts.append(b);
   });
+  // Legacy saved MCQs stored only {attempts, ok}; the correct option and explanation
+  // are in the question definition, so an already-solved ticket can be reviewed safely.
+  if (solved) {
+    const answer = def.options.find((o) => o.id === def.correct);
+    if (answer) showResult(answer, true);
+  }
   root.append(bi(def.stem, { tag: 'div', cls: 'predict-stem' }), opts, h('div', { class: 'row' }, hint), fb);
   root.relabel = () => { relabelBi(root); i18n.apply(root); };
   return root;

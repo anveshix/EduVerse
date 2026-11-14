@@ -1,6 +1,7 @@
 // App shell: top bar, hash router, interactive 3D hero globe, discipline filter, sound/stars HUD, flip-card glossary, lazy module mounting.
 import { h, $ } from './core/dom.js';
 import * as store from './core/store.js';
+import { exitProgress } from './core/progress.js';
 import * as i18n from './core/i18n.js';
 import { t, pair } from './core/i18n.js';
 import { playTap, playFlip } from './core/sound.js';
@@ -31,6 +32,7 @@ async function boot() {
     if (keys.includes('lang')) onLang();
     if (keys.some((k) => ['sound', 'lowGraphics', 'reducedMotion', 'projector', 'teacher'].includes(k))) applyPrefs();
     if (keys.some((k) => ['stars', 'progress', 'lang'].includes(k))) updateStarPill();
+    if (keys.includes('progress')) updateChapterComplete();
     if (keys.includes('lowGraphics') && !location.hash.match(/^#\/theme\/(T\d\d)$/)) route();
   });
   route();
@@ -66,17 +68,13 @@ function onLang() {
 function relabelTitles() { root.querySelectorAll('[data-title]').forEach((el) => { const o = JSON.parse(el.dataset.title); el.textContent = i18n.pair(o.en, o.hi); }); }
 const titleEl = (tag, o, cls) => h(tag, { class: cls, 'data-title': JSON.stringify({ en: o.en, hi: o.hi }) }, i18n.pair(o.en, o.hi));
 const status = (th) => { const n = th.learningObjects.length, k = th.learningObjects.filter((l) => l.status === 'implemented').length; return { n, k, label: k === 0 ? 'planned' : k === n ? 'implemented' : 'partial' }; };
-// Student mastery: count LOs whose exit ticket is solved (progress.exit keys are `${loId}.${exitId}`).
-function loSolved(th) {
-  const prog = store.get().progress?.[th.id] || {};
-  const exits = prog.exit || {};
-  const solvedLOs = new Set();
-  for (const [key, v] of Object.entries(exits)) {
-    if (v?.ok) solvedLOs.add(key.split('.')[0]);
-  }
-  // Fallback: if exit keys don't map cleanly, count distinct solved exits capped at LO count.
-  const k = Math.min(th.learningObjects.length, solvedLOs.size || Object.values(exits).filter((v) => v?.ok).length);
-  return { k, n: th.learningObjects.length, done: k >= th.learningObjects.length && th.learningObjects.length > 0 };
+// Progress means at least one correct exit response per LO, not a mastery assessment.
+function loSolved(th) { return exitProgress(th, store.get().progress?.[th.id]); }
+function updateChapterComplete() {
+  const badge = root.querySelector('.chapter-done');
+  const id = location.hash.match(/^#\/theme\/(T\d\d)$/)?.[1];
+  const theme = CUR?.themes.find((th) => th.id === id);
+  if (badge && theme) badge.hidden = !loSolved(theme).done;
 }
 function nextTheme() {
   // Continue: first visited-but-incomplete, else first unvisited, else T01.
@@ -278,7 +276,7 @@ async function themePage(id) {
   const loChip = (l) => h('span', { class: `chip-lo ${l.status}` }, h('b', {}, l.id.split('.')[1]), ' ', bi({ en: l.en, hi: l.hi }, { tag: 'span' }), ' ', h('i', { 'data-k': `lo.${l.status}` }, t(`lo.${l.status}`)));
   const opening = OPENINGS[id];
   const lpNow = loSolved(th);
-  const chapterDone = lpNow.done ? h('p', { class: 'chapter-done', 'data-k': 'th.complete' }, t('th.complete')) : null;
+  const chapterDone = h('p', { class: 'chapter-done', 'data-k': 'th.complete', role: 'status', hidden: !lpNow.done }, t('th.complete'));
   // 🔊 Listen: Web Speech API read-aloud for the Opening question (no backend, graceful fallback).
   let speaking = false;
   const listenBtn = h('button', {

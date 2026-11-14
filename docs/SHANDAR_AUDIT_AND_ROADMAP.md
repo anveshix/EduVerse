@@ -2,11 +2,11 @@
 
 **Overall objective (from `src/curriculum/curriculum.json`):** CBSE Class IX Social Science (087) 2026-27 — 16 themes, 78 LOs, 125 hours, bilingual EN/HI, NEP 2020 + NCF-SE 2023, static ES modules, no backend, offline-first, privacy-first (localStorage only). Every LO must be *observable → questionable → simulatable → explainable → applicable*.
 
-**Current state (verified 2026-11-14):** 78/78 LOs implemented, 79 sims, 33/33 tests, 16/16 Chromium smoke desktop+mobile, a11y 16/16, perf throttled + offline SW. Foundation is solid — this roadmap makes it *shandaar* chapter-by-chapter without breaking it.
+**Baseline:** 78/78 LOs implemented and 79 sims; the prior audit ran 33 tests, desktop/mobile Chromium smoke across 16 themes, accessibility checks, and throttled/offline checks. This roadmap improves the existing foundation chapter by chapter.
 
 ---
 
-## Shortcomings Found (Audit)
+## Baseline Shortcomings Found (before Steps 0–2)
 
 ### A. Learning journey — no path, no memory
 1. Home is a flat grid of 16 cards. No "Continue where you left off", no sequential path T01→T16, no per-card LO progress (only global ★ count).
@@ -16,7 +16,7 @@
 5. Reflection textarea saves to `progress.reflect` but is never shown back as "My reflections" — invisible learning.
 
 ### B. Pedagogy — labs are strong, chapters are thin in places
-6. **T01 (3 LOs)** is the foundation but thinnest: no Patna/Bihar local anchor (user is in Patna), no Inquiry Cycle (Question→Source→Evidence→Conclusion), sorter has only 4 questions.
+6. **T01 (3 LOs)** is the foundation but thinnest: no Patna/Bihar example, no Inquiry Cycle (Question→Source→Evidence→Conclusion), sorter has only 4 questions.
 7. **T06 Democracy (4 LOs)** — abstract pillars/parliament, no Panchayati Raj / classroom democracy activity.
 8. **T07 Elections** — 9 concepts/10 outcomes crammed into 4 LOs; delimitation + coalition + anti-defection need chunking.
 9. **T05 State & Society** — 516-line spec, highest cognitive load; needs timeline chunking.
@@ -41,10 +41,10 @@
 
 | Step | Scope | Shandaar win | Status |
 |------|-------|--------------|--------|
-| **Step 0 — Foundation** | Home Continue + Path progress + Search + How-to-Learn + per-card LO bars + Chapter Complete + Opening narration (Web Speech) | Student always knows *where am I, what's next, how do I learn* | **This PR** |
-| **Step 1 — T01** Understanding Social Science | + Patna place (6th lens place), + Q5/Q6 Patna questions, Inquiry Cycle in L1, Patna discover tasks | Local anchor: "my city, my Social Science" | **This PR** |
-| Step 2 — T02 Earth's Surface | India landform atlas (Himalaya/Deccan/Plains/Coast/Islands), Everest fossil story front-and-centre | India-first geography | Next |
-| Step 3 — T03 Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather you can observe in Patna |
+| **Step 0 — Foundation** | Home Continue + Path progress + Search + How-to-Learn + per-card LO bars + Chapter Complete + Opening narration (Web Speech) | Student always knows *where am I, what's next, how do I learn* | Done (`ec7b9a0`) |
+| **Step 1 — T01** Understanding Social Science | + Patna place (6th lens place), + Q5/Q6 Patna questions, Inquiry Cycle in L1, Patna discover tasks | Local anchor: "my city, my Social Science" | Done (`ec7b9a0`) |
+| **Step 2 — T02** Earth's Surface | India landform atlas (Himalaya/Deccan/Plains/Coast/Islands), Everest fossil story front-and-centre | India-first geography | Done |
+| Step 3 — T03 Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather you can observe in Patna | Next, on request |
 | Step 4 — T04 Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist |
 | Step 5 — T05 State & Society | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines |
 | Step 6 — T06 Democracy | Panchayati Raj + classroom vote simulation | Democracy you practise daily |
@@ -60,19 +60,19 @@
 | Step 16 — T16 Finance | UPI safety, savings, insurance, digital fraud shield | Money you can trust |
 | Step 17 — Polish | WebP images, PWA manifest, worksheet print, badges/levels, Hindi teacher review workflow | Installable, printable, shandaar |
 
-**Rule for every step:** `npm run verify` + `npm run a11y` (that theme) + `npm run smoke` (that theme) must pass before next step. No step breaks the previous.
+**Rule for every step:** regenerate the catalog and service worker after source changes, then run `npm run verify`, `node tests/a11y-smoke.cjs Txx` and `node tests/lab-smoke.cjs Txx` (plus mobile smoke). No step should break the previous one.
 
 ---
 
-## Step 0 + Step 1 — What Changed in This PR
+## Step 0 + Step 1 — What Changed
 
 ### Foundation (all 16 themes benefit)
 - **Home → Continue Learning:** picks first theme with `visited=true` but incomplete exits; else first unvisited theme. One-tap resume.
-- **Home → Learning Path bar:** `X/16 themes explored · Y/78 LOs mastered · ★ N` with progress fill.
+- **Home → Learning Path bar:** `X/16 themes explored · Y/78 LOs with a correct exit answer` with progress fill.
 - **Home → Search:** filters cards by English/Hindi title + LO text (e.g. "monsoon", "चुनाव").
 - **Home → How to Learn (4 steps):** Observe → Predict → Experiment → Reflect, collapsible, bilingual.
-- **Cards → LO progress bar:** per-theme `solved/total` from `store.progress[theme].exit` (real student mastery, not curriculum status).
-- **Theme page → Chapter Complete 🏆:** when every LO exit in that theme is solved.
+- **Cards → LO progress bar:** per-theme count of LOs with at least one correct exit answer, distinct from curriculum status. This is an activity signal, not proof of mastery.
+- **Theme page → Chapter exit check 🏆:** when each LO has at least one recorded correct exit answer.
 - **Theme page → 🔊 Listen:** Web Speech API reads the Opening question in EN/HI (respects `lang` pref, stops on toggle, graceful fallback if no voice).
 
 ### T01 — Understanding Social Science
@@ -82,12 +82,36 @@
 - **Patna discover tasks** in L2: compare Patna vs Varanasi (both Ganga), Patna vs Leh (opposite terrain, both historic routes).
 
 ### Verification
-- `npm run verify` (architecture + 33 tests), `npm run a11y T01`, `npm run smoke T01` — all must pass.
-- Catalog/SW regenerated only if sim count changes (T01 adds no new LO/sim id — enhancements only, so counts stay 78/79).
+- Step 0+1 originally passed `npm run verify`, T01 Chromium accessibility and desktop smoke. T01 was rechecked during Step 2, including mobile.
+- Keep catalog and service-worker manifests in sync even when the number of simulations is unchanged.
 
 ---
 
-## How to Continue (next session)
-1. Say "Step 2 — T02" and the agent will audit T02 labs, then upgrade T02 only.
-2. Each step ends with a commit on the same branch + PR update. Never parallel-edit two chapters.
-3. Hindi teacher review remains the #1 human task — flag any new Hindi string as `draft` in PR description.
+## Step 2 — T02: Shaping the Earth's Surface
+
+### Audit and improvements
+- **India landform atlas (L5):** seven numbered, accessible region choices show representative points for the Himalaya, Ganga plain/Patna, Deccan, Thar, Konkan, two island groups and Meghalaya. Choosing one updates the existing 2D/3D landform gallery; if the gallery is then changed independently, a note explains how to return to the comparison. The descriptions distinguish an area's *origin* from the later process illustrated by the gallery (especially basalt, coral and tectonic islands). India geodata is loaded on opening L5; an offline/error fallback retains the choices and explanations. Points are examples, not authoritative region boundaries.
+- **Everest fossil mystery (L2):** the opening question leads to a predict-first activity using the continent–continent model and a fossil-bearing limestone explanation. The model illustrates uplift, not an actual reconstruction or Everest-height calculation. Prediction feedback is now saved and restored without rerunning the simulation; older saved predictions can be retried. Solved exit tickets also restore their answer and explanation on return.
+- **Gradation and Bihar (L4–L6):** compare the Ganga plain's alluvium with other agents, distinguish older Bhangar from newer Khadar without imposing a false geographic sequence, and compare flood, heat and earthquake preparation. The slope index is not a failure probability or flood forecast; the GLOF scenario is separate and no invented surge-arrival time is displayed. The field inquiry permits photographs or safe public viewpoints and explicitly warns against floodwater and unstable banks.
+- **Bilingual accessibility:** self-hosted Noto Sans Devanagari regular/bold (Fontsource 5.3.0, SIL OFL 1.1; license in `assets/fonts/`) fixes unreadable Hindi when a device lacks a Devanagari font. The font files are precached for offline use. New Hindi remains **draft — subject-teacher review required**.
+- **Progress repair:** count distinct LOs, not individual questions or the `T02` prefix, and translate known legacy question IDs without discarding existing answers. T02's plate-distance question belongs to the boundary LO, so a new plate-identification question covers the map LO. The chapter exit badge updates as answers are saved. One correct exit answer is a progress signal, **not mastery**. Some older bespoke LOs in other chapters lack a corresponding tracked exit question and may remain undercounted until their chapter is upgraded; Continue Learning can therefore revisit such a chapter.
+- No new LO or separate simulation was added: coverage remains 78/78 implemented and 79 simulations. Illustration images are cached on first use, as before; the atlas geodata, code and fonts are included in the offline precache. The service-worker version now hashes file contents, so a same-length edit also refreshes the offline cache.
+
+### Teaching references
+- NCERT physiography: Bhabar/Terai, older/newer alluvium, relief and island groups [1](https://ncert.nic.in/textbook/pdf/kegy102.pdf).
+- Geological Society on Everest's marine limestone and uplift [1](https://www.geolsoc.org.uk/ks3/gsl/education/resources/rockcycle/page3468.html); USGS on the India–Eurasia collision and approximate timing [1](https://pubs.usgs.gov/gip/dynamic/himalaya.html).
+- USGS on the Sumatra–Andaman subduction zone [2](https://www.usgs.gov/centers/pcmsc/science/tsunami-generation-2004-m91-sumatra-andaman-earthquake); National Institute of Disaster Management preparedness guidance [2](https://nidm.gov.in/PDF/IEC/Dosnewnidm.pdf).
+- India state/UT outlines and their MIT attribution are recorded in `data/geo/SOURCES.md` and `data/geo/INDIA_SHAPEFILES_LICENSE`. Atlas coordinates and descriptions are teaching approximations.
+
+### Verification
+- `npm run catalog` and `npm run sw` regenerated the catalog (78 LOs, 79 simulations) and 120-file offline precache. `npm run verify` passed the architecture guardrails and **43/43 tests** across all themes.
+- `npm run test:t02` passed the atlas-to-gallery link in both 2D and WebGL 3D, keyboard/touch, all three language modes, persistence, Everest feedback, LO progress and offline atlas/font loading in Chromium.
+- `npm run a11y`, `npm run smoke` and `npm run smoke:mobile` passed across all 16 themes, with no reported errors or horizontal overflow. Automated accessibility checks are not a substitute for a screen-reader review.
+- `npm run perf:size` reported approximately 810 KB estimated compressed on-demand transfer for the T02 entry view and 1,003 KB after opening the atlas and its 3D gallery, excluding the background service-worker precache. The two Hindi font weights account for roughly 101 KB combined; image payload remains a target for later optimization. The throttled test also passed its existing home/T09/T11/T16 and offline checks; it is an emulation, not a real-device benchmark.
+
+---
+
+## How to Continue
+1. On the user's request, audit and upgrade **Step 3 — T03** only.
+2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
+3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

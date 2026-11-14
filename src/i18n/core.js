@@ -429,8 +429,8 @@ export const UI_CORE = {
     "hi": "विषय खोजे गए"
   },
   "home.path.los": {
-    "en": "LOs mastered",
-    "hi": "LO पूर्ण"
+    "en": "LOs with a correct exit answer",
+    "hi": "LO में सही निकास उत्तर"
   },
   "home.search": {
     "en": "Search themes… (e.g. monsoon, चुनाव)",
@@ -461,8 +461,8 @@ export const UI_CORE = {
     "hi": "4 · चिंतन करें — निकास-टिकट हल करें, सितारा पाएँ, चिंतन में एक पंक्ति लिखें।"
   },
   "home.card.progress": {
-    "en": "{k}/{n} LOs mastered",
-    "hi": "{k}/{n} LO पूर्ण"
+    "en": "{k}/{n} LOs with a correct exit answer",
+    "hi": "{k}/{n} LO में सही निकास उत्तर"
   },
   "th.listen": {
     "en": "🔊 Listen",
@@ -473,7 +473,7 @@ export const UI_CORE = {
     "hi": "⏹ रोकें"
   },
   "th.complete": {
-    "en": "🏆 Chapter complete — all LOs mastered!",
-    "hi": "🏆 अध्याय पूर्ण — सभी LO पूर्ण!"
+    "en": "🏆 Chapter exit check complete — a correct answer for every learning object!",
+    "hi": "🏆 अध्याय निकास-जाँच पूरी — हर अधिगम उद्देश्य में एक सही उत्तर!"
   }
 };

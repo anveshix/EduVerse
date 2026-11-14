@@ -128,6 +128,34 @@ test('scientific spot checks surfaced in the labs', () => {
   assert.match(t16.interest.view({ principal: 10000, rate: 8, years: 30 }).lines[0].en, /1,00,626|1,00,627/);
 });
 
+test('T02 predictions use the displayed experiment rather than stale controls', () => {
+  const rain = { ...earth.gradation.init(), agent: 'wind', years: 0 };
+  assert.equal(earth.gradation.predictions.find((p) => p.id === 'p1').run(rain), 'more');
+  assert.equal(rain.years, 40);
+  assert.equal(rain.agent, 'river');
+  for (const rock of ['soft', 'medium', 'hard']) for (const veg of [0, 1]) {
+    const s = { ...earth.gradation.init(), rock, veg, years: 0 };
+    assert.equal(earth.gradation.predictions.find((p) => p.id === 'p3').run(s), 'dep');
+    assert.equal(s.agent, 'river');
+    assert.equal(s.years, 60);
+  }
+  const slope = { ...earth.hazardLab.init(), wall: true, glof: true };
+  assert.equal(earth.hazardLab.predictions.find((p) => p.id === 'p1').run(slope), 'rises');
+  assert.equal(slope.glof, false);
+  assert.equal(slope.wall, false);
+  const wall = { ...earth.hazardLab.init(), glof: true };
+  const pred = earth.hazardLab.predictions.find((p) => p.id === 'p2');
+  assert.equal(pred.run(wall), 'falls');
+  assert.equal(wall.glof, false);
+  assert.equal(wall.wall, true);
+  assert.match(pred.explain(wall).en, /from \d+ to \d+ out of 100/);
+  const withoutLake = earth.hazardLab.view({ ...wall, glof: false });
+  const withLake = earth.hazardLab.view({ ...wall, glof: true });
+  assert.equal(withoutLake.lines[0].en, withLake.lines[0].en, 'a GLOF is separate from the slope index');
+  assert.match(withLake.lines[1].en, /cannot predict/i);
+  assert.doesNotMatch(withLake.svg + withLake.lines.map((l) => l.en).join(' '), /\b(?:\d+\s*(?:min|minutes)|\d+%\s*(?:risk|probability))\b/i, 'no invented warning time or failure probability');
+});
+
 test('xr detection never throws and defaults to unsupported', async () => {
   assert.deepEqual(await xrSupport({}), { vr: false, ar: false, secure: true });
   assert.deepEqual(await xrSupport({ xr: { isSessionSupported: async (m) => m === 'immersive-vr' } }), { vr: true, ar: false, secure: true });

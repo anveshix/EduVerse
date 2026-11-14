@@ -262,8 +262,8 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 3,
-   "predictions": 2,
+   "guidedDiscoveryPrompts": 5,
+   "predictions": 3,
    "exitQuestions": 2,
    "hasReflection": true,
    "hasReset": true,
@@ -312,9 +312,9 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 2,
+   "guidedDiscoveryPrompts": 4,
    "predictions": 1,
-   "exitQuestions": 1,
+   "exitQuestions": 2,
    "hasReflection": true,
    "hasReset": true,
    "bilingual": true,
@@ -340,8 +340,8 @@
    "implementation": "src/modules/geography/labs-earth.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Test how slope steepness, intense rain, tree roots, retaining walls and glacial lakes affect landslide and GLOF disaster risk.",
-    "hi": "परखें कि ढलान का कोण, भारी वर्षा, वन जड़ें, प्रतिरोधी दीवार और हिमनद झीलें भूस्खलन व GLOF जोखिम को कैसे बदलती हैं।"
+    "en": "Explore factors affecting slope stability, then discuss glacial lake outburst floods (GLOFs) as a separate hazard.",
+    "hi": "ढलान की स्थिरता को प्रभावित करने वाले कारक परखें, फिर हिमनद झील प्रस्फोट बाढ़ (GLOF) की अलग खतरे के रूप में चर्चा करें।"
    },
    "provenance": "schematic",
    "controls": [
@@ -381,14 +381,14 @@
      "id": "wall",
      "type": "toggle",
      "label": {
-      "en": "Retaining wall + drainage pipes + warning siren",
-      "hi": "प्रतिरोधी दीवार + जल निकासी + चेतावनी सायरन"
+      "en": "Retaining wall + drainage (slope model)",
+      "hi": "प्रतिरोधी दीवार + जल निकासी (ढलान मॉडल)"
      }
     }
    ],
-   "guidedDiscoveryPrompts": 1,
-   "predictions": 1,
-   "exitQuestions": 1,
+   "guidedDiscoveryPrompts": 3,
+   "predictions": 2,
+   "exitQuestions": 2,
    "hasReflection": true,
    "hasReset": true,
    "bilingual": true,
