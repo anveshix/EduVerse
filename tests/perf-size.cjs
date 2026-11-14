@@ -1,10 +1,10 @@
 // Network payload per page (raw and gzip bytes) for the home page and each theme, plus the cost of opening the 3D tab in T02.
 // usage: node tests/perf-size.cjs   → prints JSON. The built-in server does not compress, so gzip is computed locally (what GitHub Pages sends).
-const { chromium } = require('playwright'); const http = require('http'), fs = require('fs'), path = require('path'), zlib = require('zlib');
-const root = path.resolve(__dirname, '..'), T = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
-const srv = http.createServer((q, s) => { let u = q.url.split('?')[0]; if (u.endsWith('/')) u += 'index.html'; fs.readFile(path.join(root, u), (e, d) => { if (e) { s.writeHead(404); s.end(); } else { s.writeHead(200, { 'content-type': T[path.extname(u)] }); s.end(d); } }); }).listen(0);
+const { launchChromium } = require('./launch-browser.cjs'); const http = require('http'), fs = require('fs'), path = require('path'), zlib = require('zlib');
+const root = path.resolve(__dirname, '..'), T = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2' };
+const srv = http.createServer((q, s) => { let u = q.url.split('?')[0]; if (u.endsWith('/')) u += 'index.html'; fs.readFile(path.join(root, u), (e, d) => { if (e) { s.writeHead(404); s.end(); } else { s.writeHead(200, { 'content-type': T[path.extname(u)] || 'application/octet-stream' }); s.end(d); } }); }).listen(0);
 (async () => {
-  const port = srv.address().port, b = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] }), res = {};
+  const port = srv.address().port, b = await launchChromium({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] }), res = {};
   const measure = async (label, act) => {
     const ctx = await b.newContext(), p = await ctx.newPage(), seen = new Map();
     p.on('response', async (r) => { try { const u = new URL(r.url()); if (u.port != port) return; const body = await r.body(); seen.set(u.pathname, { raw: body.length, gz: zlib.gzipSync(body, { level: 9 }).length }); } catch {} });

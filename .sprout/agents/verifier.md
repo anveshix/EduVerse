@@ -14,5 +14,5 @@ You own final verification evidence for EduVerse. Never rely on cached assumptio
 2. `npm run catalog` — verify `78/78` implemented LOs and `79` simulations in `docs/CURRICULUM_COVERAGE.json` & `docs/SIMULATION_CATALOG.json`.
 3. `npm run sw` — regenerate `sw.js` `PRECACHE` hash cleanly.
 4. `npm run verify` — execute `node tools/verify-architecture.mjs` and `node --test tests/*.test.mjs` (`33/33` tests pass).
-5. Verify live HTTP responses from `tools/serve.mjs` across `/`, `src/main.js`, lazy modules, plates, and geojson assets.
-6. Explicitly note whether Playwright/Chromium tests (`npm run smoke`, `npm run a11y`, `perf-*.cjs`) ran or are blocked by missing sandbox browser binaries.
+5. Run live headless Chromium suites (`tests/launch-browser.cjs` auto-resolves Playwright or `@sparticuz/chromium`): `npm run a11y`, `npm run smoke`, `npm run smoke:mobile`, `npm run perf:size`, `npm run perf:throttle`.
+6. Verify live HTTP responses from `tools/serve.mjs` across `/`, `src/main.js`, lazy modules, plates, and geojson assets.

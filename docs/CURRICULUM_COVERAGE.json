@@ -4,7 +4,7 @@
  "summary": {
   "total": 78,
   "implemented": 78,
-  "qaPassed": 27,
+  "qaPassed": 78,
   "planned": 0,
   "themesWithAnyLab": 16,
   "themes": 16
@@ -26,7 +26,7 @@
     "total": 3,
     "implemented": 3,
     "planned": 0,
-    "qaPassed": 0
+    "qaPassed": 3
    },
    "items": [
     {
@@ -34,7 +34,7 @@
      "modality": "diagram",
      "engine": "system-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/integrated/t01.js"
     },
     {
@@ -42,7 +42,7 @@
      "modality": "map",
      "engine": "lens-explorer",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/integrated/t01.js"
     },
     {
@@ -50,7 +50,7 @@
      "modality": "inquiry",
      "engine": "sorter",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/integrated/t01.js"
     }
    ]
@@ -71,7 +71,7 @@
     "total": 6,
     "implemented": 6,
     "planned": 0,
-    "qaPassed": 4
+    "qaPassed": 6
    },
    "items": [
     {
@@ -111,7 +111,7 @@
      "modality": "3d",
      "engine": "landform-gallery",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/labs-earth.js"
     },
     {
@@ -119,7 +119,7 @@
      "modality": "scenario",
      "engine": "hazard-lab",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/labs-earth.js"
     }
    ]
@@ -140,7 +140,7 @@
     "total": 6,
     "implemented": 6,
     "planned": 0,
-    "qaPassed": 2
+    "qaPassed": 6
    },
    "items": [
     {
@@ -156,7 +156,7 @@
      "modality": "graph",
      "engine": "climate-grapher",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t03-specs.js"
     },
     {
@@ -164,7 +164,7 @@
      "modality": "map",
      "engine": "monsoon-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t03-specs.js"
     },
     {
@@ -180,7 +180,7 @@
      "modality": "sandbox",
      "engine": "catchment",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t03-specs.js"
     },
     {
@@ -188,7 +188,7 @@
      "modality": "calculator",
      "engine": "carbon-footprint",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t03-specs.js"
     }
    ]
@@ -209,7 +209,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 2
+    "qaPassed": 5
    },
    "items": [
     {
@@ -233,7 +233,7 @@
      "modality": "scenario",
      "engine": "settlement-sim",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t04-specs.js"
     },
     {
@@ -241,7 +241,7 @@
      "modality": "3d",
      "engine": "harappan-city",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t04-specs.js"
     },
     {
@@ -249,7 +249,7 @@
      "modality": "map",
      "engine": "civ-atlas",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t04-specs.js"
     }
    ]
@@ -270,7 +270,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 0
+    "qaPassed": 5
    },
    "items": [
     {
@@ -278,7 +278,7 @@
      "modality": "map",
      "engine": "dated-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t05-specs.js"
     },
     {
@@ -286,7 +286,7 @@
      "modality": "evidence",
      "engine": "source-room",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t05-specs.js"
     },
     {
@@ -294,7 +294,7 @@
      "modality": "scenario",
      "engine": "admin-flow",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t05-specs.js"
     },
     {
@@ -302,7 +302,7 @@
      "modality": "inquiry",
      "engine": "gallery",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t05-specs.js"
     },
     {
@@ -310,7 +310,7 @@
      "modality": "map",
      "engine": "trade-routes",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t05-specs.js"
     }
    ]
@@ -331,7 +331,7 @@
     "total": 4,
     "implemented": 4,
     "planned": 0,
-    "qaPassed": 1
+    "qaPassed": 4
    },
    "items": [
     {
@@ -339,7 +339,7 @@
      "modality": "diagram",
      "engine": "concept-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/t06-specs.js"
     },
     {
@@ -347,7 +347,7 @@
      "modality": "evidence",
      "engine": "gallery",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/t06-specs.js"
     },
     {
@@ -363,7 +363,7 @@
      "modality": "inquiry",
      "engine": "country-compare",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/t06-specs.js"
     }
    ]
@@ -384,7 +384,7 @@
     "total": 4,
     "implemented": 4,
     "planned": 0,
-    "qaPassed": 2
+    "qaPassed": 4
    },
    "items": [
     {
@@ -392,7 +392,7 @@
      "modality": "diagram",
      "engine": "process-flow",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/t07-specs.js"
     },
     {
@@ -408,7 +408,7 @@
      "modality": "map",
      "engine": "delimitation",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/t07-specs.js"
     },
     {
@@ -437,7 +437,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 1
+    "qaPassed": 5
    },
    "items": [
     {
@@ -445,7 +445,7 @@
      "modality": "scenario",
      "engine": "scarcity-game",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t08-specs.js"
     },
     {
@@ -461,7 +461,7 @@
      "modality": "diagram",
      "engine": "flow",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t08-specs.js"
     },
     {
@@ -469,7 +469,7 @@
      "modality": "inquiry",
      "engine": "system-compare",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t08-specs.js"
     },
     {
@@ -477,7 +477,7 @@
      "modality": "scenario",
      "engine": "safety-net",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t08-specs.js"
     }
    ]
@@ -567,7 +567,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 2
+    "qaPassed": 5
    },
    "items": [
     {
@@ -575,7 +575,7 @@
      "modality": "3d",
      "engine": "ocean-relief",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t10-specs.js"
     },
     {
@@ -591,7 +591,7 @@
      "modality": "scenario",
      "engine": "fisheries",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t10-specs.js"
     },
     {
@@ -607,7 +607,7 @@
      "modality": "diagram",
      "engine": "concept-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t10-specs.js"
     }
    ]
@@ -628,7 +628,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 1
+    "qaPassed": 5
    },
    "items": [
     {
@@ -636,7 +636,7 @@
      "modality": "map",
      "engine": "biome-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t11-specs.js"
     },
     {
@@ -644,7 +644,7 @@
      "modality": "map",
      "engine": "reserve-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t11-specs.js"
     },
     {
@@ -660,7 +660,7 @@
      "modality": "sandbox",
      "engine": "fire-planner",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t11-specs.js"
     },
     {
@@ -668,7 +668,7 @@
      "modality": "inquiry",
      "engine": "gallery",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/geography/t11-specs.js"
     }
    ]
@@ -689,7 +689,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 0
+    "qaPassed": 5
    },
    "items": [
     {
@@ -697,7 +697,7 @@
      "modality": "map",
      "engine": "dated-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t12-specs.js"
     },
     {
@@ -705,7 +705,7 @@
      "modality": "3d",
      "engine": "fort-3d",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t12-specs.js"
     },
     {
@@ -713,7 +713,7 @@
      "modality": "evidence",
      "engine": "gallery",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t12-specs.js"
     },
     {
@@ -721,7 +721,7 @@
      "modality": "map",
      "engine": "network-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t12-specs.js"
     },
     {
@@ -729,7 +729,7 @@
      "modality": "timeline",
      "engine": "timeline",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t12-specs.js"
     }
    ]
@@ -750,7 +750,7 @@
     "total": 4,
     "implemented": 4,
     "planned": 0,
-    "qaPassed": 1
+    "qaPassed": 4
    },
    "items": [
     {
@@ -766,7 +766,7 @@
      "modality": "map",
      "engine": "exchange-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t13-specs.js"
     },
     {
@@ -774,7 +774,7 @@
      "modality": "inquiry",
      "engine": "gallery",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t13-specs.js"
     },
     {
@@ -782,7 +782,7 @@
      "modality": "evidence",
      "engine": "artefact-viewer",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/history/t13-specs.js"
     }
    ]
@@ -803,7 +803,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 0
+    "qaPassed": 5
    },
    "items": [
     {
@@ -811,7 +811,7 @@
      "modality": "evidence",
      "engine": "source-room",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/labs-authority.js"
     },
     {
@@ -819,7 +819,7 @@
      "modality": "diagram",
      "engine": "concept-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/labs-authority.js"
     },
     {
@@ -827,7 +827,7 @@
      "modality": "timeline",
      "engine": "timeline",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/labs-authority.js"
     },
     {
@@ -835,7 +835,7 @@
      "modality": "inquiry",
      "engine": "type-compare",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/labs-authority.js"
     },
     {
@@ -843,7 +843,7 @@
      "modality": "scenario",
      "engine": "civic-scenario",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/politics/labs-authority.js"
     }
    ]
@@ -864,7 +864,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 2
+    "qaPassed": 5
    },
    "items": [
     {
@@ -872,7 +872,7 @@
      "modality": "scenario",
      "engine": "plan-builder",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t15-specs.js"
     },
     {
@@ -888,7 +888,7 @@
      "modality": "map",
      "engine": "ecosystem-map",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t15-specs.js"
     },
     {
@@ -896,7 +896,7 @@
      "modality": "scenario",
      "engine": "creative-destruction",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t15-specs.js"
     },
     {
@@ -925,7 +925,7 @@
     "total": 5,
     "implemented": 5,
     "planned": 0,
-    "qaPassed": 3
+    "qaPassed": 5
    },
    "items": [
     {
@@ -957,7 +957,7 @@
      "modality": "scenario",
      "engine": "risk-return",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t16-specs.js"
     },
     {
@@ -965,7 +965,7 @@
      "modality": "diagram",
      "engine": "tax-flow",
      "status": "implemented",
-     "qaPassed": false,
+     "qaPassed": true,
      "implementation": "src/modules/economics/t16-specs.js"
     }
    ]

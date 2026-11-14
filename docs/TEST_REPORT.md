@@ -1,41 +1,42 @@
 # Test report
 
-Run: 2026-11-12, branch `arena/7ded2df7-eduverse`. Environment: Node `v22.22.3`, `jsdom` DOM harness (Chromium/Playwright binaries not available in the sandbox environment).
+Run: 2026-11-13, branch `arena/0edcc242-eduverse`. Environment: Node `v22.22.3`, `jsdom`, and Playwright `1.65.0` driving headless Chromium `153.0.8010.0` (ANGLE + SwiftShader WebGL2 via `tests/launch-browser.cjs`).
 
 ## Summary
 
 | Suite | Command | Result |
 |---|---|---|
-| Architecture & guardrail suite (`tests/architecture.test.mjs` + `tools/verify-architecture.mjs`) | `npm run verify` | **Pass** (`0` cycles, pure `engines/domain/`, lean `79.0 KB` static Home boot across `16` modules, `16/16` isolated themes, `13` preloads, `sw.js` & catalog synced) |
-| Engine unit tests (`tests/engines.test.mjs`) | `npm test` | **18 / 18 pass** (terrain, atmosphere, ocean, ecosystem, timeline, tradeRoutes, institutions, election, market, startup, finance, tectonics, history, society) |
-| Lab-spec validation (`tests/labs.test.mjs`) | `npm test` | **7 / 7 pass** across all declarative `lab-kit` specs (uniqueness, pedagogy structure, Devanagari Hindi parity, extreme control sweeps, prediction live runs, single-answer exit tickets, scientific spot checks, XR guard, `v.plate` asset & caption checks) |
-| Runtime DOM, lazy routing, glossary & HTTP verify (`tests/modules-dom.test.mjs`) | `npm test` | **7 / 7 pass** (boots `src/main.js`, navigates Home <-> `T01`/`T02`/`T04`/`T05`/`T07`/`T09`/`T12` <-> `#/bridge` <-> `#/portfolio`, verifies lazy i18n registration without unresolved `⟦key⟧`, live-relabels `en`/`hi`/`both`, verifies all `T01`–`T16` module mounts/tabs/controls/3D diorama build/fallback, glossary coverage across 91 terms, `sw.js` file existence, and HTTP `200` static serving) |
-| Catalogue generator | `npm run catalog` | **78 / 78** learning objects implemented (`0` planned), **79** simulations, **27** prior Chromium QA-verified (`data/coverage/qa-passed.json`) |
-| Service worker precache | `npm run sw` | **116** runtime files precached (`sw.js`) |
-| Chromium smoke (`tests/lab-smoke.cjs`) | `npm run smoke` | Not executed here (no Chromium/Playwright binary in sandbox) |
-| Chromium a11y (`tests/a11y-smoke.cjs`) | `npm run a11y` | Not executed here (no Chromium/Playwright binary in sandbox) |
-| Payload & throttled perf (`perf-size.cjs`, `perf-throttle.cjs`) | — | Not executed here (requires Playwright + Chromium) |
+| Architecture & guardrail suite (`tests/architecture.test.mjs` + `tools/verify-architecture.mjs`) | `npm run verify` | **Pass** (`0` cycles, pure `engines/domain/`, `79.0 KB` raw static Home boot across `16` modules, `16/16` isolated themes, `13` preloads, `sw.js` & catalog synced) |
+| Engine unit tests (`tests/engines.test.mjs`) | `npm test` | **18 / 18 pass** |
+| Lab-spec validation (`tests/labs.test.mjs`) | `npm test` | **7 / 7 pass** |
+| Runtime DOM, lazy routing, glossary & HTTP verify (`tests/modules-dom.test.mjs`) | `npm test` | **7 / 7 pass** |
+| **Live Chromium Desktop Smoke (`1100 px`, SwiftShader WebGL2)** | `npm run smoke` | **16 / 16 themes (`T01`–`T16`) pass** — `NO ERRORS`, `problems: []`, `hOverflowPx: 0` across all tabs (`6`–`12` tabs per theme), controls, and `hi`/`en`/`both` switches |
+| **Live Chromium Mobile Touch Smoke (`360 px`, `hasTouch: true`)** | `npm run smoke:mobile` | **16 / 16 themes (`T01`–`T16`) pass** — `NO ERRORS`, `problems: []`, `hOverflowPx: 0` (`184.4 s` end-to-end) |
+| **Live Chromium Accessibility & Touch Targets (`390 px`)** | `npm run a11y` | **16 / 16 themes (`T01`–`T16`) pass** (`19.3 s`) — `tabKeyboard: true`, `unlabelledSvg: 0`, `unlabelledRanges: 0`, `smallTargets: 0` (`>= 44 px`), `liveRegions >= 3`, `reducedMotionHonoured: true` |
+| **Live Chromium Home / Bridge / Portfolio Routes (`1100 px` & `360 px`)** | custom Playwright check | **Pass** — Hero 3D WebGL canvas, `#/bridge` India SVG map, `#/portfolio` CG bars all render cleanly with `0` console/page errors and `0 px` horizontal overflow |
+| **Payload & Network Audit** | `npm run perf:size` | **Pass** — Home (`39` reqs), `T02`–`T16`, and `T02+3D tab` measured (see `docs/PERFORMANCE_AUDIT.md`) |
+| **CDP Slow-Network + 6× CPU Throttle + Offline SW** | `npm run perf:throttle` | **Pass** — `home` usable in `4.4 s`; `T09` `8.9 s` (`14.9 ms` input); `T16` `8.7 s` (`10.8 ms`); `T11` `9.9 s` (`29.0 ms`); offline SW caches `117` entries (`homeLoads: true`, `labLoads: true`, `labInteractive: true`) |
+| Catalogue & Service Worker manifests | `npm run catalog && npm run sw` | **78 / 78** LOs implemented & QA-passed, **79** simulations, **116** precached runtime files (`117` entries in `sw.js`) |
 
-_Total automated Node/JSDOM subtests passing: **33 / 33** (`1` architecture + `18` engine + `7` lab + `7` DOM/runtime/HTTP)._
+## Bug Caught & Fixed by Live Chromium Smoke
 
-## What is verified vs pending Chromium QA
+- **`T08.L1` (`src/modules/economics/t08-specs.js`)**: Live Chromium `lab-smoke.cjs` flagged `CONSOLE Error: <rect> attribute width: A negative value is not valid` when the user overspent above `₹100` in the stacked budget bar SVG. Fixed by clamping remaining bar width with `Math.max(0, 592 - (x - 24))`; verified `0` console errors afterward across both `1100 px` and `360 px` runs.
+- **Browser Test Infrastructure (`tests/launch-browser.cjs`, `tests/*.cjs`)**: Added `playwright` + `@sparticuz/chromium` to `devDependencies` with automatic binary fallback (explicit env → native Playwright binary → system browser → `@sparticuz/chromium` + `al2023` libs), Node 22 `content-type` fallback on inline static servers, and visible-tab walking in `tests/lab-smoke.cjs` so nested lab/dock tabs are exercised cleanly after lazy module mounting.
 
-- **Verified programmatically (Node + `jsdom` + static ESM graph analysis):**
-  - Zero static circular imports across all `102` source files under `src/`, pure DOM-free domain engines (`src/engines/domain/`), lean `src/main.js` static boot (`79.0 KB` raw), and strict per-theme spec isolation across `T01`–`T16`.
-  - Every engine invariant (mass conservation, ISA 1976 atmosphere, tidal ranges, tsunami speeds, logistic yield & Lotka-Volterra food web, catchment water budget, slope hazard FoS, minimal winning coalitions, Harappan/fort models, unit economics, compound interest & inflation, insurance pools, progressive tax).
-  - Every `lab-kit` spec renders cleanly at min/mid/max control values without `NaN`/`undefined`/`Infinity`, every prediction runs on the live model, every exit ticket has 1 valid answer and bilingual feedback, and every English string has Devanagari Hindi parity.
-  - All 16 lazy theme modules (`T01`–`T16`) and lazy `#/bridge` & `#/portfolio` routes mount cleanly into DOM, register lazy i18n slices (`T02`, `T04`, `T07`, `T09`, `bridge`), toggle WebGL 2D fallback gracefully, expose `aria-label` on `svg[role=img]` and range inputs, and serve assets over HTTP `200 OK`.
-- **Not verified in a live browser engine here:**
-  - Real Chromium pixel rendering, WebGL GPU shader rendering, computed CSS 44 px touch-target bounding boxes, zero horizontal scroll overflow at 360 px / 1100 px, CDP network-throttled timing, and live Service Worker offline interception (`npm run smoke`, `npm run a11y`, `perf-size.cjs`, `perf-throttle.cjs`).
-  - Subject-teacher review of Hindi translations (`draft-needs-teacher-review`) and domain expert sign-off on illustrative datasets.
+## Remaining Non-Sandbox Checks
+
+- Subject-teacher review of Hindi translations (`draft-needs-teacher-review`) and domain expert sign-off on illustrative datasets.
+- Telemetry on physical low-end Android hardware, real mobile cellular networks, and physical WebXR headsets.
+- Note: `@sparticuz/chromium` ships Liberation/OpenSans fonts without Noto Devanagari glyphs, so while all Devanagari Hindi strings are verified present in the DOM (`en`/`hi`/`both`), visual glyph shaping in Chromium screenshots requires system Devanagari fonts installed on the host OS.
 
 ## Reproducing
 
 ```bash
-npm run catalog && npm run sw && npm run verify
-# On a machine with Playwright + Chromium installed:
-npm install --no-save playwright && npx playwright install chromium
-npm run smoke
-W=360 MOBILE=1 npm run smoke
+npm ci
+npm run verify
 npm run a11y
+npm run smoke
+npm run smoke:mobile
+npm run perf:size
+npm run perf:throttle
 ```

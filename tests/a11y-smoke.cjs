@@ -1,10 +1,10 @@
 // Keyboard, ARIA and touch-target checks for the lab themes. usage: node tests/a11y-smoke.cjs T03 T06 …
 // Not a substitute for a screen-reader or WCAG audit; it catches regressions in the things that are cheap to check automatically.
-const { chromium } = require('playwright'); const http = require('http'), fs = require('fs'), path = require('path');
-const root = path.resolve(__dirname, '..'), T = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
-const srv = http.createServer((q, s) => { let u = q.url.split('?')[0]; if (u.endsWith('/')) u += 'index.html'; fs.readFile(path.join(root, u), (e, d) => { if (e) { s.writeHead(404); s.end(); } else { s.writeHead(200, { 'content-type': T[path.extname(u)] }); s.end(d); } }); }).listen(0);
+const { launchChromium } = require('./launch-browser.cjs'); const http = require('http'), fs = require('fs'), path = require('path');
+const root = path.resolve(__dirname, '..'), T = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2' };
+const srv = http.createServer((q, s) => { let u = q.url.split('?')[0]; if (u.endsWith('/')) u += 'index.html'; fs.readFile(path.join(root, u), (e, d) => { if (e) { s.writeHead(404); s.end(); } else { s.writeHead(200, { 'content-type': T[path.extname(u)] || 'application/octet-stream' }); s.end(d); } }); }).listen(0);
 (async () => {
-  const port = srv.address().port, b = await chromium.launch(); let failed = false;
+  const port = srv.address().port, b = await launchChromium(); let failed = false;
   for (const id of process.argv.slice(2)) {
     const ctx = await b.newContext({ viewport: { width: 390, height: 900 }, hasTouch: true, isMobile: true, serviceWorkers: 'block' }), p = await ctx.newPage();
     await p.goto(`http://localhost:${port}/#/theme/${id}`); await p.reload(); await p.waitForSelector('#main .lab', { timeout: 10000 });

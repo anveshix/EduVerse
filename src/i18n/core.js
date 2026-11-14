@@ -403,5 +403,77 @@ export const UI_CORE = {
   "plate.tapHint": {
     "en": "👆 Tap glowing pins on the realistic 2D visual to inspect concepts & drive the simulation",
     "hi": "👆 अवधारणाएँ समझने व सिमुलेशन चलाने के लिए चित्र के चमकते बिंदुओं पर टैप करें"
+  },
+  "home.continue": {
+    "en": "Continue learning",
+    "hi": "सीखना जारी रखें"
+  },
+  "home.continue.start": {
+    "en": "Start the learning path →",
+    "hi": "सीखने का मार्ग शुरू करें →"
+  },
+  "home.continue.resume": {
+    "en": "Resume",
+    "hi": "आगे बढ़ें"
+  },
+  "home.continue.next": {
+    "en": "Up next",
+    "hi": "अगला विषय"
+  },
+  "home.path": {
+    "en": "Learning path",
+    "hi": "सीखने का मार्ग"
+  },
+  "home.path.themes": {
+    "en": "themes explored",
+    "hi": "विषय खोजे गए"
+  },
+  "home.path.los": {
+    "en": "LOs mastered",
+    "hi": "LO पूर्ण"
+  },
+  "home.search": {
+    "en": "Search themes… (e.g. monsoon, चुनाव)",
+    "hi": "विषय खोजें… (जैसे monsoon, चुनाव)"
+  },
+  "home.search.label": {
+    "en": "Search themes",
+    "hi": "विषय खोजें"
+  },
+  "home.howto": {
+    "en": "How to learn in EduVerse (4 steps)",
+    "hi": "EduVerse में कैसे सीखें (4 चरण)"
+  },
+  "home.howto.s1": {
+    "en": "1 · Observe — read the Opening question and tap glowing pins on the picture.",
+    "hi": "1 · देखें — आरंभिक प्रश्न पढ़ें और चित्र के चमकते बिंदुओं पर टैप करें।"
+  },
+  "home.howto.s2": {
+    "en": "2 · Predict — commit to an answer before you run the simulation.",
+    "hi": "2 · अनुमान लगाएँ — सिमुलेशन चलाने से पहले अपना उत्तर तय करें।"
+  },
+  "home.howto.s3": {
+    "en": "3 · Experiment — move sliders, switch lenses, try extremes. Watch the readout change.",
+    "hi": "3 · प्रयोग करें — स्लाइडर घुमाएँ, लेंस बदलें, चरम मान आज़माएँ। रीडआउट देखें।"
+  },
+  "home.howto.s4": {
+    "en": "4 · Reflect — solve the Exit Ticket, earn a star, write one line in Reflect.",
+    "hi": "4 · चिंतन करें — निकास-टिकट हल करें, सितारा पाएँ, चिंतन में एक पंक्ति लिखें।"
+  },
+  "home.card.progress": {
+    "en": "{k}/{n} LOs mastered",
+    "hi": "{k}/{n} LO पूर्ण"
+  },
+  "th.listen": {
+    "en": "🔊 Listen",
+    "hi": "🔊 सुनें"
+  },
+  "th.stop": {
+    "en": "⏹ Stop",
+    "hi": "⏹ रोकें"
+  },
+  "th.complete": {
+    "en": "🏆 Chapter complete — all LOs mastered!",
+    "hi": "🏆 अध्याय पूर्ण — सभी LO पूर्ण!"
   }
 };

@@ -195,3 +195,20 @@ ol.try{padding-left:1.3rem}ol.try li{margin:.35rem 0}.ctl-label{margin-top:.6rem
 .chart [data-set]{cursor:pointer;transition:opacity .15s ease}.chart [data-set]:hover{opacity:.85}
 
 
+/* Step 0 foundation: continue, path progress, search, howto, narration, chapter complete */
+.continue-bar{display:flex;flex-wrap:wrap;gap:.5rem .9rem;align-items:center;background:linear-gradient(90deg,var(--ok-bg),var(--card));border:1px solid var(--ok);border-radius:12px;padding:.65rem .9rem;margin-bottom:.85rem}
+.continue-txt{font-size:.98em;flex:1 1 260px;min-width:0}
+.continue-btn{text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}
+.path-progress{flex:1 1 160px;height:10px;background:var(--bg);border:1px solid var(--line);border-radius:99px;overflow:hidden;min-width:120px}
+.path-progress-fill{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--ok));transition:width .3s ease}
+.path-txt{font-size:.88em;color:var(--mut);white-space:nowrap}
+.home-search{font:inherit;min-height:44px;padding:.4rem .8rem;border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--ink);flex:1 1 200px;min-width:180px}
+.howto{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.4rem 1rem;margin-bottom:1rem}
+.howto-list{margin:.4rem 0 .7rem;padding-left:1.3rem}
+.howto-list li{margin:.3rem 0}
+.card-progress{display:block;height:8px;background:var(--bg);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:.35rem}
+.card-progress-fill{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--ok))}
+.card-progress-txt{font-size:.82em;color:var(--mut)}
+.opening-head{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center;justify-content:space-between}
+.narrate-btn{min-height:44px}
+.chapter-done{background:var(--ok-bg);border:1px solid var(--ok);color:var(--ok);border-radius:10px;padding:.5rem .8rem;font-weight:700;margin:.6rem 0 0}
