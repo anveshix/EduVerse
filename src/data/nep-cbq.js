@@ -124,7 +124,7 @@ export const THEME_NEP = {
       summary: b('From Neolithic crop domestication to Harappan seals trading with Mesopotamia, early cities launched the global exchange networks studied in Class X History.', 'नवपाषाण कृषि और हड़प्पा–मेसोपोटामिया व्यापार ने उस प्राचीन वैश्विक संपर्क की नींव रखी जिसे कक्षा X में पढ़ा जाता है।'),
     },
     tours: [
-      { az: -0.9, pol: 1.0, r: 15, en: 'Step 1 · Raised Citadel: Western mud-brick platform housing the Great Bath & Granary.', hi: 'चरण 1 · दुर्ग टीला: पश्चिमी ऊँचा चबूतरा जहाँ विशाल स्नानागार व अन्नागार हैं।' },
+      { az: -0.9, pol: 1.0, r: 15, en: 'Step 1 · Raised sector: a schematic platform inspired by Mohenjo-daro; the large brick structure’s use is uncertain.', hi: 'चरण 1 · ऊँचा भाग: मोहनजोदड़ो से प्रेरित योजनाबद्ध चबूतरा; बड़ी ईंट संरचना का उपयोग अनिश्चित है।' },
       { az: 0.75, pol: 1.05, r: 16, en: 'Step 2 · Lower Town Grid: Right-angle lanes, brick houses & shared courtyard wells.', hi: 'चरण 2 · निचला नगर ग्रिड: समकोण सड़कें, पक्की ईंट के घर और कुएँ।' },
       { az: 0.0, pol: 0.35, r: 17, en: 'Step 3 · Urban Sanitation View: Inspect covered street drains running below city blocks.', hi: 'चरण 3 · स्वच्छता निरीक्षण: नगर की सड़कों के नीचे ढकी हुई नालियाँ देखें।' },
     ],
@@ -138,13 +138,13 @@ export const THEME_NEP = {
     caseQ: {
       id: 'cbq-t04-case',
       passage: b('Source Case: At Lothal (Gujarat), excavators uncovered a large brick-lined basin connected by a sluice channel, weights of uniform chert, and round Persian Gulf seals.', 'स्रोत प्रसंग: लोथल (गुजरात) में उत्खननकर्ताओं को पक्की ईंटों का जल-बेसिन, नहर द्वार, एकसमान बाट और फ़ारस की खाड़ी की गोल मुहरें मिलीं।'),
-      stem: b('Which inference is directly supported by combining the basin + weights + Gulf seals?', 'बेसिन + मानक बाट + फ़ारसी मुहरों के प्रमाण से कौन-सा निष्कर्ष सीधे सिद्ध होता है?'),
+      stem: b('Which cautious inference fits the basin, weights and Gulf seals?', 'बेसिन, बाट और खाड़ी की मुहरों से कौन-सा सावधानी भरा निष्कर्ष मेल खाता है?'),
       options: [
-        { id: 'port', ...b('Lothal served as an organised maritime dockyard & long-distance trading port', 'लोथल एक संगठित समुद्री गोदीवाड़ा और दूरस्थ व्यापारिक बंदरगाह था') },
-        { id: 'fort', ...b('Harappans never engaged in overseas exchange', 'हड़प्पावासी कभी समुद्र-पार व्यापार नहीं करते थे'), why: b('Persian Gulf seals and dock infrastructure prove active maritime commerce.', 'खाड़ी की मुहरें व गोदीवाड़ा सक्रिय समुद्री व्यापार सिद्ध करते हैं।') },
+        { id: 'port', ...b('Lothal had exchange connections; the basin may have been a dock, though its use has been debated.', 'लोथल के विनिमय संबंध थे; बेसिन गोदी रहा हो सकता है, हालाँकि उसका उपयोग विवादित रहा है।') },
+        { id: 'fort', ...b('Harappans never engaged in overseas exchange', 'हड़प्पावासी कभी समुद्र-पार व्यापार नहीं करते थे'), why: b('The seals and other finds support exchange connections; the basin’s exact function has been debated.', 'मुहरें और अन्य वस्तुएँ विनिमय संबंधों का समर्थन करती हैं; बेसिन का सही उपयोग विवादित रहा है।') },
       ],
       correct: 'port',
-      explain: b('Material evidence (dock basin + standard weights + foreign seals) confirms overseas Bronze Age trade.', 'भौतिक प्रमाण (गोदीवाड़ा, बाट, विदेशी मुहरें) प्राचीन समुद्री व्यापार की पुष्टि करते हैं।'),
+      explain: b('Seals and weights support exchange networks. A dock is one interpretation of the basin; a reservoir has also been proposed.', 'मुहरें और बाट विनिमय संबंधों का समर्थन करते हैं। बेसिन की एक व्याख्या गोदी है; जलाशय का प्रस्ताव भी दिया गया है।'),
     },
   },
 

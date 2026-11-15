@@ -31,14 +31,15 @@ export function run(opts, years = 40) { return gradate(initialProfile(opts.relie
 
 export const LANDFORM_AGENTS = ['river', 'waves', 'wind', 'glacier', 'groundwater'];
 
-/** Slope stability & GLOF (Glacial Lake Outburst Flood) schematic hazard model for T02.L6. */
-export function slopeHazard({ slopeDeg = 35, rainMm = 120, forestPct = 40, glacierLake = false, checkWall = false } = {}) {
+/** Schematic relative slope index for T02.L6, not a failure probability or site forecast.
+ * Glacial-lake outbursts are a separate hazard; this model does not estimate their timing. */
+export function slopeHazard({ slopeDeg = 35, rainMm = 120, forestPct = 40, checkWall = false } = {}) {
   const rad = (slopeDeg * Math.PI) / 180;
-  const gravityDrive = Math.sin(rad) * 85 + (rainMm / 300) * 45 + (glacierLake ? 22 : 0);
+  const gravityDrive = Math.sin(rad) * 85 + (rainMm / 300) * 45;
   const resistance = Math.cos(rad) * 48 + (forestPct / 100) * 34 + (checkWall ? 22 : 0);
   const factorOfSafety = resistance / Math.max(1, gravityDrive);
+  // riskPct is retained as an API name; the 0–100 value is only a comparison index.
   const riskPct = Math.round(Math.max(2, Math.min(99, (1.45 - factorOfSafety) * 95)));
   const status = riskPct >= 65 ? 'critical' : riskPct >= 38 ? 'elevated' : 'stable';
-  const glofPeakMinutes = glacierLake ? Math.round(Math.max(12, 85 - slopeDeg * 0.9)) : 0;
-  return { factorOfSafety, riskPct, status, glofPeakMinutes };
+  return { factorOfSafety, riskPct, status };
 }

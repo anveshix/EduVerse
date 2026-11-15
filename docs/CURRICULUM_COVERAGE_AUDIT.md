@@ -17,30 +17,30 @@ Source: CBSE Class IX Social Science (Subject Code 087) 2026-27 (14 pp.). Note-C
 | Marks distribution / blueprint | **not encoded** (PDF p.14: "Course Structure will be provided shortly") |
 | Implemented learning objects mapped | **174/174** bullets implemented, 0 partial, 0 planned |
 | Hindi | **174/174** draft rows (subject-teacher review pending), 0 pending |
-| Prior Chromium QA passed | **27/78** LOs (49/174 bullets in `data/coverage/qa-passed.json`); all 78 LOs / 79 simulations verified via Node + JSDOM |
+| Automated + Chromium QA passed | **78/78** LOs (174/174 bullets in `data/coverage/qa-passed.json`) verified via Playwright Chromium 153 SwiftShader + Node/JSDOM |
 
-"Mapped" means a learning object is *designated* for the bullet. Prior Chromium QA records live Playwright pass status in `data/coverage/qa-passed.json`; Node + JSDOM runtime and static architecture guardrails cover all 16 themes.
+"Mapped" means a learning object is *designated* for the bullet. `data/coverage/qa-passed.json` reflects full desktop (`1100 px`) and mobile (`360 px` / `390 px`) Chromium smoke + accessibility passes across all 16 themes (`T01`–`T16`).
 
 ## Per theme
 
 | ID | Theme | h | LOs (Impl) | Chromium QA LOs | Bullets | Impl Bullets | Partial | Planned |
 |---|---|---|---|---|---|---|---|---|
-| T01 | Understanding Social Science | 4 | 3/3 | 0/3 | 5 | 5 | 0 | 0 |
-| T02 | Shaping of the Earth's Surface | 8 | 6/6 | 4/6 | 10 | 10 | 0 | 0 |
-| T03 | Atmosphere and Climate | 7 | 6/6 | 2/6 | 11 | 11 | 0 | 0 |
-| T04 | Early Humans and Beginning of Civilisation | 9 | 5/5 | 2/5 | 15 | 15 | 0 | 0 |
-| T05 | State and Society (upto 1000 CE) | 9 | 5/5 | 0/5 | 8 | 8 | 0 | 0 |
-| T06 | Democracy | 9 | 4/4 | 1/4 | 8 | 8 | 0 | 0 |
-| T07 | Elections | 9 | 4/4 | 2/4 | 19 | 19 | 0 | 0 |
-| T08 | Building Blocks in Economics | 7 | 5/5 | 1/5 | 10 | 10 | 0 | 0 |
+| T01 | Understanding Social Science | 4 | 3/3 | 3/3 | 5 | 5 | 0 | 0 |
+| T02 | Shaping of the Earth's Surface | 8 | 6/6 | 6/6 | 10 | 10 | 0 | 0 |
+| T03 | Atmosphere and Climate | 7 | 6/6 | 6/6 | 11 | 11 | 0 | 0 |
+| T04 | Early Humans and Beginning of Civilisation | 9 | 5/5 | 5/5 | 15 | 15 | 0 | 0 |
+| T05 | State and Society (upto 1000 CE) | 9 | 5/5 | 5/5 | 8 | 8 | 0 | 0 |
+| T06 | Democracy | 9 | 4/4 | 4/4 | 8 | 8 | 0 | 0 |
+| T07 | Elections | 9 | 4/4 | 4/4 | 19 | 19 | 0 | 0 |
+| T08 | Building Blocks in Economics | 7 | 5/5 | 5/5 | 10 | 10 | 0 | 0 |
 | T09 | The Price Puzzle: What Drives the Market | 8 | 6/6 | 6/6 | 10 | 10 | 0 | 0 |
-| T10 | Oceans and Life | 7 | 5/5 | 2/5 | 11 | 11 | 0 | 0 |
-| T11 | Life on Earth | 7 | 5/5 | 1/5 | 10 | 10 | 0 | 0 |
-| T12 | Resistance and Resilience (1000 CE – 1700 CE) | 9 | 5/5 | 0/5 | 9 | 9 | 0 | 0 |
-| T13 | India and the World-I (1900 BCE-1200 CE) | 8 | 4/4 | 1/4 | 7 | 7 | 0 | 0 |
-| T14 | Authority | 10 | 5/5 | 0/5 | 11 | 11 | 0 | 0 |
-| T15 | From Ideas to Startups | 8 | 5/5 | 2/5 | 16 | 16 | 0 | 0 |
-| T16 | Smart Ways to Manage Your Finances | 6 | 5/5 | 3/5 | 14 | 14 | 0 | 0 |
+| T10 | Oceans and Life | 7 | 5/5 | 5/5 | 11 | 11 | 0 | 0 |
+| T11 | Life on Earth | 7 | 5/5 | 5/5 | 10 | 10 | 0 | 0 |
+| T12 | Resistance and Resilience (1000 CE – 1700 CE) | 9 | 5/5 | 5/5 | 9 | 9 | 0 | 0 |
+| T13 | India and the World-I (1900 BCE-1200 CE) | 8 | 4/4 | 4/4 | 7 | 7 | 0 | 0 |
+| T14 | Authority | 10 | 5/5 | 5/5 | 11 | 11 | 0 | 0 |
+| T15 | From Ideas to Startups | 8 | 5/5 | 5/5 | 16 | 16 | 0 | 0 |
+| T16 | Smart Ways to Manage Your Finances | 6 | 5/5 | 5/5 | 14 | 14 | 0 | 0 |
 
 ## Source discrepancies (PDF wording preserved)
 

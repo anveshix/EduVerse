@@ -37,7 +37,7 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 2,
+   "guidedDiscoveryPrompts": 3,
    "predictions": 1,
    "exitQuestions": 1,
    "hasReflection": true,
@@ -45,7 +45,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -87,7 +87,7 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 2,
+   "guidedDiscoveryPrompts": 3,
    "predictions": 1,
    "exitQuestions": 1,
    "hasReflection": true,
@@ -95,7 +95,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -137,7 +137,7 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 1,
+   "guidedDiscoveryPrompts": 2,
    "predictions": 1,
    "exitQuestions": 1,
    "hasReflection": true,
@@ -145,7 +145,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -262,8 +262,8 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 3,
-   "predictions": 2,
+   "guidedDiscoveryPrompts": 5,
+   "predictions": 3,
    "exitQuestions": 2,
    "hasReflection": true,
    "hasReset": true,
@@ -312,15 +312,15 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 2,
+   "guidedDiscoveryPrompts": 4,
    "predictions": 1,
-   "exitQuestions": 1,
+   "exitQuestions": 2,
    "hasReflection": true,
    "hasReset": true,
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -340,8 +340,8 @@
    "implementation": "src/modules/geography/labs-earth.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Test how slope steepness, intense rain, tree roots, retaining walls and glacial lakes affect landslide and GLOF disaster risk.",
-    "hi": "परखें कि ढलान का कोण, भारी वर्षा, वन जड़ें, प्रतिरोधी दीवार और हिमनद झीलें भूस्खलन व GLOF जोखिम को कैसे बदलती हैं।"
+    "en": "Explore factors affecting slope stability, then discuss glacial lake outburst floods (GLOFs) as a separate hazard.",
+    "hi": "ढलान की स्थिरता को प्रभावित करने वाले कारक परखें, फिर हिमनद झील प्रस्फोट बाढ़ (GLOF) की अलग खतरे के रूप में चर्चा करें।"
    },
    "provenance": "schematic",
    "controls": [
@@ -381,20 +381,20 @@
      "id": "wall",
      "type": "toggle",
      "label": {
-      "en": "Retaining wall + drainage pipes + warning siren",
-      "hi": "प्रतिरोधी दीवार + जल निकासी + चेतावनी सायरन"
+      "en": "Retaining wall + drainage (slope model)",
+      "hi": "प्रतिरोधी दीवार + जल निकासी (ढलान मॉडल)"
      }
     }
    ],
-   "guidedDiscoveryPrompts": 1,
-   "predictions": 1,
-   "exitQuestions": 1,
+   "guidedDiscoveryPrompts": 3,
+   "predictions": 2,
+   "exitQuestions": 2,
    "hasReflection": true,
    "hasReset": true,
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -456,10 +456,10 @@
    "implementation": "src/modules/geography/t03-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Read and compare temperature-rainfall climographs across contrasting Indian stations shaped by latitude, altitude, coast and relief.",
-    "hi": "तट, ऊँचाई, अक्षांश और उच्चावच से प्रभावित विभिन्न भारतीय केंद्रों के तापमान-वर्षा जलवायु आरेखों की तुलना करें।"
+    "en": "Record a week of local weather and practise reading illustrative temperature–rainfall graphs; distinguish short-term observations from climate.",
+    "hi": "एक सप्ताह का स्थानीय मौसम दर्ज करें और उदाहरणात्मक तापमान–वर्षा आरेख पढ़ें; अल्पकालिक प्रेक्षण और जलवायु में अंतर समझें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "station",
@@ -486,7 +486,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -506,8 +506,8 @@
    "implementation": "src/modules/geography/t03-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Trace India’s advancing (SW) and retreating (NE) monsoon winds on an India map and link rainfall seasons to farming and coastal livelihoods.",
-    "hi": "भारत के मानचित्र पर दक्षिण-पश्चिम और उत्तर-पूर्व मानसूनी पवनों की दिशा देखें और ऋतुओं को कृषि व आजीविका से जोड़ें।"
+    "en": "Explain a simplified monsoon mechanism, trace seasonal wind reversal, and compare Bihar and Tamil Nadu without treating the map as a forecast.",
+    "hi": "सरल मानसून प्रक्रिया समझें, मौसमी पवन-उलटाव देखें और बिहार व तमिलनाडु की तुलना करें; मानचित्र को पूर्वानुमान न मानें।"
    },
    "provenance": "schematic",
    "controls": [
@@ -528,15 +528,15 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 1,
-   "predictions": 1,
+   "guidedDiscoveryPrompts": 2,
+   "predictions": 2,
    "exitQuestions": 1,
    "hasReflection": true,
    "hasReset": true,
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -652,7 +652,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -726,7 +726,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -780,33 +780,33 @@
    "implementation": "src/modules/history/t04-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Compare mobile foraging bands with early farming villages across food surplus, storage, population growth and harvest shocks.",
-    "hi": "भोजन अधिशेष, भंडारण, जनसंख्या वृद्धि और फसल जोखिम के आधार पर घुमंतू संग्राहक समूहों और आरंभिक कृषि गाँवों की तुलना करें।"
+    "en": "Compare a toy foraging and farming scenario and discuss the limits of its assumptions.",
+    "hi": "संग्रह और खेती के एक काल्पनिक मॉडल की तुलना करें और उसकी धारणाओं की सीमाएँ समझें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "mode",
      "type": "chips",
      "label": {
-      "en": "Subsistence strategy",
-      "hi": "जीवन-निर्वाह पद्धति"
+      "en": "Toy subsistence scenario",
+      "hi": "काल्पनिक निर्वाह मॉडल"
      }
     },
     {
      "id": "rainVar",
      "type": "slider",
      "label": {
-      "en": "Weather / rainfall variability",
-      "hi": "मौसम / वर्षा उतार-चढ़ाव"
+      "en": "Model weather variability",
+      "hi": "मॉडल में मौसम का उतार-चढ़ाव"
      }
     },
     {
      "id": "storage",
      "type": "slider",
      "label": {
-      "en": "Granary storage capacity",
-      "hi": "अन्नागार भंडारण क्षमता"
+      "en": "Model storage setting",
+      "hi": "मॉडल में भंडारण स्तर"
      }
     }
    ],
@@ -818,7 +818,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -838,8 +838,8 @@
    "implementation": "src/modules/history/t04-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Plan an Indus-Sarasvati (Harappan) town with Citadel, Great Bath, Granary, right-angle grid streets and covered drains, and inspect its 3D layout.",
-    "hi": "दुर्ग, विशाल स्नानागार, अन्नागार, समकोण ग्रिड सड़कों और ढकी नालियों के साथ हड़प्पा नगर की योजना बनाएँ और उसका 3D रूप देखें।"
+    "en": "Explore a schematic Harappan town and distinguish excavated features from interpretations of their use.",
+    "hi": "एक योजनाबद्ध हड़प्पा नगर देखें और खुदी संरचनाओं को उनके उपयोग की व्याख्याओं से अलग करें।"
    },
    "provenance": "reconstruction",
    "controls": [
@@ -847,40 +847,40 @@
      "id": "gridStreets",
      "type": "toggle",
      "label": {
-      "en": "Right-angle north–south / east–west grid",
-      "hi": "समकोण उत्तर–दक्षिण / पूर्व–पश्चिम ग्रिड"
+      "en": "Aligned model blocks / grid streets",
+      "hi": "संरेखित मॉडल खंड / ग्रिड सड़कें"
      }
     },
     {
      "id": "coveredDrains",
      "type": "toggle",
      "label": {
-      "en": "Kiln-brick covered drains & soak-pits",
-      "hi": "पक्की ईंट की ढकी नालियाँ व सोख्ता-गड्ढे"
+      "en": "Show covered street drains",
+      "hi": "ढकी सड़क नालियाँ दिखाएँ"
      }
     },
     {
      "id": "granary",
      "type": "toggle",
      "label": {
-      "en": "Raised Citadel granary platform",
-      "hi": "दुर्ग पर ऊँचा अन्नागार चबूतरा"
+      "en": "Show large brick platform (use uncertain)",
+      "hi": "बड़ा ईंट-चबूतरा दिखाएँ (उपयोग अनिश्चित)"
      }
     },
     {
      "id": "greatBath",
      "type": "toggle",
      "label": {
-      "en": "Bitumen-lined Great Bath reservoir",
-      "hi": "विशाल स्नानागार (जलरोधी ईंट)"
+      "en": "Show Great Bath",
+      "hi": "विशाल स्नानागार दिखाएँ"
      }
     },
     {
      "id": "wells",
      "type": "slider",
      "label": {
-      "en": "Brick wells per neighbourhood block",
-      "hi": "प्रति मोहल्ला ईंट के कुएँ"
+      "en": "Illustrated wells per block",
+      "hi": "प्रति खंड चित्रित कुएँ"
      }
     }
    ],
@@ -892,7 +892,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -934,7 +934,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -984,7 +984,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1034,7 +1034,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1100,7 +1100,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1150,7 +1150,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1216,7 +1216,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1290,7 +1290,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1340,7 +1340,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1440,7 +1440,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1490,7 +1490,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1565,7 +1565,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1673,7 +1673,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1789,7 +1789,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1831,7 +1831,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -1881,7 +1881,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2049,7 +2049,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2157,7 +2157,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2257,7 +2257,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2307,7 +2307,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2357,7 +2357,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2531,7 +2531,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2573,7 +2573,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2623,7 +2623,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2697,7 +2697,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2739,7 +2739,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2781,7 +2781,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2823,7 +2823,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2907,7 +2907,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2949,7 +2949,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -2991,7 +2991,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3049,7 +3049,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3099,7 +3099,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3141,7 +3141,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3191,7 +3191,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3249,7 +3249,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3315,7 +3315,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3431,7 +3431,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3481,7 +3481,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3787,7 +3787,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",
@@ -3837,7 +3837,7 @@
    "bilingual": true,
    "hindiReview": "draft: subject-teacher review pending",
    "status": "implemented",
-   "qaPassed": false,
+   "qaPassed": true,
    "verification": [
     "tests/engines.test.mjs",
     "tests/labs.test.mjs",

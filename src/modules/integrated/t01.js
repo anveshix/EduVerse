@@ -75,6 +75,7 @@ export const systemMap = {
   discover: [
     b('Click each node from People to Decisions and notice how every part connects to at least two others.', 'जनता से सामूहिक निर्णय तक हर नोड चुनें और देखें कि हर भाग कम से कम दो अन्य भागों से जुड़ा है।'),
     b('Turn on the drought shock toggle. Why does a weather event quickly become an economic and political question?', 'सूखे का प्रभाव चालू करें। एक मौसमी घटना तुरंत आर्थिक और राजनीतिक प्रश्न कैसे बन जाती है?'),
+    b('Social Science Inquiry Cycle: Question → Source (map, record, interview) → Evidence → Conclusion → New Question. Try it on Patna floods: Question (why flood?) → Source (river gauge, news, elders) → Evidence (water level + embankment) → Conclusion → New Question (who maintains embankments?).', 'सामाजिक विज्ञान जाँच-चक्र: प्रश्न → स्रोत (मानचित्र, अभिलेख, साक्षात्कार) → साक्ष्य → निष्कर्ष → नया प्रश्न। पटना बाढ़ पर आज़माएँ: प्रश्न (बाढ़ क्यों?) → स्रोत (जल-स्तर, समाचार, बुज़ुर्ग) → साक्ष्य (जलस्तर + तटबंध) → निष्कर्ष → नया प्रश्न (तटबंध कौन संभालता है?)।'),
   ],
   predictions: [
     {
@@ -137,6 +138,13 @@ const PLACES = {
     pol: b('Gram Sabhas, PESA local self-governance institutions, and mineral-royalty & forest-conservation councils.', 'ग्राम सभाएँ, पेसा (PESA) स्थानीय स्वशासन संस्थाएँ और खनिज-वन संरक्षण परिषदें।'),
     econ: b('Iron-steel & mineral hubs, tussar silk and lac cooperatives, non-timber forest produce, and lively weekly haat markets.', 'इस्पात व खनिज केंद्र, तसर रेशम व लाख सहकारी समितियाँ, वनोपज और साप्ताहिक हाट बाज़ार।'),
   },
+  patna: {
+    lon: 85.13, lat: 25.6, state: 'Bihar', en: 'Patna (Ganga Plain)', hi: 'पटना (गंगा मैदान)',
+    geo: b('Flat Ganga–Son confluence plain (~50 m); monsoon floods, silt and fertile alluvium shape farms and settlements.', 'गंगा–सोन संगम का समतल मैदान (~50 मी); मानसूनी बाढ़, गाद और उपजाऊ जलोढ़ खेती व बस्तियाँ तय करते हैं।'),
+    hist: b('Ancient Patliputra — capital of Mauryas and Guptas, Ashokan pillars, Nalanda-linked learning and river trade.', 'प्राचीन पाटलिपुत्र — मौर्य व गुप्त राजधानी, अशोक स्तंभ, नालंदा से जुड़ी विद्या और नदी व्यापार।'),
+    pol: b('Bihar Legislative Assembly, Patna Municipal Corporation, Panchayati Raj Gram Sabhas and flood-relief councils.', 'बिहार विधानसभा, पटना नगर निगम, पंचायती राज ग्राम सभाएँ और बाढ़-राहत परिषदें।'),
+    econ: b('Krishi Bhavan mandis, litchi & makhana trade, river transport, coaching and service jobs; flood costs shape choices.', 'कृषि भवन मंडियाँ, लीची व मखाना व्यापार, नदी परिवहन, कोचिंग व सेवा रोज़गार; बाढ़ की लागत चुनाव तय करती है।'),
+  },
 };
 const LENS_LBL = {
   geo: b('Geography (Where & Why There)', 'भूगोल (कहाँ व क्यों)'),
@@ -189,6 +197,7 @@ export const lensExplorer = {
   discover: [
     b('Pick Sundarbans and read Geography, then Political Science, then Economics. How do cyclones tie all three together?', 'सुंदरबन चुनें और भूगोल, फिर राजनीति विज्ञान, फिर अर्थशास्त्र पढ़ें। चक्रवात तीनों को कैसे जोड़ते हैं?'),
     b('Compare Varanasi and Leh through the History lens. Why did both lie on major historical routes despite opposite terrain?', 'वाराणसी और लेह की इतिहास लेंस से तुलना करें। विपरीत भूभाग के बावजूद दोनों प्रमुख मार्गों पर क्यों थे?'),
+    b('Patna task: pick Patna, read all four lenses. Then compare Patna vs Varanasi (both Ganga cities — what is shared? what differs?) and Patna vs Leh (opposite terrain, both historic route cities — why?).', 'पटना कार्य: पटना चुनें, चारों लेंस पढ़ें। फिर पटना बनाम वाराणसी (दोनों गंगा नगर — क्या समान, क्या भिन्न?) और पटना बनाम लेह (विपरीत भूभाग, दोनों ऐतिहासिक मार्ग-नगर — क्यों?) तुलना करें।'),
   ],
   predictions: [
     {
@@ -220,6 +229,8 @@ const QUESTIONS = [
   { id: 'q2', q: b('“Why did 19th-century railways follow ancient Grand Trunk caravan corridors?”', '“19वीं सदी की रेल लाइनों ने प्राचीन उत्तरापथ व्यापार मार्गों का अनुसरण क्यों किया?”'), primary: 'hist', overlap: ['hist', 'geo', 'econ'], why: b('Links History of routes with pass Geography and trade Economics.', 'मार्गों के इतिहास को दर्रों के भूगोल और व्यापार अर्थशास्त्र से जोड़ता है।') },
   { id: 'q3', q: b('“Who decides how municipal buses are priced for students vs commuters?”', '“छात्रों बनाम दैनिक यात्रियों के लिए नगर बस का किराया कौन तय करता है?”'), primary: 'pol', overlap: ['pol', 'econ'], why: b('Links public authority (Political Science) with pricing & subsidies (Economics).', 'लोक प्राधिकार (राजनीति विज्ञान) को कीमत व सब्सिडी (अर्थशास्त्र) से जोड़ता है।') },
   { id: 'q4', q: b('“Why does onion supply spike or crash after unseasonal hail?”', '“बेमौसम ओलावृष्टि के बाद प्याज़ की कीमतें अचानक क्यों उछलती हैं?”'), primary: 'econ', overlap: ['econ', 'geo'], why: b('Links weather shocks (Geography) with supply-demand pricing (Economics).', 'मौसमी झटके (भूगोल) को माँग-पूर्ति कीमत (अर्थशास्त्र) से जोड़ता है।') },
+  { id: 'q5', q: b('“Why does Patna flood when the Ganga rises, even though the city is on high ground?”', '“गंगा का जलस्तर बढ़ने पर पटना में बाढ़ क्यों आती है, जबकि शहर ऊँची भूमि पर है?”'), primary: 'geo', overlap: ['geo', 'pol', 'econ'], why: b('Links Ganga plain Geography with embankment politics and flood-relief economics.', 'गंगा मैदान के भूगोल को तटबंध राजनीति और बाढ़-राहत अर्थशास्त्र से जोड़ता है।') },
+  { id: 'q6', q: b('“Why was Patliputra (Patna) chosen as an imperial capital for 1,000 years?”', '“पाटलिपुत्र (पटना) को 1,000 वर्षों तक साम्राज्य की राजधानी क्यों चुना गया?”'), primary: 'hist', overlap: ['hist', 'geo', 'pol', 'econ'], why: b('Links river geography, Mauryan history, imperial politics and trade economics together.', 'नदी भूगोल, मौर्यकालीन इतिहास, साम्राज्य राजनीति और व्यापार अर्थशास्त्र सबको जोड़ता है।') },
 ];
 const DISC_COLS = { geo: '#2e8b57', hist: '#b5651d', pol: '#7b3fa0', econ: '#c0392b' };
 const DISC_NAMES = { geo: b('Geography', 'भूगोल'), hist: b('History', 'इतिहास'), pol: b('Political Science', 'राजनीति विज्ञान'), econ: b('Economics', 'अर्थशास्त्र') };
@@ -260,6 +271,8 @@ export const questionSorter = {
           { x: 42, y: 46, en: 'Q2: Railways on Trade Routes', hi: 'प्र.2: प्राचीन मार्गों पर रेल', detail: b('Load Question 2 — connects History of corridors, terrain passes and commerce.', 'प्रश्न 2 खोलें — मार्गों के इतिहास को भूगोल व व्यापार से जोड़ता है।'), set: { qid: 'q2', guess: 'hist' } },
           { x: 65, y: 50, en: 'Q3: Municipal Bus Fares', hi: 'प्र.3: नगर बस किराया', detail: b('Load Question 3 — blends civic authority (Politics) and subsidies (Economics).', 'प्रश्न 3 खोलें — नागरिक अधिकार व सब्सिडी अर्थशास्त्र को जोड़ता है।'), set: { qid: 'q3', guess: 'pol' } },
           { x: 86, y: 56, en: 'Q4: Hail & Onion Price Spike', hi: 'प्र.4: ओलावृष्टि व प्याज़ दाम', detail: b('Load Question 4 — climate shocks drive market scarcity and price spikes.', 'प्रश्न 4 खोलें — मौसम का झटका बाज़ार कीमत उछाल देता है।'), set: { qid: 'q4', guess: 'econ' } },
+          { x: 30, y: 68, en: 'Q5: Patna Floods', hi: 'प्र.5: पटना बाढ़', detail: b('Load Question 5 — Ganga geography leads, politics and economics overlap.', 'प्रश्न 5 खोलें — गंगा भूगोल मुख्य, राजनीति व अर्थशास्त्र जुड़ते हैं।'), set: { qid: 'q5', guess: 'geo' } },
+          { x: 72, y: 68, en: 'Q6: Patliputra Capital', hi: 'प्र.6: पाटलिपुत्र राजधानी', detail: b('Load Question 6 — history leads, geography, politics and economics all overlap.', 'प्रश्न 6 खोलें — इतिहास मुख्य, भूगोल, राजनीति व अर्थशास्त्र सभी जुड़ते हैं।'), set: { qid: 'q6', guess: 'hist' } },
         ],
       },
       svg: `<svg viewBox="0 0 640 215" class="chart" role="img" xmlns="http://www.w3.org/2000/svg">${g}</svg>`,
@@ -274,7 +287,8 @@ export const questionSorter = {
     };
   },
   discover: [
-    b('Step through Q1 to Q4. Notice that zero questions touch only one single bubble!', 'प्र.1 से प्र.4 देखें। ध्यान दें कि कोई भी प्रश्न केवल एक विषय तक सीमित नहीं रहता!'),
+    b('Step through Q1 to Q6. Notice that zero questions touch only one single bubble — every real question needs at least two lenses!', 'प्र.1 से प्र.6 देखें। ध्यान दें कि कोई भी प्रश्न केवल एक विषय तक सीमित नहीं — हर वास्तविक प्रश्न को कम से कम दो लेंस चाहिए!'),
+    b('Patna challenge: Q5 (floods) and Q6 (Patliputra) are your home questions. Which lens leads each, and which other lenses overlap? Explain in one line each.', 'पटना चुनौती: प्र.5 (बाढ़) और प्र.6 (पाटलिपुत्र) आपके घर के प्रश्न हैं। प्रत्येक में कौन-सा लेंस मुख्य है और कौन-से लेंस जुड़ते हैं? एक-एक पंक्ति में समझाएँ।'),
   ],
   predictions: [
     {

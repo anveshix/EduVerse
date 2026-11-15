@@ -30,13 +30,14 @@ export function chips({ name, options, value, onSelect }) {
   function select(id) { btns.forEach((b) => b.setAttribute('aria-checked', b.dataset.id === id ? 'true' : 'false')); }
   return { root, select };
 }
-export function tabs({ tabs: list, active, onChange }) {
+export function tabs({ tabs: list, active, onChange, idPrefix = '' }) {
   const bar = h('div', { class: 'tabbar', role: 'tablist' });
   const panels = h('div', { class: 'tabpanels' });
   const els = {};
   list.forEach((tb) => {
-    const b = h('button', { type: 'button', role: 'tab', id: `tab-${tb.id}`, 'aria-controls': `panel-${tb.id}`, class: 'tab', 'data-k': tb.key, onclick: () => { playTap(); show(tb.id); }, onkeydown: (e) => keynav(e, tb.id) }, t(tb.key));
-    const p = h('div', { role: 'tabpanel', id: `panel-${tb.id}`, 'aria-labelledby': `tab-${tb.id}`, class: 'tabpanel', hidden: true }, tb.el);
+    const domId = idPrefix ? `${idPrefix}-${tb.id}` : tb.id;
+    const b = h('button', { type: 'button', role: 'tab', id: `tab-${domId}`, 'aria-controls': `panel-${domId}`, class: 'tab', 'data-k': tb.key, onclick: () => { playTap(); show(tb.id); }, onkeydown: (e) => keynav(e, tb.id) }, t(tb.key));
+    const p = h('div', { role: 'tabpanel', id: `panel-${domId}`, 'aria-labelledby': `tab-${domId}`, class: 'tabpanel', hidden: true }, tb.el);
     els[tb.id] = { b, p }; bar.append(b); panels.append(p);
   });
   function keynav(e, id) {
@@ -69,6 +70,8 @@ export function predict(def, { done = {}, onDone } = {}) {
   const opts = h('div', { class: 'predict-opts', role: 'radiogroup' });
   const fb = h('div', { class: 'feedback', 'aria-live': 'polite' });
   const state = done[def.id] || null;
+  // Revised questions must not display an older choice as if it answered the new wording.
+  const outdated = !!(def.revision && state?.choice && state.revision !== def.revision);
   const render = (choice) => {
     opts.innerHTML = '';
     def.options.forEach((o) => {
@@ -81,19 +84,38 @@ export function predict(def, { done = {}, onDone } = {}) {
   function commit(choice) {
     const actual = def.run();
     const ok = actual === choice;
-    done[def.id] = { choice, ok };
-    if (ok) { store.awardStar(`pred:${def.id}:${stem.textContent.slice(0, 18)}`); playWin(); }
+    // Save the explanation at experiment time so revisiting it never reruns or changes the model.
+    const explanation = def.explain();
+    done[def.id] = { choice, ok, actual, explanation };
+    if (def.revision) {
+      done[def.id].revision = def.revision;
+      // Keep the earlier record locally, without presenting its old choice as a new answer.
+      if (outdated) done[def.id].previous = state;
+      else if (state?.previous) done[def.id].previous = state.previous;
+    }
+    if (ok) { if (!state?.ok) store.awardStar(`pred:${def.id}:${stem.textContent.slice(0, 18)}`); playWin(); }
     else playTry();
     onDone?.(def.id, done[def.id]);
-    showResult(choice, actual, ok);
+    showResult(choice, actual, ok, explanation);
   }
-  function showResult(choice, actual, ok) {
+  function showResult(choice, actual, ok, explanation) {
     render(choice);
     [...opts.children].forEach((b, i) => { const id = def.options[i].id; b.classList.toggle('right', id === actual); b.classList.toggle('wrong', id === choice && !ok); });
     fb.className = 'feedback ' + (ok ? 'ok' : 'try');
-    fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(def.explain(), { block: true });
+    fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(explanation, { block: true });
   }
-  render(state?.choice || null);
+  if (outdated) {
+    render(null);
+    fb.className = 'feedback hint';
+    fb.innerHTML = biHtml({ en: 'This question has changed since your saved prediction. Your earlier answer is retained; choose again for the updated question.', hi: 'आपके सहेजे अनुमान के बाद यह प्रश्न बदल गया है। पिछला उत्तर सुरक्षित है; बदले प्रश्न के लिए फिर चुनें।' }, { block: true });
+  } else if (state?.choice && state.actual && state.explanation?.en && state.explanation?.hi) showResult(state.choice, state.actual, state.ok, state.explanation);
+  else {
+    render(null);
+    if (state?.choice) {
+      fb.className = 'feedback hint';
+      fb.innerHTML = biHtml({ en: 'Your earlier prediction was saved without its explanation. Choose again to review the result.', hi: 'आपका पिछला अनुमान स्पष्टीकरण के बिना सहेजा गया था। परिणाम समझने के लिए फिर चुनें।' }, { block: true });
+    }
+  }
   root.append(h('div', { class: 'predict-tag', 'data-k': 'predict.tag' }, t('predict.tag')), stem, opts, fb);
   root.relabel = () => { relabelBi(root); i18n.apply(root); };
   return root;
@@ -106,6 +128,19 @@ export function mcq(def, { done = {}, onDone } = {}) {
   const opts = h('div', { class: 'predict-opts', role: 'radiogroup' });
   const hint = h('button', { type: 'button', class: 'btn ghost', 'data-k': 'mcq.hint', onclick: () => { playTap(); fb.className = 'feedback hint'; fb.innerHTML = biHtml(def.hint); } }, t('mcq.hint'));
   let attempts = done[def.id]?.attempts || 0, solved = !!done[def.id]?.ok;
+  function showResult(option, ok) {
+    [...opts.children].forEach((button, i) => {
+      const selected = def.options[i].id === option.id;
+      button.classList.toggle('right', selected && ok);
+      button.classList.toggle('wrong', selected && !ok);
+      button.setAttribute('aria-checked', String(selected));
+      button.disabled = ok;
+    });
+    hint.disabled = ok;
+    const why = ok ? def.explain : (option.why || def.explain);
+    fb.className = 'feedback ' + (ok ? 'ok' : 'try');
+    fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(why, { block: true }) + (ok ? '' : `<div class="again" data-k="mcq.again">${esc(t('mcq.again'))}</div>`);
+  }
   def.options.forEach((o) => {
     const b = h('button', { type: 'button', role: 'radio', class: 'opt', 'aria-checked': 'false' });
     b.innerHTML = biHtml(o);
@@ -113,17 +148,20 @@ export function mcq(def, { done = {}, onDone } = {}) {
       if (solved) return;
       attempts++;
       const ok = o.id === def.correct;
-      [...opts.children].forEach((x) => x.classList.remove('wrong'));
-      if (ok) { solved = true; b.classList.add('right'); store.awardStar(`mcq:${def.id}:${def.stem.en.slice(0, 18)}`); playWin(); }
-      else { b.classList.add('wrong'); playTry(); }
+      if (ok) { solved = true; store.awardStar(`mcq:${def.id}:${def.stem.en.slice(0, 18)}`); playWin(); }
+      else playTry();
       done[def.id] = { attempts, ok: solved || false };
       onDone?.(def.id, done[def.id]);
-      const why = ok ? def.explain : (o.why || def.explain);
-      fb.className = 'feedback ' + (ok ? 'ok' : 'try');
-      fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(why, { block: true }) + (ok ? '' : `<div class="again" data-k="mcq.again">${esc(t('mcq.again'))}</div>`);
+      showResult(o, ok);
     });
     opts.append(b);
   });
+  // Legacy saved MCQs stored only {attempts, ok}; the correct option and explanation
+  // are in the question definition, so an already-solved ticket can be reviewed safely.
+  if (solved) {
+    const answer = def.options.find((o) => o.id === def.correct);
+    if (answer) showResult(answer, true);
+  }
   root.append(bi(def.stem, { tag: 'div', cls: 'predict-stem' }), opts, h('div', { class: 'row' }, hint), fb);
   root.relabel = () => { relabelBi(root); i18n.apply(root); };
   return root;

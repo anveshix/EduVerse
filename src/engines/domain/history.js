@@ -3,39 +3,42 @@
 
 /** T04.L3 Hunter-gatherer vs early farming settlement simulation over 15 years. */
 export function settlementSim({ mode = 'forager', rainfallVar = 0.3, storage = 0.5 }) {
-  const years = 16;
-  const series = [];
+  // Invented starting conditions and rates, not archaeological population estimates.
   let pop = mode === 'forager' ? 28 : 65;
   let foodStore = mode === 'forager' ? 10 : 45 * storage;
-  for (let y = 0; y < years; y++) {
-    // Deterministic pseudo-climate cycle
-    const shock = Math.sin(y * 1.45) * rainfallVar;
-    const yieldPerPerson = mode === 'forager' ? 1.05 + shock * 0.25 : (1.28 + shock * 0.65);
-    const need = pop * 1.0;
-    const harvest = pop * yieldPerPerson;
-    foodStore = Math.max(0, Math.min(180 * storage + 20, foodStore + harvest - need));
-    const surplus = harvest - need;
-    const diseasePenalty = mode === 'farmer' ? 0.015 : 0.002;
-    const growth = surplus >= 0 ? 0.035 - diseasePenalty : -0.04;
+  const series = [{ y: 0, pop, foodStore, surplus: 0, shortfall: 0, withdrawal: 0, unmet: 0 }];
+  for (let y = 1; y <= 15; y++) {
+    const shock = Math.sin((y - 1) * 1.45) * rainfallVar; // invented, repeatable weather cycle
+    const yieldPerPerson = mode === 'forager' ? 1.05 + shock * 0.25 : 1.16 + shock * 0.9;
+    const surplus = pop * (yieldPerPerson - 1);
+    const shortfall = Math.max(0, -surplus);
+    const withdrawal = Math.min(foodStore, shortfall);
+    const unmet = shortfall - withdrawal;
+    // Reserves cover shortfalls first; surplus is stored up to the invented capacity.
+    foodStore = Math.max(0, Math.min(180 * storage + 20, foodStore - withdrawal + Math.max(0, surplus)));
+    // A fully covered shortfall pauses growth. Only an unmet shortfall causes decline.
+    const growth = unmet > 0 ? -0.04 : shortfall > 0 ? 0 : mode === 'forager' ? 0.033 : 0.02;
     pop = Math.max(12, Math.round(pop * (1 + growth)));
-    series.push({ y, pop, foodStore: Math.round(foodStore), surplus: Math.round(surplus) });
+    series.push({ y, pop, foodStore, surplus, shortfall, withdrawal, unmet });
   }
-  return { series, finalPop: series[series.length - 1].pop, finalStore: series[series.length - 1].foodStore };
+  return { series, finalPop: pop, finalStore: Math.round(foodStore) };
 }
 
-/** T04.L4 Harappan city planner grid & sanitation metrics. */
-export function harappanPlan({ gridStreets = true, coveredDrains = true, granary = true, greatBath = true, wellsPerBlock = 2 }) {
-  const sanitation = (coveredDrains ? 45 : 10) + Math.min(40, wellsPerBlock * 12) + (greatBath ? 15 : 0);
-  const floodSafety = (gridStreets ? 30 : 12) + (coveredDrains ? 40 : 10) + (granary ? 30 : 5);
-  const overall = Math.min(100, Math.round((sanitation + floodSafety) / 2));
-  return { sanitation: Math.min(100, sanitation), floodSafety: Math.min(100, floodSafety), overall };
+/** T04.L4: features visible in a schematic, not quantified sanitation or flood risk. */
+export function harappanPlan({ gridStreets = true, coveredDrains = true, granary = true, greatBath = true, wells = 2 } = {}) {
+  const count = Number(wells);
+  return {
+    gridStreets: !!gridStreets, coveredDrains: !!coveredDrains,
+    granary: !!granary, greatBath: !!greatBath,
+    wells: Number.isFinite(count) ? Math.max(0, Math.min(3, Math.round(count))) : 0,
+  };
 }
 
 /** T04.L5 Comparative Bronze Age river civilisations (approximate dates). */
 export const RIVER_CIVS = [
   { id: 'harappan', lon: 68.1, lat: 27.3, river: { en: 'Indus & Ghaggar-Hakra', hi: 'सिंधु व घग्गर-हकरा' }, span: 'c. 2600–1900 BCE', en: 'Harappan (Mohenjo-daro, Harappa, Dholavira)', hi: 'हड़प्पा सभ्यता', writing: { en: 'Indus script (undeciphered)', hi: 'सिंधु लिपि (अपाठित)' }, trait: { en: 'Standardised baked bricks, covered street drains, grid planning', hi: 'मानक पक्की ईंटें, ढकी नालियाँ, ग्रिड नगर-योजना' } },
   { id: 'mesopotamia', lon: 44.4, lat: 32.5, river: { en: 'Tigris & Euphrates', hi: 'दजला व फ़रात' }, span: 'c. 3200–1900 BCE', en: 'Mesopotamia (Sumer, Ur, Babylon)', hi: 'मेसोपोटामिया', writing: { en: 'Cuneiform on clay tablets', hi: 'मिट्टी की पट्टियों पर कीलाक्षर' }, trait: { en: 'Ziggurats, city-states, earliest deciphered trade receipts', hi: 'ज़िग्गुरात, नगर-राज्य, प्राचीनतम पठित व्यापार-लेखे' } },
-  { id: 'egypt', lon: 31.2, lat: 29.8, river: { en: 'Nile', hi: 'नील नदी' }, span: 'c. 3100–1100 BCE', en: 'Ancient Egypt (Memphis, Thebes)', hi: 'प्राचीन मिस्र', writing: { en: 'Hieroglyphs & papyrus', hi: 'चित्रलिपि व पपायरस' }, trait: { en: 'Predictable Nile flood silt, monumental stone pyramids', hi: 'नियमित नील बाढ़ गाद, विशाल पाषाण पिरामिड' } },
+  { id: 'egypt', lon: 31.2, lat: 29.8, river: { en: 'Nile', hi: 'नील नदी' }, span: 'c. 3100–1100 BCE', en: 'Ancient Egypt (Memphis, Thebes)', hi: 'प्राचीन मिस्र', writing: { en: 'Hieroglyphs & papyrus', hi: 'चित्रलिपि व पपायरस' }, trait: { en: 'Nile floodplain agriculture, monumental stone pyramids', hi: 'नील बाढ़-मैदान की खेती, विशाल पाषाण पिरामिड' } },
   { id: 'china', lon: 114.3, lat: 36.1, river: { en: 'Huang He (Yellow River)', hi: 'ह्वांग हो (पीली नदी)' }, span: 'c. 1600–1046 BCE', en: 'Shang China (Anyang)', hi: 'शांग चीन', writing: { en: 'Oracle bone script', hi: 'अस्थि-अभिलेख लिपि' }, trait: { en: 'Ritual bronze casting, millet agriculture, walled towns', hi: 'कांस्य ढलाई, बाजरा खेती, प्राचीर-युक्त नगर' } },
 ];
 

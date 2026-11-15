@@ -4,10 +4,10 @@ Audit date: 2026-11-12 (updated from 2026-11-11 baseline). Scope: `/home/user/Ed
 
 ## 1. Current Coverage & Capabilities
 
-All **78 / 78 learning objects** across all **16 / 16 curriculum themes** (`T01`–`T16`) are implemented (`79` interactive simulations, `56` plate illustrations, `17` banner/hero visuals, `91` bilingual glossary terms, `32` competency-based assertion-reason questions, and Class X Board Bridge + Portfolio views).
+All **78 / 78 learning objects** across all **16 / 16 curriculum themes** (`T01`–`T16`) are implemented and QA-verified (`79` interactive simulations, `56` plate illustrations, `17` banner/hero visuals, `91` bilingual glossary terms, `32` competency-based assertion-reason questions, and Class X Board Bridge + Portfolio views).
 
 Authoritative machine-generated manifests:
-- `docs/CURRICULUM_COVERAGE.json` (`npm run catalog`): 16 themes, 78 implemented LOs, 0 planned, 27 prior Chromium QA-passed (`data/coverage/qa-passed.json`).
+- `docs/CURRICULUM_COVERAGE.json` (`npm run catalog`): 16 themes, 78 implemented LOs, 0 planned, 78 Chromium QA-passed (`data/coverage/qa-passed.json`).
 - `docs/SIMULATION_CATALOG.json` (`npm run catalog`): 79 simulation definitions linked to domain engines, lab implementations, and controls.
 - `sw.js` (`npm run sw`): precaches all runtime static HTML, CSS, JS modules, geodata, vendored libraries, and images.
 
@@ -39,12 +39,12 @@ index.html (<link rel="modulepreload"> critical path)
 ## 3. Verification Performed
 
 - `npm run verify`: passes `tools/verify-architecture.mjs` (`0` errors across all 102 `src/` files) and all **33 / 33** Node + JSDOM tests (`architecture`, `engines`, `labs`, `modules-dom`).
+- `npm run smoke`, `npm run smoke:mobile`, `npm run a11y`, `npm run perf:size`, `npm run perf:throttle`: all **16 / 16 themes** (`T01`–`T16`), plus `#/`, `#/bridge`, and `#/portfolio`, pass headless Chromium `153.0.8010.0` (Playwright + `@sparticuz/chromium` SwiftShader WebGL2) at desktop (`1100 px`) and mobile (`360 px` / `390 px` touch) with `0` console/page errors, `0 px` horizontal overflow, `>= 44 px` touch targets, and verified offline Service Worker caching (`117` entries).
 - `npm run catalog && npm run sw`: cleanly regenerates `CURRICULUM_COVERAGE.json`, `SIMULATION_CATALOG.json`, and `sw.js`.
-- `tools/serve.mjs`: HTTP `200 OK` static serving verified for `/`, ESM chunks, geojson, and images.
+- `tools/serve.mjs`: HTTP `200 OK` static serving verified for all `117/117` precached entries.
 
-## 4. Open Risks & Pending Human/Browser Sign-Offs
+## 4. Open Risks & Pending Human/Hardware Sign-Offs
 
-- **Chromium / Playwright (`npm run smoke`, `npm run a11y`, `perf-size.cjs`, `perf-throttle.cjs`)**: Chromium binaries are absent in this container sandbox; 51 of 78 LOs have automated Node/JSDOM verification (`33/33` tests pass) and await live Chromium visual/touch-target QA in CI or desktop Playwright (`data/coverage/qa-passed.json` records `27` prior Chromium QA passes).
-- **Hindi Review**: All 174 curriculum rows and module dictionaries remain `draft-needs-teacher-review` awaiting Hindi subject-teacher validation.
+- **Hindi Review**: All 174 curriculum rows and module dictionaries remain `draft-needs-teacher-review` awaiting Hindi subject-teacher validation (also note container headless font images lack Devanagari glyph fonts, though DOM text parity is verified).
 - **Physical Hardware Checks**: No physical Android GPU frame-rate telemetry or WebXR headset testing has been run in-sandbox.
 - **Source Oddities**: Historical PDF wording discrepancies `D1`–`D10` are preserved faithfully per `docs/CURRICULUM_COVERAGE_AUDIT.md`.

@@ -60,7 +60,7 @@ export function createInteractivePlate(getPlate, onSet) {
   return { el: wrap, update, relabel: update, reset() { activeIdx = -1; update(); } };
 }
 
-export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
+export function createLab(spec, themeId, { onDraw, onSpot, skipAuto3d = false } = {}) {
   const S = store.simState(spec.id, spec.init());
   const base = spec.init(); for (const k of Object.keys(base)) if (!(k in S)) S[k] = base[k];
   S.done ??= {};
@@ -69,6 +69,7 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
   const persist = () => store.saveSim();
   const dict = {};
   const widgets = {};
+  const drawListeners = new Set();
   let demoTimer = 0;
   let activeSpotIdx = -1;
   let lastPlate = null;
@@ -115,8 +116,9 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
       const idx = Number(spotBtn.dataset.spot);
       activeSpotIdx = idx;
       const sp = lastPlate.spots[idx];
-      if (sp?.set) { Object.assign(S, sp.set); sync(); }
-      else draw();
+      if (sp?.set) Object.assign(S, sp.set);
+      onSpot?.(sp, idx, S);
+      if (sp?.set) sync(); else draw();
       return;
     }
     const svgTarget = e.target.closest?.('[data-set]');
@@ -140,6 +142,7 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
     chartBox.querySelectorAll('svg[role="img"]').forEach((svg) => { if (v.aria && !svg.getAttribute('aria-label')) svg.setAttribute('aria-label', v.aria); });
     read.innerHTML = v.lines.map((l) => `<div class="ro-line ${l.cls ?? ''}">${biHtml(l, { block: true })}</div>`).join('');
     onDraw?.(S);
+    drawListeners.forEach((listener) => listener(S));
   }
 
   // Auto-play demo button: gently cycles the first slider or chip so passive exploration comes alive
@@ -198,7 +201,8 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
   if (discover) dockList.push({ id: 'try', key: 'lab.dock.try', el: discover });
   if (exitBox) dockList.push({ id: 'quiz', key: 'lab.dock.quiz', el: exitBox });
   if (noteBox) dockList.push({ id: 'reflect', key: 'lab.dock.note', el: noteBox });
-  const dock = dockList.length ? mkTabs({ active: dockList[0].id, tabs: dockList }) : null;
+  // Every lab can coexist in the DOM, even when its panel is hidden; scope dock IDs accordingly.
+  const dock = dockList.length ? mkTabs({ idPrefix: `${spec.id.replace(/\./g, '-')}-dock`, active: dockList[0].id, tabs: dockList }) : null;
 
   side.append(h('div', { class: 'row' }, demoBtn, button('btn.reset', reset, 'btn')));
   const el = h('div', { class: 'lab', id: `lab-${spec.id.replace(/\./g, '-')}` },
@@ -217,10 +221,19 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
 
   return {
     el, state: S, reset, draw,
+    // Presets from companion activities must update both the model and its controls.
+    setState(patch) {
+      for (const c of spec.controls) {
+        if (Object.prototype.hasOwnProperty.call(patch, c.id)) S[c.id] = patch[c.id];
+      }
+      sync();
+    },
+    // Companion activities can observe model changes from controls, predictions, reset and relabelling.
+    onDraw(listener) { drawListeners.add(listener); return () => drawListeners.delete(listener); },
     enable3d: () => auto3d?.enable?.(),
     disable3d: () => auto3d?.disable?.(),
     relabel() { preds.forEach((p) => p.relabel()); exitEls.forEach((q) => q.relabel()); relabelBi(el); i18n.apply(el); ta.placeholder = t('reflect.ph'); auto3d?.relabel?.(); draw(); },
-    destroy() { stopDemo(); auto3d?.destroy?.(); },
+    destroy() { stopDemo(); drawListeners.clear(); auto3d?.destroy?.(); },
     debug: () => ({ state: { ...S }, view: spec.view(S) }),
   };
 }
@@ -244,6 +257,8 @@ export function mountLabs(root, themeId, defs, tabs) {
   root.append(tb.root); i18n.apply(root);
   sync3dTab(ui.tab);
   return {
+    // Keep the existing tab/lab lifecycle while allowing a theme to attach companions to a specific LO.
+    lab(id) { const index = defs.findIndex((d) => d.id === id); return index < 0 ? null : labs[index]; },
     relabel() { labs.forEach((l) => l.relabel()); i18n.apply(root); },
     destroy() { labs.forEach((l) => l.destroy?.()); },
     debug: () => Object.fromEntries(labs.map((l, i) => [defs[i].id, l.debug()])),
@@ -255,13 +270,14 @@ export function createThreeLab(spec, themeId, create3dView, opts = {}) {
   const lab = createLab(spec, themeId, {
     ...opts,
     skipAuto3d: true,
-    onDraw: (S) => stage3d?.update(S),
+    onDraw: (S) => { stage3d?.update(S); opts.onDraw?.(S); },
   });
   stage3d = attachThreeStage(lab.el, () => lab.state, create3dView, { themeId, ...opts });
   return {
     ...lab,
     enable: stage3d.enable,
     disable: stage3d.disable,
+    focus: stage3d.focus,
     relabel() { lab.relabel(); stage3d.relabel(); },
     destroy() { stage3d.destroy(); lab.destroy?.(); },
   };

@@ -71,29 +71,35 @@ export function mount(root, ctx = {}) {
         qLine.textContent = t(ok ? 'pm.quiz.right' : 'pm.quiz.wrong', { picked: p.name, target: quiz.target.name, score: quiz.score, asked: quiz.asked });
         quiz.target = null; qBtn.textContent = t('pm.quiz.next'); qBtn.dataset.k = 'pm.quiz.next'; return;
       }
-      S.selPlate = code; persist(); draw();
-      read.textContent = t('pm.sel', { name: p.major && PLATE_HI[p.code] ? i18n.pair(p.name, PLATE_HI[p.code]) : p.name, kind: t(p.major ? 'pm.major' : 'pm.minor') });
+      S.selPlate = code; persist(); draw(); showSelection();
+    }
+    function showSelection() {
+      const p = plates.find((x) => x.code === S.selPlate);
+      if (!p) { read.textContent = ''; return; }
+      const base = t('pm.sel', { name: p.major && PLATE_HI[p.code] ? i18n.pair(p.name, PLATE_HI[p.code]) : p.name, kind: t(p.major ? 'pm.major' : 'pm.minor') });
+      const indiaFact = p.code === 'IN' ? ' · ' + i18n.pair('India is part of this plate. Its movement toward Eurasia helps raise the Himalaya; rivers fill the basin to the south with sediment.', 'भारत इस प्लेट का भाग है। यूरेशिया की ओर इसकी गति हिमालय को उठाने में मदद करती है; नदियाँ दक्षिण के बेसिन में अवसाद भरती हैं।') : '';
+      read.textContent = base + indiaFact;
     }
     function nextQ() {
       const majors = plates.filter((p) => p.major); if (!majors.length) return;
       quiz.target = majors[Math.floor(Math.random() * majors.length)];
       qLine.className = 'readout'; qLine.textContent = t('pm.quiz.ask', { name: quiz.target.name });
     }
-    loadGeo().then((g) => { if (destroyed) return; plates = g.plates; draw(); }).catch(() => { box.innerHTML = `<p class="note" data-k="pm.err">${esc(t('pm.err'))}</p>`; });
+    loadGeo().then((g) => { if (destroyed) return; plates = g.plates; draw(); showSelection(); }).catch(() => { if (!destroyed) box.innerHTML = `<p class="note" data-k="pm.err">${esc(t('pm.err'))}</p>`; });
     const mapPlate = createInteractivePlate(() => ({
       src: 'assets/images/plates/t02-hazards.jpg',
-      en: 'Himalayan convergent relief: tap pins to inspect major tectonic plates shaping uplift and quakes.',
-      hi: 'हिमालयी अभिसारी उच्चावच: पर्वत-निर्माण व भूकंप रचने वाली प्रमुख प्लेटों को पिन पर टैप करके चुनें।',
+      en: 'An illustrated mountain scene, not a plate map. Use these pins to select plates on the map below.',
+      hi: 'पर्वतीय दृश्य का चित्र, प्लेट मानचित्र नहीं। नीचे के मानचित्र पर प्लेट चुनने के लिए ये बिंदु उपयोग करें।',
       spots: [
-        { x: 70, y: 24, en: 'Indo-Australian Plate', hi: 'भारत-ऑस्ट्रेलियाई प्लेट', detail: b('Pushes northward ~5 cm/yr against Eurasia, crumpling the Himalaya.', 'लगभग 5 सेमी/वर्ष उत्तर की ओर बढ़कर हिमालय को ऊपर उठाती है।'), set: { selPlate: 'IN' } },
-        { x: 35, y: 30, en: 'Eurasian Plate', hi: 'यूरेशियाई प्लेट', detail: b('Receives Himalayan collision stress across Tibet and Central Asia.', 'तिब्बत व मध्य एशिया में टक्कर का दबाव सहती विशाल महाद्वीपीय प्लेट।'), set: { selPlate: 'EU' } },
-        { x: 50, y: 66, en: 'Pacific Ring of Fire', hi: 'प्रशांत अग्नि-वलय', detail: b('Dense oceanic subduction zones ringing the Pacific Basin.', 'प्रशांत महासागर के चारों ओर गहरे गर्तों व ज्वालामुखियों की पट्टी।'), set: { selPlate: 'PA' } },
+        { x: 70, y: 24, en: 'Indian Plate', hi: 'भारतीय प्लेट', detail: b('Moves toward Eurasia; their collision helps raise the Himalaya.', 'यूरेशिया की ओर बढ़ती है; इनकी टक्कर हिमालय को उठाने में मदद करती है।'), set: { selPlate: 'IN' } },
+        { x: 35, y: 30, en: 'Eurasian Plate', hi: 'यूरेशियाई प्लेट', detail: b('The Indian and Eurasian plates meet across the Himalayan region.', 'भारतीय और यूरेशियाई प्लेटें हिमालयी क्षेत्र में मिलती हैं।'), set: { selPlate: 'EU' } },
+        { x: 50, y: 66, en: 'Pacific Plate', hi: 'प्रशांत प्लेट', detail: b('The Pacific Plate borders many subduction zones along the Ring of Fire; this mountain picture does not show its location.', 'प्रशांत प्लेट अग्नि-वलय के अनेक धँसाव क्षेत्रों से लगती है; यह पर्वतीय चित्र उसकी स्थिति नहीं दिखाता।'), set: { selPlate: 'PA' } },
       ],
     }), (patch) => { if (patch.selPlate && plates.length) choose(patch.selPlate); });
     const el = h('div', { class: 'lab' },
       h('p', { class: 'lead' }, bi({ en: 'The Earth’s surface is broken into large moving slabs called plates. Tap a plate to name it, then test yourself.', hi: 'पृथ्वी की सतह बड़ी गतिशील पट्टियों में टूटी है जिन्हें प्लेट कहते हैं। प्लेट पर टैप करके नाम जानें, फिर स्वयं को परखें।' })),
       h('div', { class: 'lab-grid' }, h('div', { class: 'lab-main' }, mapPlate.el, box, read), h('div', { class: 'lab-side' }, tp.root, tl.root, h('div', { class: 'row' }, qBtn), qLine, h('p', { class: 'note', 'data-k': 'pm.note' }, t('pm.note')))));
-    return { el, relabel() { mapPlate.relabel(); relabelBi(el); i18n.apply(el); draw(); qBtn.textContent = t(qBtn.dataset.k); } };
+    return { el, relabel() { mapPlate.relabel(); relabelBi(el); i18n.apply(el); draw(); showSelection(); qBtn.textContent = t(qBtn.dataset.k); } };
   })();
 
   // ============================ BOUNDARY EXPLORER (L2) ============================
@@ -167,6 +173,10 @@ export function mount(root, ctx = {}) {
     const pr2 = predict({ id: 'p2', stem: { en: PRED.crust.en, hi: PRED.crust.hi }, options: PRED.crust.opts,
       run: () => { S.type = 'div'; S.speed = 4; S.time = 30; sync(); return 'div'; },
       explain: () => ({ en: `Magma rises in the gap and cools into new crust: ${fmt(M.convergenceKm(4, 30), 0)} km of new sea floor after 30 Myr at 4 cm/yr. Subduction destroys crust; at a transform boundary crust is neither made nor destroyed.`, hi: `दरार में मैग्मा ऊपर उठकर ठंडा होता है और नई पर्पटी बनती है: 4 सेमी/वर्ष पर 30 दस लाख वर्षों में ${fmt(M.convergenceKm(4, 30), 0)} किमी नया समुद्र-तल। धँसाव में पर्पटी नष्ट होती है; रूपांतर सीमा पर न बनती है न नष्ट होती है।` }) }, { done: S.done, onDone: persist });
+    // Sea-to-Summit story: answers the Everest opening question (Step 2).
+    const pr3 = predict({ id: 'p4', stem: { en: PRED.everest.en, hi: PRED.everest.hi }, options: PRED.everest.opts,
+      run: () => { S.type = 'conv-cc'; S.speed = 5; S.time = 45; sync(); return 'uplift'; },
+      explain: () => ({ en: 'Before India met Asia, marine sediments accumulated in the ancient Tethys region and became fossil-bearing limestone. Collision beginning roughly 40–50 million years ago compressed and lifted these rocks into the Himalaya. The selected collision model illustrates uplift; it does not calculate Everest’s actual height or age.', hi: 'भारत और एशिया के मिलने से पहले प्राचीन टेथिस क्षेत्र में समुद्री अवसाद जमा होकर जीवाश्मयुक्त चूना-पत्थर बने। लगभग 4–5 करोड़ वर्ष पहले शुरू हुई टक्कर ने इन चट्टानों को दबाकर हिमालय में ऊपर उठाया। चुना गया टक्कर मॉडल उत्थान समझाता है; यह एवरेस्ट की वास्तविक ऊँचाई या आयु नहीं निकालता।' }) }, { done: S.done, onDone: persist });
     const ta = h('textarea', { class: 'reflect', rows: 3, 'data-k-aria': 'hz.aria', 'aria-label': t('hz.aria') }); ta.value = prog.hazard || '';
     ta.addEventListener('input', () => { prog.hazard = ta.value; store.saveProgress(); });
     const bxPlate = createInteractivePlate(() => ({
@@ -185,11 +195,11 @@ export function mount(root, ctx = {}) {
       h('div', { class: 'lab-grid' },
         h('div', { class: 'lab-main' }, bxPlate.el, view3d, presets, sec, read, modeNote),
         h('div', { class: 'lab-side' }, ch.root, sSpeed.root, sTime.root, tLab.root, h('div', { class: 'row' }, bPlay, bReset), h('p', { class: 'note', 'data-k': 'pb.limits' }, t('pb.limits')))),
-      h('section', { class: 'subsec' }, h('h3', { 'data-k': 'predict.h' }, t('predict.h')), pr1, pr2),
+      h('section', { class: 'subsec' }, h('h3', { 'data-k': 'predict.h' }, t('predict.h')), pr3, pr1, pr2),
       h('section', { class: 'subsec' }, h('h3', { 'data-k': 'hz.h' }, t('hz.h')), bi(HAZARD, { tag: 'p', cls: 'note' }), ta));
     return {
       el, enable: applyMode, pause: () => togglePlay(false), disable: disable3D,
-      relabel() { bxPlate.relabel(); pr1.relabel(); pr2.relabel(); relabelBi(el); i18n.apply(el); bPlay.textContent = t(bPlay.dataset.k); ta.setAttribute('aria-label', t('hz.aria')); modeNote.textContent = t(modeNote.dataset.k); if (lastPick && !inspectPill.hidden) inspectPill.textContent = i18n.pair(lastPick.en, lastPick.hi); if (currentStop && !tourPill.hidden) tourPill.textContent = `🥽 (${tourIdx + 1}/${stops.length}) ${i18n.pair(currentStop.en, currentStop.hi)}`; pv?.relabel(); refresh(); },
+      relabel() { bxPlate.relabel(); pr1.relabel(); pr2.relabel(); pr3.relabel(); relabelBi(el); i18n.apply(el); bPlay.textContent = t(bPlay.dataset.k); ta.setAttribute('aria-label', t('hz.aria')); modeNote.textContent = t(modeNote.dataset.k); if (lastPick && !inspectPill.hidden) inspectPill.textContent = i18n.pair(lastPick.en, lastPick.hi); if (currentStop && !tourPill.hidden) tourPill.textContent = `🥽 (${tourIdx + 1}/${stops.length}) ${i18n.pair(currentStop.en, currentStop.hi)}`; pv?.relabel(); refresh(); },
       debug: () => ({ api: !!api, canvas: !!glHost.querySelector('canvas'), type: S.type, speed: S.speed, time: S.time, km: M.convergenceKm(S.speed, S.time) }),
       host: glHost,
     };
@@ -230,10 +240,11 @@ export function mount(root, ctx = {}) {
     }
     const prM = predict({ id: 'p3', stem: { en: PRED.mantle.en, hi: PRED.mantle.hi }, options: PRED.mantle.opts,
       run: () => { S.depth = 1500; sDepth.set(1500); draw(); return M.layerAtDepth(1500).state === 'solid' ? 'flows' : 'liquid'; },
-      explain: () => ({ en: 'At 1,500 km the mantle is hot but under huge pressure, so it is solid; over millions of years it flows slowly, like very thick dough. Only the outer core (2,900–5,150 km) is liquid.', hi: '1,500 किमी पर मैंटल गर्म पर भारी दाब में होने से ठोस है; लाखों वर्षों में यह गाढ़े आटे की तरह धीरे बहता है। केवल बाह्य क्रोड (2,900–5,150 किमी) द्रव है।' }) }, { done: S.done, onDone: persist });
+      explain: () => ({ en: 'At 1,500 km the mantle is hot but solid under immense pressure; over millions of years it flows slowly. In this simplified four-layer model, the outer core (2,900–5,150 km) is liquid. Some shallow mantle rock can partially melt.', hi: '1,500 किमी पर मैंटल गर्म होते हुए भी अत्यधिक दाब में ठोस है; लाखों वर्षों में यह धीरे बहता है। इस सरल चार-परत मॉडल में बाह्य क्रोड (2,900–5,150 किमी) द्रव है। ऊपरी मैंटल की कुछ चट्टान आंशिक रूप से पिघल सकती है।' }) }, { done: S.done, onDone: persist });
     draw();
     const el = h('div', { class: 'lab' }, h('p', { class: 'lead' }, bi({ en: 'Travel down from the surface. Which layer are you in, and is it solid or liquid? Switch scale to see how thin the crust really is.', hi: 'सतह से नीचे जाएँ। आप किस परत में हैं, और वह ठोस है या द्रव? पैमाना बदलकर देखें कि भूपर्पटी वास्तव में कितनी पतली है।' })),
       h('div', { class: 'lab-grid' }, h('div', { class: 'lab-main' }, intPlate.el, box, read), h('div', { class: 'lab-side' }, sDepth.root, tScale.root, h('p', { class: 'note', 'data-k': 'in.note' }, t('in.note')))),
+      h('div', { class: 'note lab-note schematic' }, bi({ en: 'Common mistake: “The mantle is liquid like lava.” Most of it is solid rock that can flow very slowly; parts may partially melt. In this four-layer model, the outer core is the liquid layer. Continents are parts of plates, not objects floating on the sea.', hi: 'सामान्य भ्रांति: “मैंटल लावा की तरह द्रव है।” इसका अधिकतर भाग ठोस चट्टान है जो बहुत धीरे बह सकती है; कुछ भाग आंशिक रूप से पिघल सकते हैं। इस चार-परत मॉडल में बाह्य क्रोड द्रव परत है। महाद्वीप प्लेटों के भाग हैं, समुद्र पर तैरती वस्तुएँ नहीं।' })),
       h('section', { class: 'subsec' }, h('h3', { 'data-k': 'predict.h' }, t('predict.h')), prM));
     return { el, relabel() { intPlate.relabel(); prM.relabel(); relabelBi(el); i18n.apply(el); draw(); } };
   })();

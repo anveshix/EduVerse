@@ -34,12 +34,12 @@ function viewGradation(S) {
   return {
     plate: {
       src: 'assets/images/plates/t02-landforms.jpg',
-      en: 'From snowline glacier peaks down to meandering river floodplains — tap any pin to switch the gradation agent.',
-      hi: 'हिमनद चोटियों से विसर्पी नदी मैदानों तक — अपरदन-निक्षेपण कारक बदलने हेतु पिन पर टैप करें।',
+      en: 'An illustrated mountain and river scene, not a map: tap a pin to compare surface processes with places in India.',
+      hi: 'पर्वत और नदी का एक चित्र, मानचित्र नहीं: भारत के स्थानों की प्रक्रियाओं से तुलना करने के लिए बिंदु चुनें।',
       spots: [
-        { x: 35, y: 20, en: 'Glacier Headwaters', hi: 'हिमनद उद्गम', detail: b('Carves broad U-shaped valleys and leaves unsorted moraine ridges.', 'चौड़ी U-आकार की घाटियाँ तराशता व हिमोढ़ छोड़ता है।'), set: { agent: 'glacier', years: 70 } },
-        { x: 38, y: 66, en: 'Braided River & Meanders', hi: 'नदी विसर्प व बाढ़ मैदान', detail: b('Cuts V-valleys upstream and deposits fertile alluvium across flat plains.', 'ऊपर V-घाटी काटती है और समतल मैदान में उपजाऊ जलोढ़ जमा करती है।'), set: { agent: 'river', rain: 0.7 } },
-        { x: 74, y: 74, en: 'Vegetated Terraces', hi: 'वनस्पति रक्षित ढाल', detail: b('Tree roots and crops bind topsoil — watch erosion plummet when vegetation rises.', 'जड़ें और वनस्पति मिट्टी को थामकर कटाव काफ़ी घटाती हैं।'), set: { veg: 0.85 } },
+        { x: 35, y: 20, en: 'Glacier headwaters · compare the Himalaya', hi: 'हिमनद उद्गम · हिमालय से तुलना', detail: b('Glaciers can carve U-shaped valleys and leave moraines in the high Himalaya.', 'उच्च हिमालय में हिमनद U-आकार की घाटियाँ काट सकते हैं और हिमोढ़ छोड़ते हैं।'), set: { agent: 'glacier', years: 70 } },
+        { x: 38, y: 66, en: 'River sediments · compare the Ganga plain', hi: 'नदी अवसाद · गंगा मैदान से तुलना', detail: b('The Ganga, Son, Gandak and Kosi carry and deposit alluvium on the plains; this picture is not Patna.', 'गंगा, सोन, गंडक और कोसी मैदानों में जलोढ़ ढोती और जमा करती हैं; यह चित्र पटना का नहीं है।'), set: { agent: 'river', rain: 0.85, rock: 'soft', veg: 0.3 } },
+        { x: 74, y: 74, en: 'Vegetated terraces', hi: 'वनस्पति रक्षित ढाल', detail: b('Tree roots and crops bind topsoil — watch erosion fall when vegetation rises.', 'जड़ें और वनस्पति मिट्टी को थामकर कटाव घटाती हैं।'), set: { veg: 0.85 } },
       ],
     },
     svg: ch.html({ label: P('Land profile', 'भूमि का परिच्छेद') }), aria: `Land profile after ${S.years} years: ${fmt(r.eroded, 0)} eroded, ${fmt(r.deposited, 0)} deposited.`, lines,
@@ -60,14 +60,23 @@ export const gradation = {
     { id: 'years', type: 'slider', label: b('Time passed (years)', 'बीता समय (वर्ष)'), min: 0, max: 100, step: 1 },
   ],
   view: viewGradation,
-  discover: [b('Set vegetation to 0% then 100% and watch the eroded total. What do forests do for hillsides?', 'वनस्पति को 0% और फिर 100% करें और अपरदन की कुल मात्रा देखें। वन पहाड़ी ढलानों के लिए क्या करते हैं?'), b('Switch between soft and hard rock. Which one keeps its height longer?', 'मुलायम और कठोर चट्टान के बीच बदलें। कौन-सी अपनी ऊँचाई अधिक समय तक बनाए रखती है?'), b('Find where the tan deposits build up. Is it near the steep source or the gentle mouth?', 'देखें पीले निक्षेप कहाँ जमा होते हैं। क्या वे तीव्र स्रोत के पास हैं या समतल मुहाने के पास?')],
+  discover: [
+    b('Set vegetation to 0% then 100% and watch the eroded total. What do forests do for hillsides?', 'वनस्पति को 0% और फिर 100% करें और अपरदन की कुल मात्रा देखें। वन पहाड़ी ढलानों के लिए क्या करते हैं?'),
+    b('Switch between soft and hard rock. Which one keeps its height longer?', 'मुलायम और कठोर चट्टान के बीच बदलें। कौन-सी अपनी ऊँचाई अधिक समय तक बनाए रखती है?'),
+    b('Find where the tan deposits build up. Is it near the steep source or the gentle mouth?', 'देखें पीले निक्षेप कहाँ जमा होते हैं। क्या वे तीव्र स्रोत के पास हैं या समतल मुहाने के पास?'),
+    b('Compare river deposition on the Ganga plain with wind deposition in the Thar. Which material is moved by each agent? Find both regions in the L5 atlas.', 'गंगा मैदान के नदी निक्षेपण की थार के पवन निक्षेपण से तुलना करें। प्रत्येक कारक क्या ढोता है? L5 एटलस में दोनों क्षेत्र खोजें।'),
+    b('Field or photo inquiry: from a safe public viewpoint, or using a photograph, describe soil, slope and vegetation near your home. What evidence might suggest water or wind has moved material? Do not enter floodwater or approach unstable banks.', 'क्षेत्र या चित्र-जाँच: किसी सुरक्षित सार्वजनिक स्थान या चित्र से घर के पास की मिट्टी, ढलान और वनस्पति का वर्णन करें। कौन-सा प्रमाण जल या पवन द्वारा सामग्री ढोने का संकेत दे सकता है? बाढ़ के पानी या अस्थिर किनारों के पास न जाएँ।'),
+  ],
   predictions: [
-    { id: 'p1', stem: b('Rainfall rises from 30% to 90% (everything else the same). In 40 years the land will be eroded…', 'वर्षा 30% से 90% हो जाती है (बाकी सब वही)। 40 वर्षों में भूमि का अपरदन होगा…'), options: [{ id: 'more', ...b('More', 'अधिक') }, { id: 'less', ...b('Less', 'कम') }, { id: 'same', ...b('The same', 'समान') }],
-      run: (S) => { const a = run(S, { rain: 0.3 }).eroded; S.rain = 0.9; const c = run(S, {}).eroded; S.years = 40; return c > a * 1.05 ? 'more' : c < a * 0.95 ? 'less' : 'same'; },
+    { id: 'p1', stem: b('In the river model, rainfall rises from 30% to 90% (rock and vegetation stay the same). In 40 years the land will be eroded…', 'नदी मॉडल में वर्षा 30% से 90% हो जाती है (चट्टान व वनस्पति वही रहती हैं)। 40 वर्षों में भूमि का अपरदन होगा…'), options: [{ id: 'more', ...b('More', 'अधिक') }, { id: 'less', ...b('Less', 'कम') }, { id: 'same', ...b('The same', 'समान') }],
+      run: (S) => { S.agent = 'river'; S.years = 40; const a = run(S, { rain: 0.3 }).eroded; S.rain = 0.9; const c = run(S, {}).eroded; return c > a * 1.05 ? 'more' : c < a * 0.95 ? 'less' : 'same'; },
       explain: (S) => ({ en: `Rain adds running water to wash loosened material downslope: ${fmt(run(S, {}).eroded, 0)} units moved now compared with ${fmt(run(S, { rain: 0.3 }).eroded, 0)} at 30% rain.`, hi: `वर्षा बहता जल जोड़ती है जो ढीली सामग्री को ढलान से नीचे बहा देता है: अब ${fmt(run(S, {}).eroded, 0)} इकाई खिसकी, जबकि 30% वर्षा पर ${fmt(run(S, { rain: 0.3 }).eroded, 0)} इकाई।` }) },
     { id: 'p2', stem: b('Along a river, where is most material DEPOSITED?', 'नदी के साथ-साथ अधिकतर पदार्थ कहाँ जमा होता है?'), options: [{ id: 'upper', ...b('Steep upper course', 'तीव्र ऊपरी मार्ग') }, { id: 'lower', ...b('Gentle lower course and mouth', 'समतल निचला मार्ग और मुहाना') }],
       run: (S) => { S.agent = 'river'; S.years = 60; const r = run(S, {}), p0 = G.initialProfile(100); let up = 0, lo = 0; r.profile.forEach((y, i) => { const d = Math.max(0, y - p0[i]); if (i < G.N / 2) up += d; else lo += d; }); return lo >= up ? 'lower' : 'upper'; },
       explain: () => ({ en: 'Where the slope flattens the water slows and can no longer carry its load, so sand and silt settle: floodplains and deltas.', hi: 'जहाँ ढाल समतल होती है वहाँ जल धीमा होकर अपना भार नहीं ढो पाता, इसलिए रेत और गाद बैठ जाती है: बाढ़ के मैदान और डेल्टा।' }) },
+    { id: 'p3', stem: b('After a Ganga flood near Patna, water leaves fresh silt on a field. Is the silt being eroded or deposited?', 'पटना के पास गंगा की बाढ़ के बाद पानी खेत पर नई गाद छोड़ता है। गाद का अपरदन हो रहा है या निक्षेपण?'), options: [{ id: 'dep', ...b('Deposition — the river leaves sediment on the floodplain', 'निक्षेपण — नदी बाढ़-मैदान पर अवसाद छोड़ती है') }, { id: 'ero', ...b('Erosion — material is being removed from the field', 'अपरदन — खेत से सामग्री हटाई जा रही है') }],
+      run: (S) => { S.agent = 'river'; S.rock = 'soft'; S.veg = 0.3; S.rain = 0.9; S.years = 60; return run(S, {}).deposited > 0 ? 'dep' : 'ero'; },
+      explain: () => b('Settling silt is deposition and can renew alluvial soil. Floods can also erode land and damage homes or crops. This simplified river model does not forecast a Patna flood.', 'गाद का जमना निक्षेपण है और इससे जलोढ़ मिट्टी नई हो सकती है। बाढ़ भूमि काट भी सकती है और घरों या फसलों को हानि पहुँचा सकती है। यह सरल नदी-मॉडल पटना की बाढ़ का पूर्वानुमान नहीं है।') },
   ],
   exit: [
     { id: 'e1', stem: b('Which statement correctly separates weathering from erosion?', 'कौन-सा कथन अपक्षय और अपरदन को सही अलग करता है?'), correct: 'a', options: [
@@ -131,13 +140,13 @@ export const landformGallery = {
     return {
       plate: {
         src: 'assets/images/plates/t02-landforms.jpg',
-        en: 'Himalayan fold peaks, braided river canyon and alluvial green valley — tap pins to switch between river, glacier, wind and wave landforms.',
-        hi: 'हिमालयी वलित शिखर, नदी घाटी व जलोढ़ मैदान — नदी, हिमनद, पवन व तरंग स्थलाकृतियाँ बदलने हेतु पिन पर टैप करें।',
+        en: 'An illustrated mountain and river scene, not a map. The pins let you compare processes, including wind and waves elsewhere.',
+        hi: 'पर्वत और नदी का एक चित्र, मानचित्र नहीं। बिंदुओं से अन्य जगहों की पवन और तरंग सहित प्रक्रियाओं की तुलना करें।',
         spots: [
-          { x: 36, y: 20, en: 'Glacial Peaks & Cirques', hi: 'हिमनद शिखर व सर्क', detail: b('Switch to Glacier U-valley and moraines.', 'हिमनद की U-घाटी व हिमोढ़ देखें।'), set: { agent: 'glacier', stage: 0.75 } },
-          { x: 38, y: 66, en: 'River Gorge & Floodplain', hi: 'नदी गॉर्ज व बाढ़ मैदान', detail: b('Switch to River V-valley erosion and delta deposits.', 'नदी की V-घाटी व डेल्टा निक्षेपण देखें।'), set: { agent: 'river', stage: 0.65 } },
-          { x: 14, y: 46, en: 'Dry Wind-Swept Ridge', hi: 'शुष्क पवन ढाल', detail: b('Switch to Wind mushroom rocks and barchan dunes.', 'पवन छत्रक शैल व बरखान टिब्बे देखें।'), set: { agent: 'wind', stage: 0.7 } },
-          { x: 64, y: 74, en: 'Wave & Karst Comparison', hi: 'सागरीय तरंग व कार्स्ट', detail: b('Switch to Sea cliffs, arches and stacks.', 'समुद्री भृगु व स्टैक देखें।'), set: { agent: 'waves', stage: 0.7 } },
+          { x: 36, y: 20, en: 'Compare glacier landforms', hi: 'हिमनद स्थलाकृतियों से तुलना', detail: b('Switch to a glacier U-valley and moraines.', 'हिमनद की U-घाटी व हिमोढ़ देखें।'), set: { agent: 'glacier', stage: 0.75 } },
+          { x: 38, y: 66, en: 'Compare river landforms', hi: 'नदी स्थलाकृतियों से तुलना', detail: b('Switch to river V-valley erosion and read about deposits downstream.', 'नदी की V-घाटी देखें और नीचे की ओर निक्षेपण के बारे में पढ़ें।'), set: { agent: 'river', stage: 0.65 } },
+          { x: 14, y: 46, en: 'Compare wind landforms', hi: 'पवन स्थलाकृतियों से तुलना', detail: b('Switch to wind-shaped barchan dunes.', 'पवन से बने बरखान टिब्बे देखें।'), set: { agent: 'wind', stage: 0.7 } },
+          { x: 64, y: 74, en: 'Compare coastal landforms', hi: 'तटीय स्थलाकृतियों से तुलना', detail: b('Switch to a sea cliff and beach; this image is not a coast.', 'समुद्री भृगु और पुलिन देखें; यह चित्र तट का नहीं है।'), set: { agent: 'waves', stage: 0.7 } },
         ],
       },
       svg: `<svg viewBox="0 0 640 230" class="chart" role="img" xmlns="http://www.w3.org/2000/svg">${g}</svg>`,
@@ -151,6 +160,8 @@ export const landformGallery = {
   discover: [
     b('Compare the River V-shaped valley with the Glacier U-shaped valley. Why does ice carve wider walls than water?', 'नदी की V-आकार घाटी की हिमनद की U-आकार घाटी से तुलना करें। हिम जल की अपेक्षा चौड़ी दीवारें क्यों काटता है?'),
     b('Switch to Underground water and raise maturity. Where do stalactites grow from?', 'भूमिगत जल चुनें और परिपक्वता बढ़ाएँ। स्टैलेक्टाइट कहाँ से नीचे लटकते हैं?'),
+    b('In the atlas, compare the Himalaya, Ganga plain, Deccan, Thar, coast, two island groups and Meghalaya. Which process shaped each? Which are NOT formed by the agent shown in the gallery?', 'एटलस में हिमालय, गंगा मैदान, दक्कन, थार, तट, दोनों द्वीप-समूहों और मेघालय की तुलना करें। प्रत्येक को किस प्रक्रिया ने आकार दिया? किसकी उत्पत्ति दीर्घा में दिखाए कारक से नहीं हुई?'),
+    b('Using a map, textbook or safe photograph of the Ganga plain, compare older Bhangar with newer Khadar alluvium. What more evidence would you need to identify a particular site?', 'गंगा मैदान के मानचित्र, पाठ्यपुस्तक या सुरक्षित चित्र से पुरानी भांगर और नई खादर जलोढ़ की तुलना करें। किसी विशेष स्थान की पहचान के लिए और कौन-सा प्रमाण चाहिए?'),
   ],
   predictions: [
     {
@@ -173,25 +184,37 @@ export const landformGallery = {
       explain: b('Wind lifts loose desert sand and deposits crescent-shaped barchan dunes.', 'पवन ढीली मरुस्थलीय रेत को उड़ाकर अर्धचंद्राकार बरखान टिब्बों के रूप में जमा करती है।'),
       hint: b('Select Wind in the agent chips.', 'कारक विकल्पों में पवन चुनें।'),
     },
+    {
+      id: 'e2',
+      stem: b('What mainly built the alluvial Northern Plains, including much of Bihar?', 'बिहार के बड़े भाग सहित जलोढ़ उत्तरी मैदान मुख्यतः किससे बने हैं?'),
+      correct: 'river',
+      options: [
+        { id: 'river', ...b('River deposition of sediment', 'नदियों द्वारा अवसाद का निक्षेपण') },
+        { id: 'wind', ...b('Wind deposition from the desert', 'मरुस्थलीय पवन से निक्षेपण'), why: b('Wind builds Thar dunes; the Northern Plains are largely river alluvium.', 'पवन थार में टिब्बे बनाती है; उत्तरी मैदान मुख्यतः नदी जलोढ़ हैं।') },
+      ],
+      explain: b('Rivers deposit alluvium. Near the foothills, Bhabar is pebbly and Terai is often marshy; farther out, older Bhangar and newer floodplain Khadar are types of alluvial plain, not a fixed north-to-south sequence.', 'नदियाँ जलोढ़ जमा करती हैं। तलहटी के पास भाबर कंकड़ीला और तराई प्रायः दलदली है; आगे पुरानी भांगर और बाढ़-मैदान की नई खादर जलोढ़ मैदान के प्रकार हैं, कोई तय उत्तर-दक्षिण क्रम नहीं।'),
+      hint: b('In the atlas, read what the Ganga and its tributaries carry onto the plain.', 'एटलस में पढ़ें कि गंगा और उसकी सहायक नदियाँ मैदान में क्या लाती हैं।'),
+    },
   ],
-  reflect: b('Identify one landform in your state and state whether erosion or deposition built it.', 'अपने राज्य की एक स्थलाकृति चुनें और लिखें कि वह अपरदन से बनी या निक्षेपण से।'),
+  reflect: b('Choose a landform near you or in the atlas. Explain one process that helped shape it and what evidence you would look for.', 'अपने पास या एटलस की एक स्थलाकृति चुनें। उसे आकार देने वाली एक प्रक्रिया और उसके लिए खोजे जाने वाले प्रमाण बताएँ।'),
 };
 
 // ---------------- T02.L6 Slope stability, GLOF & disaster mitigation ----------------
 export const hazardLab = {
   id: 'T02.L6',
-  objective: b('Test how slope steepness, intense rain, tree roots, retaining walls and glacial lakes affect landslide and GLOF disaster risk.', 'परखें कि ढलान का कोण, भारी वर्षा, वन जड़ें, प्रतिरोधी दीवार और हिमनद झीलें भूस्खलन व GLOF जोखिम को कैसे बदलती हैं।'),
-  note: { kind: 'schematic', en: 'Educational slope factor-of-safety model inspired by Himalayan landslides and GLOF basins; not a site-specific forecast.', hi: 'हिमालयी भूस्खलन और GLOF पर आधारित शिक्षण-मॉडल; किसी विशेष स्थल का पूर्वानुमान नहीं।' },
+  objective: b('Explore factors affecting slope stability, then discuss glacial lake outburst floods (GLOFs) as a separate hazard.', 'ढलान की स्थिरता को प्रभावित करने वाले कारक परखें, फिर हिमनद झील प्रस्फोट बाढ़ (GLOF) की अलग खतरे के रूप में चर्चा करें।'),
+  note: { kind: 'schematic', en: 'The slope index is a teaching comparison, not a probability or site forecast. The lake toggle illustrates a separate hazard; it does not calculate GLOF arrival times or protective measures.', hi: 'ढलान सूचकांक शिक्षण-तुलना है, संभावना या स्थल का पूर्वानुमान नहीं। झील का बटन अलग खतरा दिखाता है; यह GLOF पहुँचने का समय या बचाव के उपाय नहीं निकालता।' },
   init: () => ({ slope: 36, rain: 140, forest: 40, glof: false, wall: false }),
   controls: [
     { id: 'slope', type: 'slider', label: b('Hill slope angle (°)', 'पहाड़ी ढलान कोण (°)'), min: 15, max: 60, step: 1, fmt: (v) => `${v}°` },
     { id: 'rain', type: 'slider', label: b('24h rainfall (mm)', '24 घंटे की वर्षा (मिमी)'), min: 0, max: 300, step: 10, fmt: (v) => `${v} mm` },
     { id: 'forest', type: 'slider', label: b('Slope forest cover', 'ढलान वन आवरण'), min: 0, max: 100, step: 5, fmt: (v) => `${v}%` },
     { id: 'glof', type: 'toggle', label: b('Moraine-dammed glacial lake upstream', 'ऊपर हिमोढ़-बाँध वाली हिमनद झील') },
-    { id: 'wall', type: 'toggle', label: b('Retaining wall + drainage pipes + warning siren', 'प्रतिरोधी दीवार + जल निकासी + चेतावनी सायरन') },
+    { id: 'wall', type: 'toggle', label: b('Retaining wall + drainage (slope model)', 'प्रतिरोधी दीवार + जल निकासी (ढलान मॉडल)') },
   ],
   view(S) {
-    const res = G.slopeHazard({ slopeDeg: S.slope, rainMm: S.rain, forestPct: S.forest, glacierLake: S.glof, checkWall: S.wall });
+    // GLOF is a separate qualitative scenario; the slope index is not a flood model.
+    const res = G.slopeHazard({ slopeDeg: S.slope, rainMm: S.rain, forestPct: S.forest, checkWall: S.wall });
     const rad = (S.slope * Math.PI) / 180;
     const xTop = 120, yBot = 215, runW = 240, yTop = Math.max(25, yBot - Math.tan(rad) * runW * 0.68);
     const col = res.status === 'critical' ? '#c0392b' : res.status === 'elevated' ? '#d97706' : '#146c2e';
@@ -204,40 +227,50 @@ export const hazardLab = {
       g += `<polygon fill="#1b7a43" points="${tx.toFixed(0)},${(ty - 24).toFixed(0)} ${(tx - 9).toFixed(0)},${(ty - 4).toFixed(0)} ${(tx + 9).toFixed(0)},${(ty - 4).toFixed(0)}"/>`;
     }
     if (S.wall) g += `<rect x="${xTop + runW - 10}" y="${yBot - 36}" width="18" height="36" fill="#475569" stroke="#1e293b" stroke-width="2"/>`;
-    // Risk gauge bar on right
-    g += `<text class="txt b" x="480" y="46" text-anchor="middle">${esc(P('Hazard risk index', 'आपदा जोखिम सूचकांक'))}</text>`;
+    // The index is illustrative, not a failure probability or a GLOF forecast.
+    g += `<text class="txt b" x="480" y="46" text-anchor="middle">${esc(P('Slope model index', 'ढलान मॉडल सूचकांक'))}</text>`;
     g += `<rect x="405" y="64" width="150" height="26" rx="6" fill="var(--line)"/><rect x="405" y="64" width="${(res.riskPct * 1.5).toFixed(0)}" height="26" rx="6" fill="${col}"/>`;
-    g += `<text class="txt b" x="480" y="114" text-anchor="middle" fill="${col}">${res.riskPct}% · ${esc(P(res.status.toUpperCase(), res.status === 'critical' ? 'अत्यधिक जोखिम' : res.status === 'elevated' ? 'मध्यम जोखिम' : 'स्थिर'))}</text>`;
-    if (S.glof) g += `<text class="txt sm" x="480" y="146" text-anchor="middle">${esc(P(`GLOF surge travel ~${res.glofPeakMinutes} min`, `GLOF लहर पहुँच ~${res.glofPeakMinutes} मि`))}</text>`;
+    const label = res.status === 'critical' ? P('higher', 'अधिक') : res.status === 'elevated' ? P('middle', 'मध्यम') : P('lower', 'कम');
+    g += `<text class="txt b" x="480" y="114" text-anchor="middle" fill="${col}">${res.riskPct}/100 · ${esc(label)}</text>`;
+    if (S.glof) g += `<text class="txt sm" x="480" y="146" text-anchor="middle">${esc(P('GLOF: separate hazard', 'GLOF: अलग खतरा'))}</text>`;
     return {
       plate: {
         src: 'assets/images/plates/t02-hazards.jpg',
-        en: 'Himalayan slope & GLOF watershed: tap pins to toggle forest roots, retaining walls or the glacial lake hazard.',
-        hi: 'हिमालयी ढलान व हिमनद झील: वन, प्रतिरोधी दीवार या GLOF जोखिम बदलने हेतु पिन पर टैप करें।',
+        en: 'Illustrated mountain scene, not a map: use the pins to explore the slope model and a separate glacial-lake hazard.',
+        hi: 'पर्वतीय दृश्य का चित्र, मानचित्र नहीं: बिंदुओं से ढलान मॉडल और हिमनद झील का अलग खतरा देखें।',
         spots: [
-          { x: 22, y: 34, en: 'Conifer Slope Forest', hi: 'कोणधारी वन ढाल', detail: b('Deep tree roots anchor topsoil and soak cloudburst water (set forest 85%).', 'जड़ें मिट्टी को जकड़ती व भारी बारिश सोखती हैं (वन 85%)।'), set: { forest: 85, slope: 32 } },
-          { x: 68, y: 40, en: 'Moraine-Dammed Glacial Lake', hi: 'हिमोढ़-बाँध हिमनद झील', detail: b('Trigger an upstream GLOF hazard to inspect valley surge travel minutes.', 'ऊपरी GLOF झील सक्रिय करके घाटी बाढ़-लहर समय देखें।'), set: { glof: true, rain: 220 } },
-          { x: 44, y: 65, en: 'Gabion Wall & Highway Bench', hi: 'प्रतिरोधी दीवार व राजमार्ग', detail: b('Enable engineered retaining walls, weep-hole drains and sirens to stabilise road cuts.', 'सड़क कटाव थामने को प्रतिरोधी दीवार, निकास पाइप व सायरन चालू करें।'), set: { wall: true } },
+          { x: 22, y: 34, en: 'Conifer Slope Forest', hi: 'कोणधारी वन ढाल', detail: b('Roots can help hold soil in place (set forest cover to 85% in the model).', 'जड़ें मिट्टी को थामने में मदद कर सकती हैं (मॉडल में वन आवरण 85% करें)।'), set: { forest: 85, slope: 32 } },
+          { x: 68, y: 40, en: 'Moraine-Dammed Glacial Lake', hi: 'हिमोढ़-बाँध हिमनद झील', detail: b('Explore the separate hazard of a sudden glacial-lake outburst; the slope index does not forecast it.', 'हिमनद झील के अचानक फटने का अलग खतरा देखें; ढलान सूचकांक उसका पूर्वानुमान नहीं करता।'), set: { glof: true } },
+          { x: 44, y: 65, en: 'Retaining Wall & Road Cut', hi: 'प्रतिरोधी दीवार व सड़क कटाव', detail: b('Try a retaining wall and drainage in the slope model. Actual design requires site-specific engineering.', 'ढलान मॉडल में प्रतिरोधी दीवार और निकासी आज़माएँ। वास्तविक निर्माण के लिए स्थल की अभियांत्रिकी जाँच चाहिए।'), set: { wall: true } },
         ],
       },
       svg: `<svg viewBox="0 0 640 240" class="chart" role="img" xmlns="http://www.w3.org/2000/svg">${g}</svg>`,
-      aria: `Slope ${S.slope} degrees, rainfall ${S.rain} mm: risk ${res.riskPct}% (${res.status}).`,
+      aria: P(`Slope ${S.slope} degrees, rainfall ${S.rain} mm: teaching index ${res.riskPct} out of 100.`, `ढलान ${S.slope} डिग्री, वर्षा ${S.rain} मिमी: शिक्षण सूचकांक 100 में ${res.riskPct}।`),
       lines: [
-        { en: `Factor of safety ${fmt(res.factorOfSafety, 2)} → landslide risk ${res.riskPct}% (${res.status}).`, hi: `सुरक्षा गुणांक ${fmt(res.factorOfSafety, 2)} → भूस्खलन जोखिम ${res.riskPct}%।`, cls: res.status === 'critical' ? 'warn' : res.status === 'stable' ? 'balanced' : '' },
-        S.glof ? { en: `GLOF hazard active: sudden dam breach sends mud-boulder surge downstream in ~${res.glofPeakMinutes} min — early sensors + valley evacuation save lives.`, hi: `GLOF खतरा सक्रिय: हिमोढ़ बाँध टूटने पर मलबा-बाढ़ ~${res.glofPeakMinutes} मिनट में नीचे पहुँचती है — पूर्व-चेतावनी सेंसर जीवन बचाते हैं।`, cls: 'warn' } : { en: 'Toggle the glacial lake to test high-mountain GLOF surge timing.', hi: 'उच्च पर्वतीय GLOF बाढ़ समय जाँचने के लिए हिमनद झील चालू करें।', cls: 'note' },
+        { en: `Model stability ratio ${fmt(res.factorOfSafety, 2)} → slope index ${res.riskPct}/100. This is not a probability.`, hi: `मॉडल स्थिरता अनुपात ${fmt(res.factorOfSafety, 2)} → ढलान सूचकांक ${res.riskPct}/100। यह संभावना नहीं है।`, cls: res.status === 'critical' ? 'warn' : res.status === 'stable' ? 'balanced' : '' },
+        S.glof ? { en: 'A glacial-lake dam can fail suddenly and send water and debris down a valley. Arrival times vary; this model cannot predict them. Follow local warnings.', hi: 'हिमनद झील का बाँध अचानक टूटकर घाटी में पानी और मलबा भेज सकता है। पहुँचने का समय बदलता है; यह मॉडल उसका पूर्वानुमान नहीं कर सकता। स्थानीय चेतावनियाँ मानें।', cls: 'warn' } : { en: 'Switch on the glacial lake to discuss GLOF separately from the slope index.', hi: 'ढलान सूचकांक से अलग GLOF की चर्चा करने के लिए हिमनद झील चालू करें।', cls: 'note' },
       ],
     };
   },
   discover: [
     b('Cut forest cover to 0% on a 45° slope during 220 mm rain, then enable retaining wall + drainage. How much does risk fall?', '220 मिमी वर्षा में 45° ढलान पर वन 0% करें, फिर प्रतिरोधी दीवार व जल-निकासी चालू करें। जोखिम कितना घटता है?'),
+    b('Bihar comparison: river floods, summer heatwaves (loo is a hot, dry wind) and earthquakes can all cause harm. Name one preparedness step for each. This slope model does not predict any of them.', 'बिहार की तुलना: नदी की बाढ़, गर्मियों की भीषण गर्मी (लू गर्म, शुष्क पवन है) और भूकंप सभी हानि पहुँचा सकते हैं। हर एक के लिए तैयारी का एक कदम बताएँ। यह ढलान मॉडल इनका पूर्वानुमान नहीं करता।'),
+    b('From indoors, or using a photograph, imagine wind lifting dust and later dropping it elsewhere. Which part is erosion and which is deposition? Avoid going outside in a dust storm or extreme heat.', 'घर के अंदर से या किसी चित्र की मदद से सोचें कि पवन धूल उठाकर कहीं और गिराती है। कौन-सा भाग अपरदन और कौन-सा निक्षेपण है? आँधी या भीषण गर्मी में बाहर न जाएँ।'),
   ],
   predictions: [
     {
       id: 'p1',
       stem: b('When road cutting steepens a hill slope from 25° to 50° and trees are cleared, landslide risk…', 'जब सड़क काटने से ढलान 25° से 50° हो जाता है और पेड़ कट जाते हैं, तो भूस्खलन जोखिम…'),
       options: [opt('rises', 'Rises sharply because gravity pull increases while root grip drops', 'तेज़ी से बढ़ता है क्योंकि गुरुत्व खिंचाव बढ़ता व जड़-पकड़ घटती है'), opt('falls', 'Falls because less soil remains', 'घटता है')],
-      run: (S) => { const a = G.slopeHazard({ slopeDeg: 25, rainMm: 160, forestPct: 60 }).riskPct; S.slope = 50; S.forest = 0; S.rain = 160; const b2 = G.slopeHazard({ slopeDeg: 50, rainMm: 160, forestPct: 0 }).riskPct; return b2 > a ? 'rises' : 'falls'; },
+      run: (S) => { const a = G.slopeHazard({ slopeDeg: 25, rainMm: 160, forestPct: 60 }).riskPct; S.slope = 50; S.forest = 0; S.rain = 160; S.glof = false; S.wall = false; const b2 = G.slopeHazard({ slopeDeg: S.slope, rainMm: S.rain, forestPct: S.forest }).riskPct; return b2 > a ? 'rises' : 'falls'; },
       explain: () => b('Steeper slope increases downward shear stress; removing roots lets rainwater saturate and slide soil.', 'अधिक ढाल नीचे की ओर खिसकाव बढ़ाती है और जड़ें हटने से वर्षा जल मिट्टी को बहा ले जाता है।'),
+    },
+    {
+      id: 'p2',
+      stem: b('In the slope model, set 45° slope, 200 mm rain and 30% forest, with no glacial lake. What happens to the index when a retaining wall and drainage are added?', 'ढलान मॉडल में 45° ढलान, 200 मिमी वर्षा और 30% वन रखें, हिमनद झील नहीं। प्रतिरोधी दीवार और जल-निकासी जोड़ने पर सूचकांक को क्या होता है?'),
+      options: [opt('falls', 'It falls in this model', 'इस मॉडल में घटता है'), opt('rises', 'It rises in this model', 'इस मॉडल में बढ़ता है')],
+      run: (S) => { S.slope = 45; S.rain = 200; S.forest = 30; S.glof = false; S.wall = false; const before = G.slopeHazard({ slopeDeg: S.slope, rainMm: S.rain, forestPct: S.forest }).riskPct; S.wall = true; const after = G.slopeHazard({ slopeDeg: S.slope, rainMm: S.rain, forestPct: S.forest, checkWall: S.wall }).riskPct; return after < before ? 'falls' : 'rises'; },
+      explain: (S) => { const base = { slopeDeg: S.slope, rainMm: S.rain, forestPct: S.forest }; const before = G.slopeHazard(base).riskPct, after = G.slopeHazard({ ...base, checkWall: true }).riskPct; return b(`The teaching index falls from ${before} to ${after} out of 100 when the wall and drainage are enabled. It is not a probability; real slope safety depends on site conditions and engineering.`, `दीवार और जल-निकासी जोड़ने पर शिक्षण सूचकांक 100 में ${before} से ${after} होता है। यह संभावना नहीं है; वास्तविक ढलान की सुरक्षा स्थानीय दशाओं और अभियांत्रिकी पर निर्भर करती है।`); },
     },
   ],
   exit: [
@@ -246,12 +279,23 @@ export const hazardLab = {
       stem: b('What makes a Glacial Lake Outburst Flood (GLOF) especially dangerous for mountain valleys?', 'हिमनद झील प्रस्फोट बाढ़ (GLOF) पर्वतीय घाटियों के लिए विशेष रूप से खतरनाक क्यों है?'),
       correct: 'sudden',
       options: [
-        { id: 'sudden', ...b('An unstable ice/moraine dam can break suddenly, sending a fast mud-rock wall down narrow valleys with minutes of warning.', 'अस्थिर हिमोढ़ बाँध अचानक टूट सकता है, जिससे संकरी घाटियों में कुछ ही मिनटों में कीचड़-चट्टान की बाढ़ आ जाती है।') },
-        { id: 'slow', ...b('It moves slower than normal river flow over several weeks.', 'यह कई हफ्तों में सामान्य नदी से भी धीमे बहती है।'), why: b('Steep valleys accelerate the surge in minutes, not weeks.', 'तीव्र घाटियाँ बाढ़ लहर को मिनटों में नीचे पहुँचाती हैं।') },
+        { id: 'sudden', ...b('An unstable ice/moraine dam can break suddenly, sending water and debris down a valley with potentially little warning.', 'अस्थिर बर्फ़ या हिमोढ़ बाँध अचानक टूट सकता है और कम चेतावनी के साथ घाटी में पानी व मलबा भेज सकता है।') },
+        { id: 'slow', ...b('It moves slower than normal river flow over several weeks.', 'यह कई हफ्तों में सामान्य नदी से भी धीमे बहती है।'), why: b('A breach can send a fast surge downstream; travel time varies with the location and conditions.', 'बाँध टूटने पर तेज़ लहर नीचे जा सकती है; समय स्थान और दशाओं के अनुसार बदलता है।') },
       ],
-      explain: b('Monitoring lake water levels, controlled drainage siphons, and valley sirens provide crucial evacuation minutes.', 'झील स्तर की निगरानी, नियंत्रित निकासी और घाटी सायरन बचाव के कीमती मिनट देते हैं।'),
-      hint: b('Switch on the glacial lake toggle and read the surge minutes.', 'हिमनद झील चालू कर पहुँचने के मिनट पढ़ें।'),
+      explain: b('Lake monitoring, appropriate engineering, early warnings and evacuation plans can reduce harm. Follow local authorities; the slope model cannot predict an outburst or its arrival time.', 'झील की निगरानी, उचित अभियांत्रिकी, पूर्व-चेतावनी और निकासी योजनाएँ हानि घटा सकती हैं। स्थानीय प्रशासन की सलाह मानें; ढलान मॉडल प्रस्फोट या उसके पहुँचने का समय नहीं बताता।'),
+      hint: b('Switch on the glacial lake and consider what a sudden dam failure could do.', 'हिमनद झील चालू करें और सोचें कि बाँध अचानक टूटने पर क्या हो सकता है।'),
+    },
+    {
+      id: 'e2',
+      stem: b('Which set of actions can help a family prepare for flooding, heat and earthquakes in Bihar?', 'बिहार में बाढ़, भीषण गर्मी और भूकंप से बचाव की तैयारी में कौन-से कदम मदद कर सकते हैं?'),
+      correct: 'all',
+      options: [
+        { id: 'all', ...b('Flood: follow official warnings and avoid floodwater; heat: stay cool and drink water; earthquake: practise Drop, Cover and Hold On.', 'बाढ़: आधिकारिक चेतावनी मानें और बाढ़ के पानी से दूर रहें; गर्मी: ठंडे स्थान पर रहें और पानी पिएँ; भूकंप: झुकें, ढकें और पकड़ें का अभ्यास करें।') },
+        { id: 'one', ...b('Rely only on an embankment and ignore heat and earthquake preparation.', 'केवल तटबंध पर भरोसा करें और गर्मी व भूकंप की तैयारी न करें।'), why: b('Embankments do not protect against heat or earthquakes; each hazard needs its own preparation.', 'तटबंध गर्मी या भूकंप से नहीं बचाते; प्रत्येक खतरे के लिए अलग तैयारी चाहिए।') },
+      ],
+      explain: b('Different hazards require different preparations. Follow local authorities during emergencies; the slope simulation does not forecast floods, heat or earthquakes.', 'अलग खतरों के लिए अलग तैयारी चाहिए। आपात स्थिति में स्थानीय प्रशासन की सलाह मानें; ढलान सिमुलेशन बाढ़, गर्मी या भूकंप का पूर्वानुमान नहीं करता।'),
+      hint: b('Think about actions for all three hazards, not just one.', 'केवल एक नहीं, तीनों खतरों के लिए कदमों पर सोचें।'),
     },
   ],
-  reflect: b('Name one engineering measure and one ecological measure that reduce hillside landslides.', 'पहाड़ी भूस्खलन घटाने का एक अभियांत्रिकी उपाय और एक पारिस्थितिक उपाय लिखें।'),
+  reflect: b('Name one engineering measure and one ecological measure that reduce hillside landslides, plus one flood-safety step for Bihar plains.', 'पहाड़ी भूस्खलन घटाने का एक अभियांत्रिकी और एक पारिस्थितिक उपाय, साथ ही बिहार मैदान के लिए एक बाढ़-सुरक्षा कदम लिखें।'),
 };

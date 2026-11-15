@@ -24,7 +24,7 @@ export function progress(themeId) {
   p.cbq ??= {};
   return p;
 }
-export const saveProgress = () => save();
+export function saveProgress() { save(); subs.forEach((f) => f(state, ['progress'])); }
 export function awardStar(key) {
   if (!key || state.stars[key]) return false;
   state.stars[key] = true;

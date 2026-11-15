@@ -2,6 +2,9 @@
 import { mountLabs } from '../../components/lab-kit.js';
 import { loadGeoAll } from '../../engines/viz.js';
 import { cutaway, breeze, climateGrapher, monsoonMap, catchment, carbonFootprint } from './t03-specs.js';
+import { createWeatherDiary } from './weather-diary.js';
+import { createClimateTable } from './climate-table.js';
+import { createMonsoonInquiry } from './monsoon-inquiry.js';
 
 export function mount(root) {
   const res = mountLabs(
@@ -17,7 +20,22 @@ export function mount(root) {
       { en: 'Carbon footprint (L6)', hi: 'कार्बन पदचिह्न (L6)' },
     ],
   );
+  const climate = res.lab('T03.L2');
+  const monsoon = res.lab('T03.L3');
+  const diary = createWeatherDiary();
+  const climateTable = createClimateTable(climate.state);
+  const inquiry = createMonsoonInquiry({ season: monsoon.state.season, onSeason: (season) => monsoon.setState({ season }) });
+  const stopClimate = climate.onDraw((state) => climateTable.update(state));
+  const stopMonsoon = monsoon.onDraw((state) => inquiry.update(state));
+  const climateGrid = climate.el.querySelector('.lab-grid');
+  climateGrid.before(diary.el);
+  climateGrid.after(climateTable.el);
+  monsoon.el.querySelector('.lab-grid').before(inquiry.el);
   let alive = true;
   loadGeoAll().then(() => { if (alive) res.relabel(); });
-  return { ...res, destroy() { alive = false; res.destroy?.(); } };
+  return {
+    ...res,
+    relabel() { res.relabel(); diary.relabel(); climateTable.relabel(); inquiry.relabel(); },
+    destroy() { alive = false; stopClimate(); stopMonsoon(); diary.destroy(); climateTable.destroy(); inquiry.destroy(); res.destroy(); },
+  };
 }

@@ -80,7 +80,8 @@ export const scarcityGame = {
     let x = 24;
     items.forEach((it) => {
       const w = (Math.min(120, it.val) / 100) * 592;
-      if (w > 0) g += `<rect x="${x.toFixed(1)}" y="28" width="${Math.min(592 - (x - 24), w).toFixed(1)}" height="30" fill="${it.fill}"/>`;
+      const rw = Math.min(Math.max(0, 592 - (x - 24)), w);
+      if (rw > 0) g += `<rect x="${x.toFixed(1)}" y="28" width="${rw.toFixed(1)}" height="30" fill="${it.fill}"/>`;
       x += w;
     });
     g += `<line x1="616" y1="18" x2="616" y2="70" stroke="var(--bad)" stroke-width="3"/><text class="txt sm b" x="616" y="84" text-anchor="end">${esc(P('Budget Limit ₹100', 'बजट सीमा ₹100'))}</text>`;

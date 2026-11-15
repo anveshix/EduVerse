@@ -102,8 +102,10 @@ test('tectonics wrapper exposes the existing model', () => {
 });
 test('terrain/atmosphere/ocean/ecosystem extended engines maintain invariants', () => {
   const shSafe = E.terrain.slopeHazard({ slopeDeg: 20, rainMm: 60, forestPct: 80, checkWall: true });
-  const shRisk = E.terrain.slopeHazard({ slopeDeg: 55, rainMm: 280, forestPct: 5, glacierLake: true, checkWall: false });
-  assert.ok(shSafe.factorOfSafety > shRisk.factorOfSafety && shRisk.glofPeakMinutes > 0);
+  const shRisk = E.terrain.slopeHazard({ slopeDeg: 55, rainMm: 280, forestPct: 5, checkWall: false });
+  assert.ok(shSafe.factorOfSafety > shRisk.factorOfSafety);
+  assert.deepEqual(E.terrain.slopeHazard({ slopeDeg: 55, rainMm: 280, forestPct: 5, glacierLake: true }), shRisk, 'lake outburst is separate from the slope index');
+  assert.equal('glofPeakMinutes' in shRisk, false, 'the slope model must not imply an arrival-time forecast');
   const cr = E.atmosphere.catchmentRunoff({ rainMm: 150, forestPct: 60, pavedPct: 10, checkDams: 2 });
   near(cr.infiltrated + cr.damStored + cr.surfaceRunoff, cr.rainMm, 1e-6);
   assert.ok(E.atmosphere.carbonFootprint({ solarPct: 100 }).electricity === 0);
@@ -113,7 +115,9 @@ test('terrain/atmosphere/ocean/ecosystem extended engines maintain invariants', 
 });
 test('history, politics, startup & finance extended engines produce consistent outcomes', () => {
   assert.ok(E.history.settlementSim({ mode: 'farmer', storage: 0.8 }).finalPop > E.history.settlementSim({ mode: 'forager' }).finalPop);
-  assert.ok(E.history.harappanPlan({ coveredDrains: true }).sanitation > E.history.harappanPlan({ coveredDrains: false }).sanitation);
+  assert.equal(E.history.harappanPlan({ coveredDrains: false, wells: 3 }).coveredDrains, false);
+  assert.equal(E.history.harappanPlan({ wells: 3 }).wells, 3);
+  assert.equal('sanitation' in E.history.harappanPlan(), false, 'the town sketch does not calculate historical sanitation');
   assert.ok(E.history.fortDesign({ bentGate: true, doubleWall: true }).defence > E.history.fortDesign({ bentGate: false, doubleWall: false }).defence);
   assert.equal(E.society.assessDemocracyCase({ freeVote: true, multipleParties: true, freeMedia: false, equalLaw: false }).verdict, 'flawed');
   assert.equal(E.society.delimitationOutcome('packedA').mismatch, true);

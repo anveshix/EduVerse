@@ -1,7 +1,7 @@
 // T03 Atmosphere and Climate lab specs (L1–L6).
 import * as A from '../../engines/domain/atmosphere.js';
 import { Chart } from '../../engines/chart.js';
-import { d3, indiaMapSvg } from '../../engines/viz.js';
+import { d3, indiaMapSvg, indiaProjection } from '../../engines/viz.js';
 import { fmt, esc } from '../../core/dom.js';
 import { pair as P } from '../../core/i18n.js';
 
@@ -14,7 +14,7 @@ const LAYER_NOTE = {
   mesosphere: b('Meteors burn up here; the coldest part of the atmosphere.', 'उल्काएँ यहाँ जल जाती हैं; वायुमंडल का सबसे ठंडा भाग।'),
   thermosphere: b('Very thin air; temperature is very high but there is too little air to feel hot. Auroras occur here.', 'वायु बहुत विरल; तापमान बहुत ऊँचा पर इतनी कम वायु कि गर्मी महसूस नहीं होती। ध्रुवीय ज्योति यहीं होती है।'),
 };
-const MONTHS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
 // ---------------------------------------------------------------- T03.L1 atmosphere cutaway
 export const cutaway = {
@@ -147,8 +147,8 @@ export const breeze = {
 // ================================================================ T03.L2 Climate Grapher
 export const climateGrapher = {
   id: 'T03.L2',
-  objective: b('Read and compare temperature-rainfall climographs across contrasting Indian stations shaped by latitude, altitude, coast and relief.', 'तट, ऊँचाई, अक्षांश और उच्चावच से प्रभावित विभिन्न भारतीय केंद्रों के तापमान-वर्षा जलवायु आरेखों की तुलना करें।'),
-  note: { kind: 'schematic', en: 'Representative monthly climatology normals for classroom comparison of coastal, arid, cold-desert and orographic stations.', hi: 'तटीय, शुष्क, शीत-मरुस्थल व पर्वतीय केंद्रों की कक्षा-तुलना हेतु प्रतिनिधि मासिक औसत।' },
+  objective: b('Record a week of local weather and practise reading illustrative temperature–rainfall graphs; distinguish short-term observations from climate.', 'एक सप्ताह का स्थानीय मौसम दर्ज करें और उदाहरणात्मक तापमान–वर्षा आरेख पढ़ें; अल्पकालिक प्रेक्षण और जलवायु में अंतर समझें।'),
+  note: { kind: 'fictional', en: 'These monthly station figures are illustrative teaching values, not verified measurements or official climate normals. The diary is separately entered by the learner.', hi: 'मासिक केंद्र आँकड़े शिक्षण के उदाहरण हैं, सत्यापित माप या आधिकारिक जलवायु औसत नहीं। डायरी विद्यार्थी अलग से भरता है।' },
   init: () => ({ station: 'mumbai', compare: 'jaipur' }),
   controls: [
     { id: 'station', type: 'chips', label: b('Primary station', 'मुख्य केंद्र'), options: Object.entries(A.STATIONS).map(([id, s]) => ({ id, en: s.en.split(' (')[0], hi: s.hi.split(' (')[0] })) },
@@ -167,6 +167,10 @@ export const climateGrapher = {
       const y = tScale(t);
       g += `<line class="grid" x1="${x0}" x2="${x1}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/><text class="txt sm mut" x="${x0 - 6}" y="${(y + 4).toFixed(1)}" text-anchor="end">${t}°</text>`;
     }
+    for (const tick of rScale.ticks(4)) {
+      const y = rScale(tick);
+      g += `<line x1="${x1}" x2="${x1 + 4}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--ink)"/><text class="txt sm mut" x="${x1 + 7}" y="${(y + 4).toFixed(1)}">${tick}</text>`;
+    }
     st.rain.forEach((r, i) => {
       const bx = xScale(i), bw = xScale.bandwidth(), by = rScale(r);
       g += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(1)}" height="${(yBot - by).toFixed(1)}" fill="#3b82f6" opacity=".68" rx="2"/>`;
@@ -175,37 +179,39 @@ export const climateGrapher = {
     const lineGen = d3.line().x((_, i) => xScale(i) + xScale.bandwidth() / 2).y((d) => tScale(d)).curve(d3.curveMonotoneX);
     g += `<path d="${lineGen(cmp.temp)}" fill="none" stroke="var(--mut)" stroke-width="2.5" stroke-dasharray="6 4"/>`;
     g += `<path d="${lineGen(st.temp)}" fill="none" stroke="var(--d)" stroke-width="3.5"/>`;
-    g += `<text class="txt sm b" x="${x1 - 4}" y="16" text-anchor="end" fill="#2563eb">${esc(P('Bars: Rainfall (mm)', 'पट्टियाँ: वर्षा (मिमी)'))} · ${esc(P('Red: Primary °C', 'लाल: मुख्य °C'))}</text>`;
+    g += `<text class="txt sm b" x="${x0}" y="15">°C</text><text class="txt sm b" x="${x1}" y="15" text-anchor="end">mm</text>`;
+    g += `<text class="txt sm" x="${(x0 + x1) / 2}" y="${H - 4}" text-anchor="middle">${esc(P('Month: 1 = January, 12 = December', 'माह: 1 = जनवरी, 12 = दिसंबर'))}</text>`;
     return {
       plate: {
         src: 'assets/images/plates/t03-pressure.jpg',
         en: 'Global atmospheric pressure belts — tap equatorial storm clouds, subtropical desert high or temperate polar front.',
         hi: 'वैश्विक वायुदाब व पवन कटिबंध — विषुवतीय निम्न दाब, उपोष्ण उच्च दाब व ध्रुवीय वाताग्र पर टैप करें।',
         spots: [
-          { x: 26, y: 38, en: 'Mumbai (Humid Monsoon Low)', hi: 'मुंबई (तटीय मानसून निम्न दाब)', detail: b('Warm rising ocean-fed clouds keep Mumbai wet & mild year-round.', 'गर्म उठती समुद्री हवा मुंबई में भारी मानसूनी वर्षा व सम तापमान रखती है।'), set: { station: 'mumbai', compare: 'jaipur' } },
-          { x: 52, y: 58, en: 'Jaipur (Subtropical Dry Belt)', hi: 'जयपुर (उपोष्ण शुष्क उच्च दाब)', detail: b('Descending dry air inland gives scorching summers and wide seasonal swings.', 'उतरती शुष्क हवा व समुद्र से दूरी जयपुर में तीव्र गर्मी-सर्दी लाती है।'), set: { station: 'jaipur', compare: 'mumbai' } },
-          { x: 76, y: 48, en: 'Leh (High Cold Polar-Like)', hi: 'लेह (उच्च पर्वतीय शीत क्षेत्र)', detail: b('Thin alpine air at ~3,500 m drops winter nights far below freezing.', '~3,500 मी ऊँचाई की विरल हवा तापमान को शून्य से नीचे गिरा देती है।'), set: { station: 'leh', compare: 'mumbai' } },
+          { x: 26, y: 38, en: 'Mumbai (coastal)', hi: 'मुंबई (तटीय)', detail: b('The illustrative graph has a strong summer rainy season; the nearby sea can moderate temperature variation.', 'उदाहरण आरेख में गर्मियों में अधिक वर्षा है; पास का समुद्र तापमान का अंतर कम कर सकता है।'), set: { station: 'mumbai', compare: 'jaipur' } },
+          { x: 52, y: 58, en: 'Jaipur (inland)', hi: 'जयपुर (आंतरिक)', detail: b('Distance from the sea is one reason inland temperatures can vary more between seasons.', 'समुद्र से दूरी एक कारण है कि आंतरिक क्षेत्रों में ऋतुओं के बीच तापमान अधिक बदल सकता है।'), set: { station: 'jaipur', compare: 'mumbai' } },
+          { x: 76, y: 48, en: 'Leh (high altitude)', hi: 'लेह (अधिक ऊँचाई)', detail: b('Leh is at high altitude; temperature generally decreases with altitude in the lower atmosphere.', 'लेह अधिक ऊँचाई पर है; निचले वायुमंडल में ऊँचाई के साथ तापमान सामान्यतः घटता है।'), set: { station: 'leh', compare: 'mumbai' } },
         ],
       },
       svg: `<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" xmlns="http://www.w3.org/2000/svg">${g}</svg>`,
-      aria: `${st.en}: annual rain ${st.totalRain} mm, temp ${st.minT} to ${st.maxT} C`,
+      aria: P(`Illustrative graph for ${st.en}: annual sum of rain ${st.totalRain} mm; monthly temperatures ${st.minT} to ${st.maxT} degrees Celsius.`, `${st.hi} का उदाहरण आरेख: वर्षा का वार्षिक योग ${st.totalRain} मिमी; मासिक तापमान ${st.minT} से ${st.maxT} डिग्री सेल्सियस।`),
       lines: [
-        { en: `${st.en} (elev. ${st.elev} m): annual rainfall ${fmt(st.totalRain, 0)} mm; temp ${st.minT}°C to ${st.maxT}°C (annual range ${st.rangeT}°C).`, hi: `${st.hi} (ऊँचाई ${st.elev} मी): वार्षिक वर्षा ${fmt(st.totalRain, 0)} मिमी; तापमान ${st.minT}°C से ${st.maxT}°C (वार्षिक अंतर ${st.rangeT}°C)।`, cls: 'balanced' },
-        { en: `Comparison (${cmp.en}): annual range ${cmp.rangeT}°C, annual rainfall ${fmt(cmp.totalRain, 0)} mm.`, hi: `तुलना (${cmp.hi}): वार्षिक अंतर ${cmp.rangeT}°C, वार्षिक वर्षा ${fmt(cmp.totalRain, 0)} मिमी।`, cls: 'note' },
+        { en: 'Illustrative values only — not official station observations or climate normals. Blue bars use the right rainfall axis; the red line is primary temperature and the dashed line is comparison temperature on the left axis.', hi: 'केवल उदाहरणात्मक मान — आधिकारिक केंद्र प्रेक्षण या जलवायु औसत नहीं। नीली पट्टियाँ दाईं वर्षा-अक्ष पर हैं; लाल रेखा मुख्य और बिंदीदार रेखा तुलना तापमान को बाईं अक्ष पर दिखाती है।', cls: 'note' },
+        { en: `${st.en} (approx. elev. ${st.elev} m): illustrative annual rain sum ${fmt(st.totalRain, 0)} mm; monthly temperatures ${st.minT}°C to ${st.maxT}°C (range ${st.rangeT}°C).`, hi: `${st.hi} (लगभग ऊँचाई ${st.elev} मी): उदाहरण में वार्षिक वर्षा योग ${fmt(st.totalRain, 0)} मिमी; मासिक तापमान ${st.minT}°C से ${st.maxT}°C (अंतर ${st.rangeT}°C)।`, cls: 'balanced' },
+        { en: `Illustrative comparison (${cmp.en}): temperature range ${cmp.rangeT}°C, annual rain sum ${fmt(cmp.totalRain, 0)} mm.`, hi: `उदाहरण तुलना (${cmp.hi}): तापमान अंतर ${cmp.rangeT}°C, वार्षिक वर्षा योग ${fmt(cmp.totalRain, 0)} मिमी।`, cls: 'note' },
       ],
     };
   },
   discover: [
-    b('Compare Mumbai (coastal) with Jaipur (inland). Why is Mumbai’s annual temperature swing much smaller?', 'मुंबई (तटीय) की जयपुर (आंतरिक) से तुलना करें। मुंबई का वार्षिक तापमान अंतर बहुत कम क्यों है?'),
-    b('Pick Chennai and look at October–December bars. Why does Chennai peak later than Mumbai?', 'चेन्नई चुनें और अक्टूबर–दिसंबर की पट्टियाँ देखें। चेन्नई में वर्षा मुंबई से बाद में क्यों चरम पर होती है?'),
+    b('Compare the illustrative Mumbai (coastal) and Jaipur (inland) figures. How can the sea moderate the coastal temperature range?', 'मुंबई (तटीय) और जयपुर (आंतरिक) के उदाहरण मानों की तुलना करें। समुद्र तटीय तापमान अंतर कैसे कम कर सकता है?'),
+    b('Pick Chennai and look at the illustrative October–December bars. How can the later northeast monsoon help explain the pattern?', 'चेन्नई चुनें और उदाहरण की अक्टूबर–दिसंबर पट्टियाँ देखें। बाद का उत्तर-पूर्व मानसून इस पैटर्न को कैसे समझा सकता है?'),
   ],
   predictions: [
     {
       id: 'p1',
-      stem: b('Which city has the smallest temperature difference between winter and summer?', 'सर्दी और गर्मी के बीच सबसे कम तापमान-अंतर किस शहर में है?'),
+      stem: b('In this illustrative graph, which city has the smaller temperature range?', 'इस उदाहरण आरेख में किस शहर का तापमान-अंतर कम है?'),
       options: [opt('mumbai', 'Mumbai (moderated by Arabian Sea)', 'मुंबई (अरब सागर के प्रभाव से)'), opt('jaipur', 'Jaipur (far from sea)', 'जयपुर (समुद्र से दूर)')],
       run: (S) => { S.station = 'mumbai'; S.compare = 'jaipur'; return A.stationSummary('mumbai').rangeT < A.stationSummary('jaipur').rangeT ? 'mumbai' : 'jaipur'; },
-      explain: () => b(`Mumbai swings only ${A.stationSummary('mumbai').rangeT}°C across the year vs Jaipur’s ${A.stationSummary('jaipur').rangeT}°C because ocean water warms and cools slowly.`, `सागर धीरे गर्म-ठंडा होने से मुंबई में केवल ${A.stationSummary('mumbai').rangeT}°C का अंतर रहता है, जबकि जयपुर में ${A.stationSummary('jaipur').rangeT}°C।`),
+      explain: () => b(`In these illustrative values Mumbai’s range is ${A.stationSummary('mumbai').rangeT}°C versus Jaipur’s ${A.stationSummary('jaipur').rangeT}°C. The sea can moderate coastal temperatures; these numbers are not official observations.`, `इन उदाहरण मानों में मुंबई का अंतर ${A.stationSummary('mumbai').rangeT}°C और जयपुर का ${A.stationSummary('jaipur').rangeT}°C है। समुद्र तटीय तापमान को संतुलित कर सकता है; ये आधिकारिक प्रेक्षण नहीं हैं।`),
     },
   ],
   exit: [
@@ -214,21 +220,36 @@ export const climateGrapher = {
       stem: b('Why is Leh much colder than Jaipur even though both have low rainfall?', 'कम वर्षा होने के बावजूद लेह जयपुर से इतना ठंडा क्यों है?'),
       correct: 'alt',
       options: [
-        { id: 'alt', ...b('Leh sits at ~3,500 m altitude in the Himalaya, where thinner air cools ~6.5°C per km.', 'लेह हिमालय में ~3,500 मी ऊँचाई पर है, जहाँ विरल हवा ऊँचाई के साथ ठंडी होती है।') },
+        { id: 'alt', ...b('Leh is at high altitude, where lower-atmosphere temperature generally decreases with height.', 'लेह अधिक ऊँचाई पर है, जहाँ निचले वायुमंडल का तापमान सामान्यतः ऊँचाई के साथ घटता है।') },
         { id: 'sea', ...b('Leh is closer to the Bay of Bengal.', 'लेह बंगाल की खाड़ी के अधिक निकट है।'), why: b('Leh is deep inland; altitude and latitude explain its cold climate.', 'लेह समुद्र से बहुत दूर है; उसकी ठंड का कारण ऊँचाई है।') },
       ],
       explain: b('Altitude lowers temperature rapidly even in sunny high deserts.', 'अधिक ऊँचाई पर सूर्य की धूप के बावजूद तापमान कम रहता है।'),
       hint: b('Check Leh’s elevation in the readout.', 'लेह की ऊँचाई पढ़ें।'),
     },
   ],
-  reflect: b('Describe your local climate across the year: which 2–3 months bring most rain and when is the warmest month?', 'अपने क्षेत्र की वार्षिक जलवायु बताएँ: किन 2–3 महीनों में सर्वाधिक वर्षा होती है और सबसे गर्म महीना कौन-सा है?'),
+  reflect: b('What did your seven-day diary show? What long-term, trustworthy records would you need to describe your local climate?', 'सात दिनों की डायरी में क्या दिखा? अपने क्षेत्र की जलवायु बताने के लिए कौन-से भरोसेमंद दीर्घकालिक आँकड़े चाहिए?'),
 };
+
+// Arrowheads use the same projection as the map, so paths communicate direction rather than just corridors.
+function monsoonArrowheads(paths) {
+  const project = indiaProjection(640, 420, 20);
+  return paths.map((path, i) => {
+    const [x0, y0] = project(path.coords[path.coords.length - 2]);
+    const [x1, y1] = project(path.coords[path.coords.length - 1]);
+    const length = Math.hypot(x1 - x0, y1 - y0) || 1;
+    const ux = (x1 - x0) / length, uy = (y1 - y0) / length;
+    const bx = x1 - 13 * ux, by = y1 - 13 * uy;
+    const points = [[x1, y1], [bx - 6 * uy, by + 6 * ux], [bx + 6 * uy, by - 6 * ux]]
+      .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+    return `<polygon data-monsoon-arrow="${i + 1}" points="${points}" fill="${esc(path.stroke)}"/>`;
+  }).join('');
+}
 
 // ================================================================ T03.L3 India Monsoon Map
 export const monsoonMap = {
   id: 'T03.L3',
-  objective: b('Trace India’s advancing (SW) and retreating (NE) monsoon winds on an India map and link rainfall seasons to farming and coastal livelihoods.', 'भारत के मानचित्र पर दक्षिण-पश्चिम और उत्तर-पूर्व मानसूनी पवनों की दिशा देखें और ऋतुओं को कृषि व आजीविका से जोड़ें।'),
-  note: { kind: 'schematic', en: 'India boundaries via datta07/INDIAN-SHAPEFILES (MIT); monsoon arrows show textbook seasonal corridors.', hi: 'भारत सीमाएँ datta07/INDIAN-SHAPEFILES द्वारा; तीर पाठ्यपुस्तकीय मौसमी मानसून पथ दिखाते हैं।' },
+  objective: b('Explain a simplified monsoon mechanism, trace seasonal wind reversal, and compare Bihar and Tamil Nadu without treating the map as a forecast.', 'सरल मानसून प्रक्रिया समझें, मौसमी पवन-उलटाव देखें और बिहार व तमिलनाडु की तुलना करें; मानचित्र को पूर्वानुमान न मानें।'),
+  note: { kind: 'schematic', en: 'State boundaries via datta07/INDIAN-SHAPEFILES (MIT). Arrows and coloured states show examples, not measured rain, exact paths or forecasts.', hi: 'राज्य सीमाएँ datta07/INDIAN-SHAPEFILES (MIT) से। तीर और रंगे राज्य केवल उदाहरण हैं, मापी वर्षा, सटीक पथ या पूर्वानुमान नहीं।' },
   init: () => ({ season: 'sw', crop: 'rice' }),
   controls: [
     { id: 'season', type: 'chips', label: b('Monsoon season', 'मानसून ऋतु'), options: [opt('sw', 'Advancing SW Monsoon (Jun–Sep)', 'आता द.-प. मानसून (जून–सितं)'), opt('ne', 'Retreating NE Monsoon (Oct–Dec)', 'लौटता उ.-पू. मानसून (अक्टू–दिसं)')] },
@@ -244,48 +265,66 @@ export const monsoonMap = {
       : [
           { coords: [[78, 30], [82, 24], [85, 17], [80, 12]], stroke: '#b45309', width: 4, dash: '8 5' },
         ];
+    // One highlight colour per season avoids implying an unmeasured rainfall scale.
     const stateColors = sw
-      ? { Kerala: '#86efac', Maharashtra: '#93c5fd', Assam: '#60a5fa', Meghalaya: '#3b82f6', Bihar: '#93c5fd', 'West Bengal': '#60a5fa', Rajasthan: '#fde68a' }
-      : { 'Tamil Nadu': '#60a5fa', 'Andhra Pradesh': '#93c5fd', Odisha: '#bfdbfe' };
-    const markers = sw
-      ? [{ lon: 76.2, lat: 10.5, r: 7, fill: '#0284c7', label: b('Kerala onset ~Jun 1', 'केरल आगमन ~1 जून') }, { lon: 91.6, lat: 25.3, r: 7, fill: '#1d4ed8', label: b('Meghalaya hills', 'मेघालय पहाड़ियाँ') }]
-      : [{ lon: 80.3, lat: 13.1, r: 8, fill: '#b45309', label: b('Coromandel winter rain', 'कोरोमंडल शीत वर्षा') }];
-    const svg = indiaMapSvg({ w: 640, h: 420, stateColors, paths, markers, aria: `India map showing ${sw ? 'Advancing Southwest' : 'Retreating Northeast'} monsoon` });
+      ? { Kerala: '#bfdbfe', Maharashtra: '#bfdbfe', Assam: '#bfdbfe', Meghalaya: '#bfdbfe', Bihar: '#bfdbfe', 'West Bengal': '#bfdbfe', Rajasthan: '#bfdbfe' }
+      : { 'Tamil Nadu': '#fde68a', 'Andhra Pradesh': '#fde68a', Odisha: '#fde68a' };
+    const markers = [
+      { lon: 85.1, lat: 25.6, r: 6, fill: '#1d4ed8', anchor: 'end', label: b('Bihar', 'बिहार') },
+      { lon: 79.5, lat: 11.0, r: 6, fill: '#b45309', label: b('Tamil Nadu', 'तमिलनाडु') },
+      ...(sw ? [{ lon: 91.6, lat: 25.3, r: 6, fill: '#1d4ed8', label: b('Meghalaya', 'मेघालय') }] : []),
+    ];
+    const aria = sw
+      ? P('Schematic map: southwest winds follow Arabian Sea and Bay of Bengal branches. Bihar and Tamil Nadu are marked. Colours are examples, not measured rainfall.', 'योजनाबद्ध मानचित्र: दक्षिण-पश्चिम पवनें अरब सागर और बंगाल की खाड़ी की शाखाओं में चलती हैं। बिहार और तमिलनाडु अंकित हैं। रंग उदाहरण हैं, मापी वर्षा नहीं।')
+      : P('Schematic map: northeast winds cross the Bay toward Tamil Nadu. Bihar and Tamil Nadu are marked. Colours are examples, not measured rainfall.', 'योजनाबद्ध मानचित्र: उत्तर-पूर्व पवनें खाड़ी पार कर तमिलनाडु की ओर जाती हैं। बिहार और तमिलनाडु अंकित हैं। रंग उदाहरण हैं, मापी वर्षा नहीं।');
+    const svg = indiaMapSvg({ w: 640, h: 420, stateColors, paths, markers, extraSvg: monsoonArrowheads(paths), aria });
     const liveNote = S.crop === 'rice'
-      ? b('Kharif rice relies on reliable June–September SW monsoon rain across the Ganga plain and coastal deltas; Tamil Nadu also gets Oct–Dec samba water.', 'खरीफ़ धान जून–सितंबर की द.-प. वर्षा पर निर्भर है; तमिलनाडु को अक्टू–दिसं में लौटते मानसून से भी सिंचाई मिलती है।')
+      ? b('Kharif rice in many places uses seasonal rain and/or irrigation. Tamil Nadu also has crops supported by the later rainy season; the timing and amount vary.', 'कई क्षेत्रों का खरीफ़ धान मौसमी वर्षा और/या सिंचाई पर निर्भर है। तमिलनाडु की कुछ फ़सलों को बाद की वर्षा से भी जल मिलता है; समय और मात्रा बदलते हैं।')
       : S.crop === 'millet'
-        ? b('Rain-shadow regions (interior Maharashtra, Karnataka, Rajasthan) grow drought-resilient millets (jowar, bajra, ragi).', 'वृष्टि-छाया क्षेत्रों (आंतरिक दक्कन, राजस्थान) में सूखा-सहिष्णु मोटे अनाज (ज्वार, बाजरा, रागी) उगाए जाते हैं।')
-        : b('Rough SW monsoon seas prompt a seasonal trawling ban to protect fish breeding; calmer post-monsoon waters resume full coastal catch.', 'तेज़ द.-प. मानसूनी समुद्र में प्रजनन रक्षा हेतु मत्स्य-निषेध रहता है; शांत मौसम में तटीय मछुआरे लौटते हैं।');
+        ? b('Farmers in some drier parts of the Deccan and Rajasthan grow millets such as jowar, bajra or ragi. Rainfall differences have several causes.', 'दक्कन और राजस्थान के कुछ शुष्क भागों में किसान ज्वार, बाजरा या रागी उगाते हैं। वर्षा के अंतर के कई कारण होते हैं।')
+        : b('Fishing communities monitor sea conditions and local seasonal fishing restrictions; dates and rules differ by coast. This map cannot determine whether the sea is safe.', 'मछुआरे समुद्र की दशा और स्थानीय मौसमी मत्स्य प्रतिबंधों पर ध्यान देते हैं; तिथियाँ और नियम तट के अनुसार अलग हैं। यह मानचित्र समुद्र की सुरक्षा नहीं बता सकता।');
     return {
       plate: {
         src: 'assets/images/plates/t03-monsoon.jpg',
         en: 'Advancing monsoon rain curtains sweeping across Sahyadri hills — tap pins to toggle SW/NE winds and crops.',
         hi: 'सह्याद्रि पहाड़ियों पर बरसते मानसूनी बादल — द.-प./उ.-पू. मानसून और आजीविका बदलने हेतु पिन पर टैप करें।',
         spots: [
-          { x: 28, y: 38, en: 'Orographic Cloudburst (SW)', hi: 'पर्वतीय वर्षा (द.-प.)', detail: b('June–Sept winds slam against Western Ghats, soaking paddy terraces.', 'जून–सितं की हवाएँ पश्चिमी घाट से टकराकर धान खेतों को सींचती हैं।'), set: { season: 'sw', crop: 'rice' } },
+          { x: 28, y: 38, en: 'Windward slope (SW)', hi: 'पवनमुखी ढाल (द.-प.)', detail: b('Moist winds can rise over the Western Ghats and produce rain on the windward slope.', 'नम पवनें पश्चिमी घाट पर ऊपर उठकर पवनमुखी ढाल पर वर्षा कर सकती हैं।'), set: { season: 'sw', crop: 'rice' } },
           { x: 64, y: 48, en: 'Retreating Bay Winds (NE)', hi: 'लौटता मानसून (उ.-पू.)', detail: b('Oct–Dec winds pick up Bay of Bengal moisture for Tamil Nadu winter crops.', 'अक्टू–दिसं की हवाएँ बंगाल की खाड़ी से नमी लेकर तमिलनाडु को वर्षा देती हैं।'), set: { season: 'ne', crop: 'rice' } },
           { x: 46, y: 74, en: 'Rain-Shadow Millets', hi: 'वृष्टि-छाया मोटे अनाज', detail: b('Inland Deccan farms rely on drought-hardy jowar, bajra & ragi.', 'आंतरिक दक्कन में सूखा-सहिष्णु ज्वार, बाजरा व रागी बोई जाती हैं।'), set: { season: 'sw', crop: 'millet' } },
         ],
       },
       svg,
-      aria: `${sw ? 'SW monsoon' : 'NE monsoon'} and ${S.crop} livelihoods`,
+      aria,
       lines: [
-        sw ? b('June–Sept: Warm moist ocean air blows SW → NE in two branches (Arabian Sea & Bay of Bengal), bringing ~75% of India’s annual rain.', 'जून–सितं: समुद्र से नम हवाएँ द.-प. से दो शाखाओं (अरब सागर व बंगाल की खाड़ी) में चलती हैं और भारत की ~75% वर्षा लाती हैं।')
-          : b('Oct–Dec: Cooling northern land pushes dry NE winds back, picking up Bay of Bengal moisture to rain on the Coromandel coast (Tamil Nadu).', 'अक्टू–दिसं: उत्तरी भूमि ठंडी होने से उ.-पू. हवाएँ लौटती हैं और बंगाल की खाड़ी से नमी लेकर तमिलनाडु तट पर बरसती हैं।'),
+        sw ? b('June–September: the blue arrows sketch Arabian Sea (west) and Bay of Bengal (east) branches. The normal onset over Kerala is around early June; actual arrival, breaks and rainfall vary.', 'जून–सितंबर: नीले तीर अरब सागर (पश्चिम) और बंगाल की खाड़ी (पूर्व) की शाखाओं के उदाहरण हैं। केरल में सामान्य आगमन जून की शुरुआत में है; वास्तविक आगमन, विराम और वर्षा बदलते हैं।')
+          : b('October–December: the orange arrow sketches northeast winds crossing the Bay toward Tamil Nadu. Bihar and Tamil Nadu can have different rainy seasons; this is not a daily forecast.', 'अक्टूबर–दिसंबर: नारंगी तीर खाड़ी पार कर तमिलनाडु की ओर उत्तर-पूर्व पवन का उदाहरण है। बिहार और तमिलनाडु की वर्षा ऋतुएँ अलग हो सकती हैं; यह दैनिक पूर्वानुमान नहीं है।'),
+        b('Coloured states highlight examples, not amounts of measured rain. Arrows are schematic directions, not exact paths.', 'रंगे राज्य उदाहरण हैं, मापी हुई वर्षा की मात्रा नहीं। तीर योजनाबद्ध दिशाएँ हैं, सटीक पथ नहीं।'),
         liveNote,
       ],
     };
   },
   discover: [
-    b('Toggle between SW and NE monsoon. Watch which coast turns dark blue during Oct–Dec.', 'द.-प. और उ.-पू. मानसून के बीच बदलें। देखें अक्टू–दिसं में कौन-सा तट नीला होता है।'),
+    b('Trace both blue summer branches, then switch to northeast winds. Explain how the Bay can supply moisture to Tamil Nadu later in the year.', 'गर्मियों की दोनों नीली शाखाएँ देखें, फिर उत्तर-पूर्व पवनें चुनें। समझाएँ कि खाड़ी वर्ष के बाद के भाग में तमिलनाडु को नमी कैसे दे सकती है।'),
+    b('Compare Bihar and Tamil Nadu. Why can their typical rainy seasons differ, and why might either place experience exceptions?', 'बिहार और तमिलनाडु की तुलना करें। उनकी सामान्य वर्षा ऋतुएँ अलग क्यों हो सकती हैं और किसी भी स्थान पर अपवाद क्यों हो सकते हैं?'),
   ],
   predictions: [
     {
       id: 'p1',
-      stem: b('Which Indian coast receives its main rainy season from the Retreating Northeast Monsoon (Oct–Dec)?', 'लौटते उत्तर-पूर्व मानसून (अक्टू–दिसं) से मुख्य वर्षा किस भारतीय तट पर होती है?'),
+      stem: b('Which Indian coast receives much of its rain from the Northeast Monsoon (Oct–Dec)?', 'उत्तर-पूर्व मानसून (अक्टूबर–दिसंबर) से अधिक वर्षा किस भारतीय तट पर होती है?'),
       options: [opt('coro', 'Tamil Nadu / Coromandel coast', 'तमिलनाडु / कोरोमंडल तट'), opt('raj', 'Western Rajasthan', 'पश्चिमी राजस्थान')],
       run: (S) => { S.season = 'ne'; return 'coro'; },
-      explain: () => b('Northeast winds cross the Bay of Bengal, gather moisture, and strike Tamil Nadu and coastal Andhra Pradesh.', 'उ.-पू. हवाएँ बंगाल की खाड़ी से नमी लेकर तमिलनाडु व तटीय आंध्र प्रदेश पर बरसती हैं।'),
+      explain: () => b('Northeast winds can cross the Bay of Bengal and carry moisture to Tamil Nadu and parts of coastal Andhra Pradesh.', 'उत्तर-पूर्व पवनें बंगाल की खाड़ी पार कर तमिलनाडु और तटीय आंध्र प्रदेश के कुछ भागों तक नमी पहुँचा सकती हैं।'),
+    },
+    {
+      id: 'p2',
+      stem: b('Which comparison of Bihar and Tamil Nadu is more useful?', 'बिहार और तमिलनाडु की कौन-सी तुलना अधिक उपयोगी है?'),
+      options: [
+        opt('different', 'Bihar generally gets much rain in June–September; Tamil Nadu gets a substantial later share.', 'बिहार में सामान्यतः जून–सितंबर में अधिक वर्षा होती है; तमिलनाडु में बाद का हिस्सा भी महत्वपूर्ण है।'),
+        opt('always', 'Both places always receive the same rain in the same week.', 'दोनों स्थानों पर हर बार एक ही सप्ताह में समान वर्षा होती है।'),
+      ],
+      run: (S) => { S.season = 'ne'; return 'different'; },
+      explain: () => b('The map sketches the later Bay-to-Tamil Nadu flow; Bihar usually receives much rain during the southwest season. Real seasons overlap and vary: the diagram is not rainfall data or a forecast.', 'मानचित्र खाड़ी से तमिलनाडु की ओर बाद का प्रवाह दिखाता है; बिहार में प्रायः दक्षिण-पश्चिम ऋतु में अधिक वर्षा होती है। वास्तविक ऋतुएँ मिलती और बदलती हैं: चित्र वर्षा-आँकड़ा या पूर्वानुमान नहीं है।'),
     },
   ],
   exit: [
@@ -294,14 +333,14 @@ export const monsoonMap = {
       stem: b('Why does interior Maharashtra receive much less rain than Konkan just across the Western Ghats?', 'पश्चिमी घाट के ठीक पार कोंकण की तुलना में आंतरिक महाराष्ट्र में इतनी कम वर्षा क्यों होती है?'),
       correct: 'shadow',
       options: [
-        { id: 'shadow', ...b('Moisture-laden Arabian Sea winds rise and rain on the western windward slope, leaving dry air on the leeward rain-shadow.', 'अरब सागर की नम हवाएँ पश्चिमी ढाल पर बरस जाती हैं, जिससे दूसरी ओर वृष्टि-छाया क्षेत्र सूखा रह जाता है।') },
+        { id: 'shadow', ...b('Moist Arabian Sea air rises and often rains on the windward slope; the leeward side is generally drier.', 'अरब सागर की नम वायु ऊपर उठकर पवनमुखी ढाल पर प्रायः बरसती है; विमुख ओर सामान्यतः कम वर्षा होती है।') },
         { id: 'noocean', ...b('There is no ocean west of India.', 'भारत के पश्चिम में कोई महासागर नहीं है।'), why: b('The Arabian Sea lies directly west of Konkan.', 'कोंकण के ठीक पश्चिम में अरब सागर स्थित है।') },
       ],
       explain: b('Orographic rainfall drops heavy rain windward and creates a rain shadow leeward.', 'पर्वतीय वर्षा पवनमुखी ढाल पर भारी वर्षा करती है और विमुख ओर वृष्टि-छाया बनाती है।'),
       hint: b('Switch to SW monsoon and look at the blue Western Ghats arrow.', 'द.-प. मानसून में पश्चिमी घाट के तीर देखें।'),
     },
   ],
-  reflect: b('Why do farmers call the arrival date of the monsoon the most important calendar event of the year?', 'किसान मानसून के आगमन की तिथि को वर्ष की सबसे महत्त्वपूर्ण घटना क्यों मानते हैं?'),
+  reflect: b('How could a delayed onset or a break in rain affect a rain-fed farmer? Why should the farmer check local advisories rather than this schematic map?', 'देर से आगमन या वर्षा का विराम वर्षा-आधारित किसान को कैसे प्रभावित कर सकता है? इस योजनाबद्ध मानचित्र के बजाय स्थानीय परामर्श क्यों देखना चाहिए?'),
 };
 
 // ================================================================ T03.L5 Flood catchment

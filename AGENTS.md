@@ -40,12 +40,19 @@ index.html (modulepreload hints)
 ## 3. Verification Commands
 
 ```bash
-npm run catalog   # Regenerate docs/CURRICULUM_COVERAGE.json & docs/SIMULATION_CATALOG.json
-npm run sw        # Regenerate sw.js PRECACHE manifest & version hash
-npm run verify    # Architecture guardrails (tools/verify-architecture.mjs) + 33 Node/JSDOM tests
-npm test          # 33 unit, spec, architecture, DOM/module, glossary & HTTP tests
-npm run serve     # Launch local static server at http://0.0.0.0:4173
+npm run catalog       # Regenerate docs/CURRICULUM_COVERAGE.json & docs/SIMULATION_CATALOG.json
+npm run sw            # Regenerate sw.js PRECACHE manifest & version hash
+npm run verify        # Architecture guardrails (tools/verify-architecture.mjs) + 33 Node/JSDOM tests
+npm test              # 33 unit, spec, architecture, DOM/module, glossary & HTTP tests
+npm run a11y          # Headless Chromium 390px keyboard, ARIA & >=44px touch-target checks (T01–T16)
+npm run smoke         # Headless Chromium 1100px interactive sweep & screenshots (T01–T16)
+npm run smoke:mobile  # Headless Chromium 360px mobile-touch sweep & overflow checks (T01–T16)
+npm run perf:size     # Headless Chromium raw/gzip transfer measurements
+npm run perf:throttle # 400kbps/400ms RTT + 6x CPU throttle + offline SW test
+npm run serve         # Launch local static server at http://0.0.0.0:4173
 ```
+
+`tests/launch-browser.cjs` automatically resolves native Playwright Chromium, `CHROMIUM_EXECUTABLE_PATH`, system Chrome/Chromium, or `@sparticuz/chromium` (with bundled `al2023` shared libraries) so all Chromium suites work both on desktop/CI and inside restricted containers.
 
 Always run `npm run catalog && npm run sw && npm run verify` before committing changes. Keep `sw.js`, `docs/CURRICULUM_COVERAGE.json`, and `docs/SIMULATION_CATALOG.json` synchronized with `src/`.
 

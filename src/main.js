@@ -1,6 +1,7 @@
 // App shell: top bar, hash router, interactive 3D hero globe, discipline filter, sound/stars HUD, flip-card glossary, lazy module mounting.
 import { h, $ } from './core/dom.js';
 import * as store from './core/store.js';
+import { exitProgress } from './core/progress.js';
 import * as i18n from './core/i18n.js';
 import { t, pair } from './core/i18n.js';
 import { playTap, playFlip } from './core/sound.js';
@@ -31,6 +32,7 @@ async function boot() {
     if (keys.includes('lang')) onLang();
     if (keys.some((k) => ['sound', 'lowGraphics', 'reducedMotion', 'projector', 'teacher'].includes(k))) applyPrefs();
     if (keys.some((k) => ['stars', 'progress', 'lang'].includes(k))) updateStarPill();
+    if (keys.includes('progress')) updateChapterComplete();
     if (keys.includes('lowGraphics') && !location.hash.match(/^#\/theme\/(T\d\d)$/)) route();
   });
   route();
@@ -66,6 +68,27 @@ function onLang() {
 function relabelTitles() { root.querySelectorAll('[data-title]').forEach((el) => { const o = JSON.parse(el.dataset.title); el.textContent = i18n.pair(o.en, o.hi); }); }
 const titleEl = (tag, o, cls) => h(tag, { class: cls, 'data-title': JSON.stringify({ en: o.en, hi: o.hi }) }, i18n.pair(o.en, o.hi));
 const status = (th) => { const n = th.learningObjects.length, k = th.learningObjects.filter((l) => l.status === 'implemented').length; return { n, k, label: k === 0 ? 'planned' : k === n ? 'implemented' : 'partial' }; };
+// Progress means at least one correct exit response per LO, not a mastery assessment.
+function loSolved(th) { return exitProgress(th, store.get().progress?.[th.id]); }
+function updateChapterComplete() {
+  const badge = root.querySelector('.chapter-done');
+  const id = location.hash.match(/^#\/theme\/(T\d\d)$/)?.[1];
+  const theme = CUR?.themes.find((th) => th.id === id);
+  if (badge && theme) badge.hidden = !loSolved(theme).done;
+}
+function nextTheme() {
+  // Continue: first visited-but-incomplete, else first unvisited, else T01.
+  for (const th of CUR.themes) {
+    const p = store.get().progress?.[th.id];
+    if (p?.visited && !loSolved(th).done) return { th, mode: 'resume' };
+  }
+  for (const th of CUR.themes) {
+    const p = store.get().progress?.[th.id];
+    if (!p?.visited) return { th, mode: 'next' };
+  }
+  return { th: CUR.themes[0], mode: 'next' };
+}
+let activeSearch = '';
 
 function destroyCur() {
   try { heroCleanup?.(); } catch {}
@@ -97,7 +120,10 @@ async function route() {
 function card(th) {
   const s = status(th);
   const media = THEME_MEDIA[th.id];
-  return h('a', { class: `card disc-${th.discipline} st-${s.label}`, href: `#/theme/${th.id}`, 'data-theme': th.id, 'data-disc': th.discipline },
+  const lp = loSolved(th);
+  const pct = lp.n ? Math.round((lp.k / lp.n) * 100) : 0;
+  const searchText = `${th.id} ${th.title.en} ${th.title.hi} ${th.learningObjects.map((l) => `${l.en} ${l.hi}`).join(' ')}`.toLowerCase();
+  return h('a', { class: `card disc-${th.discipline} st-${s.label}`, href: `#/theme/${th.id}`, 'data-theme': th.id, 'data-disc': th.discipline, 'data-search': searchText },
     media ? h('div', { class: 'card-media' },
       h('img', { src: media.src, alt: '', loading: 'lazy', decoding: 'async' }),
       h('span', { class: 'card-3d-tag', 'data-k': 'home.badge.3d' }, t('home.badge.3d')),
@@ -105,6 +131,9 @@ function card(th) {
     h('span', { class: 'card-id' }, th.id),
     titleEl('span', th.title, 'card-title'),
     h('span', { class: 'card-meta' }, h('span', { 'data-k': DISC[th.discipline] }, t(DISC[th.discipline])), h('span', {}, ` · ${th.hours} `), h('span', { 'data-k': 'hours' }, t('hours'))),
+    h('span', { class: 'card-progress', role: 'progressbar', 'aria-valuenow': String(pct), 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-label': t('home.card.progress', { k: lp.k, n: lp.n }) },
+      h('span', { class: 'card-progress-fill', style: `width:${pct}%` })),
+    h('span', { class: 'card-progress-txt', 'data-k': 'home.card.progress', 'data-p': JSON.stringify({ k: lp.k, n: lp.n }) }, t('home.card.progress', { k: lp.k, n: lp.n })),
     h('span', { class: `badge ${s.label}`, 'data-k': `st.${s.label}`, 'data-p': JSON.stringify({ k: s.k, n: s.n }) }, t(`st.${s.label}`, { k: s.k, n: s.n })));
 }
 
@@ -158,6 +187,14 @@ function home() {
   }, t('home.surprise'));
 
   const filterKeys = [['all', 'home.all'], ['geography', 'disc.geography'], ['history', 'disc.history'], ['political-science', 'disc.political'], ['economics', 'disc.economics'], ['integrated', 'disc.integrated']];
+  const applyFilters = () => {
+    const q = activeSearch.trim().toLowerCase();
+    root.querySelectorAll('.card[data-disc]').forEach((c) => {
+      const discOk = activeFilter === 'all' || c.dataset.disc === activeFilter;
+      const qOk = !q || (c.dataset.search || '').includes(q);
+      c.hidden = !(discOk && qOk);
+    });
+  };
   const filterBar = h('div', { class: 'filter-pills', role: 'group' },
     ...filterKeys.map(([id, key]) => h('button', {
       type: 'button',
@@ -169,9 +206,14 @@ function home() {
         playTap();
         activeFilter = id;
         filterBar.querySelectorAll('.chip').forEach((b, idx) => b.setAttribute('aria-checked', filterKeys[idx][0] === id ? 'true' : 'false'));
-        root.querySelectorAll('.card[data-disc]').forEach((c) => { c.hidden = id !== 'all' && c.dataset.disc !== id; });
+        applyFilters();
       },
     }, t(key))));
+  const searchInput = h('input', {
+    type: 'search', class: 'home-search', 'data-k-ph': 'home.search', placeholder: t('home.search'),
+    'aria-label': t('home.search.label'), value: activeSearch,
+    oninput: (e) => { activeSearch = e.target.value; applyFilters(); },
+  });
 
   const hud = h('section', { class: 'hud-bar' },
     h('div', { class: 'hud-stats' },
@@ -181,7 +223,32 @@ function home() {
       surpriseBtn,
       h('a', { class: 'btn ghost hud-link', href: '#/bridge', 'data-k': 'home.bridgeBtn' }, t('home.bridgeBtn')),
       h('a', { class: 'btn ghost hud-link', href: '#/portfolio', 'data-k': 'home.portBtn' }, t('home.portBtn'))),
-    filterBar);
+    filterBar,
+    searchInput);
+
+  // Continue learning + learning-path progress (Step 0 foundation).
+  const totalLOs = CUR.themes.reduce((a, x) => a + x.learningObjects.length, 0);
+  const solvedLOs = CUR.themes.reduce((a, x) => a + loSolved(x).k, 0);
+  const pathPct = totalLOs ? Math.round((solvedLOs / totalLOs) * 100) : 0;
+  const nxt = nextTheme();
+  const continueBar = h('section', { class: 'continue-bar', 'aria-label': t('home.continue') },
+    h('div', { class: 'continue-txt' },
+      h('strong', { 'data-k': 'home.continue' }, t('home.continue')),
+      ' · ',
+      h('span', { 'data-k': nxt.mode === 'resume' ? 'home.continue.resume' : 'home.continue.next' }, t(nxt.mode === 'resume' ? 'home.continue.resume' : 'home.continue.next')),
+      ' ',
+      titleEl('span', nxt.th.title)),
+    h('a', { class: 'btn primary continue-btn', href: `#/theme/${nxt.th.id}` }, `${nxt.th.id} →`),
+    h('div', { class: 'path-progress', role: 'progressbar', 'aria-valuenow': String(pathPct), 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-label': t('home.path') },
+      h('span', { class: 'path-progress-fill', style: `width:${pathPct}%` })),
+    h('span', { class: 'path-txt' }, `${stats.visitedCount}/16 `, h('span', { 'data-k': 'home.path.themes' }, t('home.path.themes')), ` · ${solvedLOs}/${totalLOs} `, h('span', { 'data-k': 'home.path.los' }, t('home.path.los'))));
+  const howto = h('details', { class: 'howto' },
+    h('summary', { 'data-k': 'home.howto' }, t('home.howto')),
+    h('ol', { class: 'howto-list' },
+      h('li', { 'data-k': 'home.howto.s1' }, t('home.howto.s1')),
+      h('li', { 'data-k': 'home.howto.s2' }, t('home.howto.s2')),
+      h('li', { 'data-k': 'home.howto.s3' }, t('home.howto.s3')),
+      h('li', { 'data-k': 'home.howto.s4' }, t('home.howto.s4'))));
 
   const part = (n, label) => h('section', { class: 'part', 'aria-labelledby': `part${n}` }, h('h2', { id: `part${n}`, 'data-k': label, 'data-p': JSON.stringify({ h: CUR.themes.filter((x) => x.part === n).reduce((a, x) => a + x.hours, 0) }) }, t(label, { h: CUR.themes.filter((x) => x.part === n).reduce((a, x) => a + x.hours, 0) })), h('div', { class: 'grid' }, ...CUR.themes.filter((x) => x.part === n).map(card)));
   root.append(
@@ -191,13 +258,13 @@ function home() {
         h('p', { class: 'lead', 'data-k': 'home.lead' }, t('home.lead')),
         h('p', { class: 'note', 'data-k': 'home.honest' }, t('home.honest'))),
       heroArt),
+    continueBar,
     hud,
+    howto,
     part(1, 'home.part1'),
     part(2, 'home.part2'));
 
-  if (activeFilter !== 'all') {
-    root.querySelectorAll('.card[data-disc]').forEach((c) => { c.hidden = c.dataset.disc !== activeFilter; });
-  }
+  applyFilters();
   mountHomeGlobe(heroArt);
 }
 
@@ -208,6 +275,28 @@ async function themePage(id) {
   store.progress(id).visited = true; store.saveProgress();
   const loChip = (l) => h('span', { class: `chip-lo ${l.status}` }, h('b', {}, l.id.split('.')[1]), ' ', bi({ en: l.en, hi: l.hi }, { tag: 'span' }), ' ', h('i', { 'data-k': `lo.${l.status}` }, t(`lo.${l.status}`)));
   const opening = OPENINGS[id];
+  const lpNow = loSolved(th);
+  const chapterDone = h('p', { class: 'chapter-done', 'data-k': 'th.complete', role: 'status', hidden: !lpNow.done }, t('th.complete'));
+  // 🔊 Listen: Web Speech API read-aloud for the Opening question (no backend, graceful fallback).
+  let speaking = false;
+  const listenBtn = h('button', {
+    type: 'button', class: 'btn ghost narrate-btn', 'data-k': 'th.listen', 'aria-pressed': 'false',
+    onclick: () => {
+      try {
+        if (!('speechSynthesis' in window)) return;
+        if (speaking) { speechSynthesis.cancel(); speaking = false; listenBtn.textContent = t('th.listen'); listenBtn.setAttribute('aria-pressed', 'false'); return; }
+        speechSynthesis.cancel();
+        const lang = store.get().lang;
+        const text = lang === 'hi' ? opening.hi : lang === 'en' ? opening.en : `${opening.en} ${opening.hi}`;
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
+        u.rate = 0.95;
+        u.onend = u.onerror = () => { speaking = false; listenBtn.textContent = t('th.listen'); listenBtn.setAttribute('aria-pressed', 'false'); };
+        speaking = true; listenBtn.textContent = t('th.stop'); listenBtn.setAttribute('aria-pressed', 'true');
+        speechSynthesis.speak(u);
+      } catch { speaking = false; }
+    },
+  }, t('th.listen'));
   const modSlot = h('div', { class: 'module', id: 'module' });
   const [{ createNepBridge }, { TEACHER, LIMITS }] = await Promise.all([
     import('./components/nep-bridge.js'),
@@ -246,7 +335,10 @@ async function themePage(id) {
         titleEl('h1', th.title),
         h('p', { class: 'card-meta' }, h('span', { 'data-k': DISC[th.discipline] }, t(DISC[th.discipline])), ` · ${th.hours} `, h('span', { 'data-k': 'hours' }, t('hours')), ' · ', h('span', { class: `badge ${s.label}`, 'data-k': `st.${s.label}`, 'data-p': JSON.stringify({ k: s.k, n: s.n }) }, t(`st.${s.label}`, { k: s.k, n: s.n })))),
       themeBannerEl(id)),
-    h('section', { class: 'opening', 'aria-labelledby': 'op-h' }, h('h2', { id: 'op-h', 'data-k': 'th.opening' }, t('th.opening')), bi(opening, { tag: 'p', cls: 'q' })),
+    h('section', { class: 'opening', 'aria-labelledby': 'op-h' },
+      h('div', { class: 'opening-head' }, h('h2', { id: 'op-h', 'data-k': 'th.opening' }, t('th.opening')), listenBtn),
+      bi(opening, { tag: 'p', cls: 'q' }),
+      chapterDone),
     modSlot,
     nepBridge?.el,
     h('section', { class: 'subsec' }, h('h2', { 'data-k': 'th.lo' }, t('th.lo')), lst(th.learningObjects, loChip)),

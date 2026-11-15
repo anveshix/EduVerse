@@ -7,6 +7,8 @@ import * as store from '../../core/store.js';
 import { chips, tabs, bi, relabelBi, predict, mcq, biHtml } from '../../components/widgets.js';
 import { createLab, createInteractivePlate, createThreeLab } from '../../components/lab-kit.js';
 import { createHarappan3d } from './harappan-3d.js';
+import { createDetectiveKit } from './detective-kit.js';
+import { createHarappanTour, HARAPPAN_STOPS } from './harappan-tour.js';
 import { loadGeoAll } from '../../engines/viz.js';
 import * as M from './models.js';
 import { settlementLab, harappanCity, civAtlas } from './t04-specs.js';
@@ -19,31 +21,36 @@ const o = (id, en, hi, why) => ({ id, en, hi, ...(why ? { why } : {}) });
 const COL = { palaeo: '#b5651d', meso: '#8a9a3a', neo: '#2e8b57', harappa: '#7b3fa0', later: '#555' };
 const ITEMS = [
   { id: 'i1', kind: 'evidence', en: 'Stone blades were found in one layer of a cave floor.', hi: 'गुफ़ा के फ़र्श की एक परत में पत्थर के फलक मिले।', why: { en: 'This is directly observed: the blades exist and we know the layer they came from.', hi: 'यह सीधे देखा गया है: फलक मौजूद हैं और हमें उनकी परत पता है।' } },
-  { id: 'i2', kind: 'inference', en: 'The people who made the blades hunted animals.', hi: 'फलक बनाने वाले लोग जानवरों का शिकार करते थे।', why: { en: 'Blades alone do not prove it. This is a conclusion that needs more evidence, such as animal bones with cut marks.', hi: 'केवल फलकों से यह सिद्ध नहीं होता। यह निष्कर्ष है जिसके लिए और प्रमाण चाहिए, जैसे कटे निशान वाली जानवरों की हड्डियाँ।' } },
-  { id: 'i3', kind: 'evidence', en: 'Animal bones with cut marks lie beside the blades.', hi: 'फलकों के पास कटे निशान वाली जानवरों की हड्डियाँ पड़ी हैं।', why: { en: 'Bones and marks are physical things found at the site.', hi: 'हड्डियाँ और निशान स्थल पर मिली भौतिक वस्तुएँ हैं।' } },
+  { id: 'i2', kind: 'inference', en: 'The people who made the blades hunted animals.', hi: 'फलक बनाने वाले लोग जानवरों का शिकार करते थे।', why: { en: 'Blades alone do not prove hunting. Analysed marks on animal bones may suggest processing, but do not by themselves prove a hunt.', hi: 'केवल फलकों से शिकार सिद्ध नहीं होता। हड्डियों पर जाँचे निशान प्रसंस्करण का संकेत दे सकते हैं, पर अकेले शिकार सिद्ध नहीं करते।' } },
+  { id: 'i3', kind: 'evidence', en: 'Animal bones with grooves were found near the blades.', hi: 'फलकों के पास खरोंच वाली जानवरों की हड्डियाँ मिलीं।', why: { en: 'Bones, grooves and their recorded location are observations; what caused the grooves needs investigation.', hi: 'हड्डियाँ, खरोंच और उनका दर्ज स्थान प्रेक्षण हैं; खरोंचों का कारण जाँचना होगा।' } },
   { id: 'i4', kind: 'inference', en: 'These people lived in groups and shared food.', hi: 'ये लोग समूहों में रहते और भोजन बाँटते थे।', why: { en: 'We cannot see this directly; it is an interpretation of how the site was used.', hi: 'इसे हम सीधे नहीं देख सकते; यह स्थल के उपयोग की व्याख्या है।' } },
   { id: 'i5', kind: 'evidence', en: 'Grinding stones and burnt wheat grains were found inside a house.', hi: 'एक घर के भीतर चक्की के पत्थर और जले हुए गेहूँ के दाने मिले।', why: { en: 'Both objects were found and recorded at the site.', hi: 'दोनों वस्तुएँ स्थल पर मिलीं और दर्ज की गईं।' } },
   { id: 'i6', kind: 'inference', en: 'The villagers had begun farming.', hi: 'गाँव के लोगों ने खेती शुरू कर दी थी।', why: { en: 'A reasonable conclusion from the grains and tools, but it is still an interpretation; wild grains can also be gathered.', hi: 'दानों और औज़ारों से निकला उचित निष्कर्ष, पर यह फिर भी व्याख्या है; जंगली दाने भी इकट्ठा किए जा सकते हैं।' } },
 ];
 const EXIT = [
   { id: 'h1', stem: { en: 'Which is an inference, not direct evidence?', hi: 'कौन-सा निष्कर्ष है, सीधा प्रमाण नहीं?' }, correct: 'b',
-    options: [o('a', 'A stone tool was found in a cave.', 'गुफ़ा में पत्थर का औज़ार मिला।', { en: 'That is something found and recorded: evidence.', hi: 'यह मिली और दर्ज की गई वस्तु है: प्रमाण।' }), o('b', 'The cave people hunted together.', 'गुफ़ा के लोग मिलकर शिकार करते थे।'), o('c', 'A bone has cut marks on it.', 'एक हड्डी पर कटे निशान हैं।', { en: 'The marks can be seen on the bone: evidence.', hi: 'निशान हड्डी पर देखे जा सकते हैं: प्रमाण।' })],
+    options: [o('a', 'A stone tool was found in a cave.', 'गुफ़ा में पत्थर का औज़ार मिला।', { en: 'That is something found and recorded: evidence.', hi: 'यह मिली और दर्ज की गई वस्तु है: प्रमाण।' }), o('b', 'The cave people hunted together.', 'गुफ़ा के लोग मिलकर शिकार करते थे।'), o('c', 'A bone has grooves on it.', 'एक हड्डी पर खरोंचें हैं।', { en: 'The marks can be seen on the bone: evidence.', hi: 'निशान हड्डी पर देखे जा सकते हैं: प्रमाण।' })],
     explain: { en: 'Hunting together is a conclusion we draw from the evidence; we did not observe it.', hi: 'मिलकर शिकार करना हमारा निकाला निष्कर्ष है; हमने इसे देखा नहीं।' }, hint: { en: 'Ask: could I hold it, photograph it or measure it?', hi: 'पूछें: क्या मैं इसे पकड़, खींच या माप सकता हूँ?' } },
   { id: 'h2', stem: { en: 'Why do we call a time of 12,000 years ago “recent” in the story of humans?', hi: '12,000 वर्ष पहले के समय को मानव-कथा में “हाल का” क्यों कहते हैं?' }, correct: 'sm',
-    options: [o('sm', 'It is a tiny fraction of the 2 million years of human tool-making.', 'यह मानव द्वारा औज़ार बनाने के 20 लाख वर्षों का बहुत छोटा अंश है।'), o('lg', 'It is about half of human history.', 'यह मानव-इतिहास का लगभग आधा है।', { en: '12,000 is only 0.6% of 2,000,000 years.', hi: '12,000, 20,00,000 वर्षों का केवल 0.6% है।' })],
-    explain: { en: '12,000 ÷ 2,000,000 = 0.6%, which on a 24-hour clock is about the last 9 minutes.', hi: '12,000 ÷ 20,00,000 = 0.6%, जो 24 घंटे की घड़ी पर लगभग अंतिम 9 मिनट है।' }, hint: { en: 'Divide 12,000 by 2,000,000.', hi: '12,000 को 20,00,000 से भाग दें।' } },
+    options: [o('sm', 'It is a tiny fraction of the 2-million-year window shown on the clock.', 'यह घड़ी पर दिखाए गए 20 लाख वर्ष के अंतराल का बहुत छोटा अंश है।'), o('lg', 'It is about half of human history.', 'यह मानव-इतिहास का लगभग आधा है।', { en: '12,000 is only 0.6% of 2,000,000 years.', hi: '12,000, 20,00,000 वर्षों का केवल 0.6% है।' })],
+    explain: { en: '12,000 ÷ 2,000,000 = 0.6%, or about the last 9 minutes on this clock. The earliest known stone tools are older than the window shown.', hi: '12,000 ÷ 20,00,000 = 0.6%, यानी इस घड़ी के लगभग अंतिम 9 मिनट। सबसे प्राचीन ज्ञात पत्थर औज़ार दिखाए अंतराल से पुराने हैं।' }, hint: { en: 'Divide 12,000 by 2,000,000.', hi: '12,000 को 20,00,000 से भाग दें।' } },
 ];
-const REFLECT = { en: 'Pick one object from the evidence tab and write one inference and one thing that would make you more sure.', hi: 'प्रमाण-टैब से एक वस्तु चुनें और एक निष्कर्ष तथा एक ऐसी बात लिखें जिससे आप अधिक निश्चित हो सकें।' };
+const REFLECT = { en: 'Pick one observation, suggest an interpretation and a different possibility, and name evidence you would check next.', hi: 'एक प्रेक्षण चुनें, एक व्याख्या और दूसरी संभावना सुझाएँ, फिर लिखें कि अगला कौन-सा प्रमाण जाँचेंगे।' };
+const clockExplanation = () => b(`8,000 ÷ 2,000,000 × 24 hours = ${fmt(M.minutesBeforeMidnight(8000), 1)} minutes. This is one example date, not the beginning of farming everywhere; the oldest known stone tools are older than this clock’s window.`, `8,000 ÷ 20,00,000 × 24 घंटे = ${fmt(M.minutesBeforeMidnight(8000), 1)} मिनट। यह एक उदाहरण तिथि है, हर जगह खेती की शुरुआत नहीं; सबसे पुराने ज्ञात पत्थर औज़ार इस घड़ी के अंतराल से पुराने हैं।`);
 
 export function mount(root) {
   const S = store.simState('T04', { tab: 'time', mark: 'farming', ev: {}, done: {} }); S.ev ??= {}; S.done ??= {};
   const prog = store.progress('T04'); const persist = () => store.saveSim();
+  // The clock's answer choices are unchanged, so repair its old explanation without rerunning it.
+  // The other updated questions carry a revision: older answers remain local but can be retried.
+  if (S.done.t1?.choice && S.done.t1?.actual && S.done.t1?.explanation) S.done.t1.explanation = clockExplanation();
+  persist();
   const aname = (id) => t(`tl.age.${id}`);
   let alive = true;
 
   i18n.register({
     'T04.tab.settle': { en: 'Settlement sim (L3)', hi: 'बस्ती प्रयोग (L3)' },
-    'T04.tab.city': { en: '3D Harappan city (L4)', hi: '3D हड़प्पा नगर (L4)' },
+    'T04.tab.city': { en: 'Harappan town tour (L4)', hi: 'हड़प्पा नगर यात्रा (L4)' },
     'T04.tab.atlas': { en: 'Civilisation atlas (L5)', hi: 'सभ्यता मानचित्र (L5)' },
   });
 
@@ -75,54 +82,93 @@ export function mount(root) {
     }
     const tlPlate = createInteractivePlate(() => ({
       src: 'assets/images/plates/t04-timeline.jpg',
-      en: 'Two million years of stone-tool history compressed onto one 24-hour dial — tap pins to jump between key milestones.',
-      hi: '20 लाख वर्षों का पाषाण इतिहास 24 घंटे की घड़ी पर — प्रमुख पड़ावों पर जाने हेतु पिन पर टैप करें।',
+      en: 'An illustrated two-million-year window on a 24-hour dial — choose a pin to jump to an example date.',
+      hi: '20 लाख वर्ष का एक चित्रित अंतराल 24 घंटे की घड़ी पर — उदाहरण तिथि चुनने हेतु पिन पर टैप करें।',
       spots: [
-        { x: 24, y: 58, en: 'First Stone Choppers (~2 Myr)', hi: 'प्रथम पाषाण औज़ार (~20 लाख ई.पू.)', detail: b('Oldest stone tools appear near 00:00 midnight on our 24-hour clock.', '24 घंटे की घड़ी की शुरुआत में सबसे प्राचीन पत्थर औज़ार दिखाई देते हैं।'), set: { mark: 'tools' } },
-        { x: 64, y: 60, en: 'Neolithic Farming (~8,000 ya)', hi: 'नवपाषाण कृषि (~8,000 वर्ष पूर्व)', detail: b('Farming starts only in the final ~9 minutes before midnight!', 'खेती मध्यरात्रि से केवल अंतिम ~9 मिनट पहले शुरू होती है!'), set: { mark: 'farming' } },
-        { x: 84, y: 42, en: 'Harappan Cities & Writing (~4,600 ya)', hi: 'हड़प्पा नगर व लेखन (~4,600 वर्ष पूर्व)', detail: b('Bronze Age cities emerge in the last ~3 minutes of the cosmic day.', 'कांस्य-युगीन नगर घड़ी के अंतिम ~3 मिनट में उभरते हैं।'), set: { mark: 'cities' } },
+        { x: 24, y: 58, en: 'Stone tools (~2 million years ago)', hi: 'पत्थर के औज़ार (~20 लाख वर्ष पहले)', detail: b('This is the beginning of the clock’s window, not the first stone tools. Some known tools are about 3.3 million years old.', 'यह घड़ी के अंतराल की शुरुआत है, पहले पत्थर के औज़ार नहीं। कुछ ज्ञात औज़ार लगभग 33 लाख वर्ष पुराने हैं।'), set: { mark: 'tools' } },
+        { x: 64, y: 60, en: 'Farming communities (~8,000 years ago)', hi: 'कृषक समुदाय (~8,000 वर्ष पहले)', detail: b('This example date is about 5.8 minutes before midnight. Farming began at different times in different regions.', 'यह उदाहरण तिथि मध्यरात्रि से लगभग 5.8 मिनट पहले है। खेती अलग क्षेत्रों में अलग समय पर शुरू हुई।'), set: { mark: 'farming' } },
+        { x: 84, y: 42, en: 'Harappan Cities & Writing (~4,600 ya)', hi: 'हड़प्पा नगर व लेखन (~4,600 वर्ष पूर्व)', detail: b('The illustrative Mature Harappan date is about 3.3 minutes before midnight; other cities had different dates.', 'परिपक्व हड़प्पा की उदाहरण तिथि मध्यरात्रि से लगभग 3.3 मिनट पहले है; अन्य नगरों की तिथियाँ अलग थीं।'), set: { mark: 'cities' } },
       ],
     }), (patch) => { if (patch.mark) { S.mark = patch.mark; ch.select(S.mark); draw(); } });
-    const pr = predict({ id: 't1', stem: { en: 'Squeeze the last 2 million years into ONE day (midnight = today). Farming began about 8,000 years ago. How long before midnight is that?', hi: 'पिछले 20 लाख वर्षों को एक दिन में समेट दें (मध्यरात्रि = आज)। खेती लगभग 8,000 वर्ष पहले शुरू हुई। यह मध्यरात्रि से कितना पहले है?' }, options: [o('min', 'A few minutes', 'कुछ मिनट'), o('hour', 'About an hour', 'लगभग एक घंटा'), o('hours', 'Several hours', 'कई घंटे')],
+    const pr = predict({ id: 't1', stem: { en: 'Squeeze the last 2 million years into ONE day (midnight = today). Some farming communities lived about 8,000 years ago. How long before midnight is that?', hi: 'पिछले 20 लाख वर्षों को एक दिन में समेट दें (मध्यरात्रि = आज)। कुछ कृषक समुदाय लगभग 8,000 वर्ष पहले रहते थे। यह मध्यरात्रि से कितना पहले है?' }, options: [o('min', 'A few minutes', 'कुछ मिनट'), o('hour', 'About an hour', 'लगभग एक घंटा'), o('hours', 'Several hours', 'कई घंटे')],
       run: () => { S.mark = 'farming'; ch.select('farming'); draw(); const m = M.minutesBeforeMidnight(8000); return m < 30 ? 'min' : m < 180 ? 'hour' : 'hours'; },
-      explain: () => ({ en: `8,000 ÷ 2,000,000 × 24 hours = ${fmt(M.minutesBeforeMidnight(8000), 1)} minutes. Almost the whole story of human tool-making happened before farming; farming, cities and writing all fit in the last few minutes.`, hi: `8,000 ÷ 20,00,000 × 24 घंटे = ${fmt(M.minutesBeforeMidnight(8000), 1)} मिनट। मानव द्वारा औज़ार बनाने की लगभग पूरी कहानी खेती से पहले की है; खेती, नगर और लेखन सब अंतिम कुछ मिनटों में आते हैं।` }) }, { done: S.done, onDone: persist });
+      explain: clockExplanation }, { done: S.done, onDone: persist });
     draw();
-    const el = h('div', { class: 'lab' }, h('p', { class: 'lead' }, bi({ en: 'Pick a moment and see where it falls on a straight timeline and on a stretched (log) timeline.', hi: 'कोई क्षण चुनें और देखें कि वह सीधी समय-रेखा और खिंची हुई (लघुगणकीय) समय-रेखा पर कहाँ आता है।' })), h('div', { class: 'lab-grid' }, h('div', { class: 'lab-main' }, tlPlate.el, box, read), h('div', { class: 'lab-side' }, h('h3', { 'data-k': 'tl.h' }, t('tl.h')), ch.root)), h('section', { class: 'subsec' }, h('h3', { 'data-k': 'predict.h' }, t('predict.h')), pr));
+    const el = h('div', { class: 'lab' }, h('p', { class: 'lead' }, bi({ en: 'Pick a moment and see where it falls on a straight timeline and on a stretched (log) timeline.', hi: 'कोई क्षण चुनें और देखें कि वह सीधी समय-रेखा और खिंची हुई (लघुगणकीय) समय-रेखा पर कहाँ आता है।' })), h('div', { class: 'lab-grid' }, h('div', { class: 'lab-main' }, tlPlate.el, box, read), h('div', { class: 'lab-side' }, h('h3', { 'data-k': 'tl.h' }, t('tl.h')), ch.root)), h('p', { class: 'note' }, h('a', { href: 'https://humanorigins.si.edu/education/fun-facts/early-human-tool-kit', target: '_blank', rel: 'noopener noreferrer' }, bi(b('Smithsonian: early stone tools (internet needed)', 'स्मिथसोनियन: आरंभिक पत्थर औज़ार (इंटरनेट आवश्यक)'), { tag: 'span' }))), h('section', { class: 'subsec' }, h('h3', { 'data-k': 'predict.h' }, t('predict.h')), pr));
     return { el, relabel() { tlPlate.relabel(); pr.relabel(); relabelBi(el); i18n.apply(el); draw(); } };
   })();
 
-  // ---- L2 evidence vs inference
+  // ---- L2 evidence vs inference: a case-based kit plus the original retryable sorter.
   const ev = (() => {
+    const kit = createDetectiveKit();
     const list = h('div', { class: 'ev-list' });
-    function render() {
-      list.replaceChildren(...ITEMS.map((it) => {
-        const ans = S.ev[it.id], card = h('div', { class: 'card ev' }), fb = h('div', { class: 'feedback', 'aria-live': 'polite' });
-        card.append(bi({ en: it.en, hi: it.hi }, { tag: 'p', cls: 'ev-t' }));
-        const row = h('div', { class: 'row' });
-        ['evidence', 'inference'].forEach((k) => row.append(h('button', { type: 'button', class: 'btn' + (ans === k ? ' picked' : ''), 'aria-pressed': ans === k ? 'true' : 'false', 'data-k': `ev.${k}`, disabled: ans ? true : null, onclick: () => { S.ev[it.id] = k; persist(); render(); } }, t(`ev.${k}`))));
-        card.append(row, fb);
-        if (ans) { const ok = ans === it.kind; fb.className = 'feedback ' + (ok ? 'ok' : 'try'); fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> <span data-k="ev.is.${it.kind}">${esc(t('ev.is.' + it.kind))}</span> ` + biHtml(it.why, { block: true }); }
-        return card;
-      }));
+    const cards = ITEMS.map((it) => {
+      const card = h('div', { class: 'card ev', 'data-evidence-item': it.id });
+      const statement = bi({ en: it.en, hi: it.hi }, { tag: 'p', cls: 'ev-t' });
+      statement.id = `evidence-statement-${it.id}`;
+      const fb = h('div', { class: 'feedback', 'aria-live': 'polite' });
+      const row = h('div', { class: 'row', role: 'group', 'aria-labelledby': statement.id });
+      ['evidence', 'inference'].forEach((kind) => row.append(h('button', {
+        type: 'button', class: 'btn', 'data-evidence-choice': kind, 'aria-pressed': 'false', 'data-k': `ev.${kind}`,
+        onclick: () => { S.ev[it.id] = kind; persist(); renderCard(it, card); },
+      }, t(`ev.${kind}`))));
+      card.append(statement, row, fb); list.append(card); return card;
+    });
+    function renderCard(it, card) {
+      const answer = S.ev[it.id], valid = answer === 'evidence' || answer === 'inference';
+      card.querySelectorAll('[data-evidence-choice]').forEach((button) => {
+        const selected = valid && button.dataset.evidenceChoice === answer;
+        button.classList.toggle('picked', selected); button.setAttribute('aria-pressed', String(selected));
+      });
+      const fb = card.querySelector('.feedback');
+      fb.className = 'feedback'; fb.replaceChildren();
+      if (valid) {
+        const ok = answer === it.kind; fb.classList.add(ok ? 'ok' : 'try');
+        fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> <span data-k="ev.is.${it.kind}">${esc(t('ev.is.' + it.kind))}</span> ` + biHtml(it.why, { block: true });
+      }
     }
+    function render() { ITEMS.forEach((it, i) => renderCard(it, cards[i])); }
     render();
     const plate = createInteractivePlate(() => ({
       src: 'assets/images/plates/t04-tools.jpg',
-      en: 'Material finds (cave art, blades, polished axe, charred grain) — tap pins to distinguish physical Evidence from historian Inference.',
-      hi: 'भौतिक अवशेष (गुफ़ा चित्र, पाषाण फलक, पॉलिश कुल्हाड़ी, जले दाने) — प्रत्यक्ष प्रमाण बनाम निष्कर्ष समझने हेतु पिन पर टैप करें।',
+      en: 'Illustration of rock art, stone tools and grain. The picture is not an excavation photograph.',
+      hi: 'शैलचित्र, पत्थर के औज़ार और अनाज का चित्र। यह उत्खनन का फ़ोटो नहीं है।',
       spots: [
-        { x: 22, y: 42, en: 'Bhimbetka Rock Shelter Painting', hi: 'भीमबेटका शैलचित्र', detail: b('Evidence: red ochre dancers/animals painted on sandstone; Inference: seasonal group ritual or hunting stories.', 'प्रमाण: बलुआ पत्थर पर लाल गेरू चित्र; निष्कर्ष: सामुदायिक अनुष्ठान या शिकार कथाएँ।') },
-        { x: 46, y: 66, en: 'Acheulean Stone Handaxe', hi: 'पुरापाषाण हस्त-कुठार', detail: b('Evidence: bifacial flaked stone found in river gravel; Inference: shaped for heavy chopping & butchery.', 'प्रमाण: नदी बजरी में मिला तराशा पत्थर; निष्कर्ष: काटने व शिकार प्रसंस्करण हेतु निर्मित।') },
-        { x: 76, y: 60, en: 'Charred Wheat & Grinding Stone', hi: 'जले गेहूँ व सिलबट्टा', detail: b('Evidence: carbonised seeds beside house hearth; Inference: systematic Neolithic harvest & flour grinding.', 'प्रमाण: चूल्हे के पास जले दाने; निष्कर्ष: स्थायी नवपाषाण खेती व अनाज पिसाई।') },
+        { x: 22, y: 42, en: 'Rock art', hi: 'शैलचित्र', detail: b('Paint on a rock surface can be recorded as evidence. A story or ritual associated with it is an interpretation to test, not something directly observed.', 'शैल सतह पर रंग को प्रमाण के रूप में दर्ज किया जा सकता है। उससे जुड़ी कथा या अनुष्ठान जाँचने योग्य व्याख्या है, सीधे देखा तथ्य नहीं।') },
+        { x: 46, y: 66, en: 'Flaked stone', hi: 'तराशा पत्थर', detail: b('Shape and flake scars can be observed. Cutting or scraping is a possible use; edge wear and context can help test it.', 'आकार और तराशने के निशान देखे जा सकते हैं। काटना या खुरचना संभावित उपयोग हैं; धार की घिसावट और संदर्भ से जाँच की जा सकती है।') },
+        { x: 76, y: 60, en: 'Grain and grinding stone', hi: 'अनाज और पीसने का पत्थर', detail: b('Charred grain and a grinding stone may suggest food processing. They alone do not prove local farming or a permanent village.', 'जला अनाज और पीसने का पत्थर भोजन प्रसंस्करण का संकेत दे सकते हैं। वे अकेले स्थानीय खेती या स्थायी गाँव सिद्ध नहीं करते।') },
       ],
     }));
-    const el = h('div', { class: 'lab' }, h('p', { class: 'lead' }, bi({ en: 'Archaeologists find things (evidence) and then explain them (inference). Sort each statement.', hi: 'पुरातत्वविद् वस्तुएँ पाते हैं (प्रमाण) और फिर उनकी व्याख्या करते हैं (निष्कर्ष)। हर कथन को छाँटें।' })), plate.el, list, h('p', { class: 'note', 'data-k': 'ev.fictional' }, t('ev.fictional')), h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn', 'data-k': 'btn.reset', onclick: () => { S.ev = {}; persist(); render(); } }, t('btn.reset'))));
-    return { el, relabel() { plate.relabel(); render(); relabelBi(el); i18n.apply(el); } };
+    const sorter = h('section', { class: 'evidence-sorter' }, bi(b('Sort the statements', 'कथनों को वर्गीकृत करें'), { tag: 'h3' }),
+      bi(b('Is each statement a recorded observation or an inference? You can change an answer after reading the feedback.', 'क्या हर कथन दर्ज प्रेक्षण है या निष्कर्ष? प्रतिक्रिया पढ़ने के बाद उत्तर बदल सकते हैं।'), { tag: 'p', cls: 'note' }),
+      plate.el, list, h('p', { class: 'note', 'data-k': 'ev.fictional' }, t('ev.fictional')),
+      h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn', onclick: () => { S.ev = {}; persist(); render(); } }, bi(b('Reset sorter only', 'केवल वर्गीकरण रीसेट करें'), { tag: 'span' }))));
+    const el = h('div', { class: 'lab' }, kit.el, sorter);
+    return { el, relabel() { kit.relabel(); plate.relabel(); render(); relabelBi(el); i18n.apply(el); }, destroy() { kit.destroy(); } };
   })();
 
   // ---- L3, L4 (3D+2D), L5
   const lab3 = createLab(settlementLab, 'T04');
-  const lab4 = createThreeLab(harappanCity, 'T04', createHarappan3d);
+  let tour;
+  const lab4 = createThreeLab(harappanCity, 'T04', createHarappan3d, {
+    ariaKey: 'T04.city.aria', mode2dKey: 'T04.city.2d', mode3dKey: 'T04.city.3d',
+    tourStops: [], // The accessible six-stop companion replaces the generic camera-only tour here.
+    onSpot: (spot, _index, state) => { if (HARAPPAN_STOPS.some((stop) => stop.id === spot?.tour)) state.tourStop = spot.tour; },
+    onInspect: (info) => { if (info?.tour) tour?.select(info.tour); },
+  });
+  const modelMain = lab4.el.querySelector('.lab-main');
+  modelMain.tabIndex = -1; modelMain.setAttribute('role', 'region');
+  modelMain.dataset.kAria = 'T04.city.model.aria'; modelMain.setAttribute('aria-label', t('T04.city.model.aria'));
+  tour = createHarappanTour(lab4.state, {
+    onSelect: (stop, patch) => { lab4.state.tourStop = stop.id; lab4.setState(patch); },
+    onFocus: (stop) => lab4.focus(stop.view, stop.id),
+    onShowModel: () => { modelMain.scrollIntoView({ block: 'start' }); modelMain.focus({ preventScroll: true }); },
+  });
+  const stopTour = lab4.onDraw((state) => tour.update(state));
+  const cityGrid = lab4.el.querySelector('.lab-grid');
+  const cityLayout = h('div', { class: 'harappa-layout' }, tour.el, cityGrid);
+  lab4.el.querySelector('.goal-pill').after(cityLayout);
+  lab4.draw();
   const lab5 = createLab(civAtlas, 'T04');
 
   loadGeoAll().then(() => { if (alive) lab5.draw(); });
@@ -151,8 +197,8 @@ export function mount(root) {
   if (S.tab === 'city') lab4.enable();
 
   return {
-    relabel() { tl.relabel(); ev.relabel(); lab3.relabel(); lab4.relabel(); lab5.relabel(); mcqs.forEach((q) => q.relabel()); relabelBi(root); i18n.apply(root); ta.placeholder = t('reflect.ph'); },
-    destroy() { alive = false; lab4.destroy(); },
+    relabel() { tl.relabel(); ev.relabel(); lab3.relabel(); lab4.relabel(); tour.relabel(); lab5.relabel(); mcqs.forEach((q) => q.relabel()); relabelBi(root); i18n.apply(root); ta.placeholder = t('reflect.ph'); },
+    destroy() { alive = false; stopTour(); tour.destroy(); ev.destroy(); lab3.destroy(); lab4.destroy(); lab5.destroy(); },
     debug: () => ({ S, settle: lab3.debug(), city: lab4.debug(), atlas: lab5.debug() }),
   };
 }

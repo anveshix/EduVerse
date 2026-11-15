@@ -6,14 +6,19 @@ import { createLandform3d } from './landforms-3d.js';
 import * as i18n from '../../core/i18n.js';
 import * as tectonics from './tectonics.js';
 import { gradation, landformGallery, hazardLab } from './labs-earth.js';
+import { createIndiaAtlas } from './india-atlas.js';
 import { tabs } from '../../components/widgets.js';
 
 export function mount(root, ctx) {
   const top = h('div'), more = h('div');
   const base = tectonics.mount(top, ctx);
   const lab4 = createLab(gradation, 'T02');
-  const lab5 = createThreeLab(landformGallery, 'T02', createLandform3d);
+  let atlas;
+  const lab5 = createThreeLab(landformGallery, 'T02', createLandform3d, { onDraw: (state) => atlas?.setGalleryAgent(state.agent) });
   const lab6 = createLab(hazardLab, 'T02');
+  atlas = createIndiaAtlas({ onSelect: (region) => lab5.setState({ agent: region.agent }) });
+  atlas.setGalleryAgent(lab5.state.agent);
+  lab5.el.prepend(atlas.el);
 
   i18n.register({
     'T02.more.L4': { en: 'Gradation sandbox (L4)', hi: 'समतलीकरण प्रयोग (L4)' },
@@ -23,7 +28,7 @@ export function mount(root, ctx) {
 
   const tb = tabs({
     active: 'L4',
-    onChange: (id) => { if (id === 'L5') lab5.enable(); else lab5.disable(); },
+    onChange: (id) => { if (id === 'L5') { atlas.enable(); lab5.enable(); } else lab5.disable(); },
     tabs: [
       { id: 'L4', key: 'T02.more.L4', el: lab4.el },
       { id: 'L5', key: 'T02.more.L5', el: lab5.el },
@@ -39,8 +44,8 @@ export function mount(root, ctx) {
   i18n.apply(root);
 
   return {
-    relabel() { base.relabel?.(); lab4.relabel(); lab5.relabel(); lab6.relabel(); i18n.apply(root); },
-    destroy() { base.destroy?.(); lab5.destroy(); },
+    relabel() { base.relabel?.(); lab4.relabel(); lab5.relabel(); lab6.relabel(); atlas.relabel(); i18n.apply(root); },
+    destroy() { base.destroy?.(); atlas.destroy(); lab4.destroy(); lab5.destroy(); lab6.destroy(); },
     debug: () => ({ ...base.debug?.(), gradation: lab4.debug(), landforms: lab5.debug(), hazard: lab6.debug() }),
   };
 }

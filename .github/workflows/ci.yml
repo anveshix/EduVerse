@@ -1,0 +1,27 @@
+name: EduVerse Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+      - run: npm run test:t02
+      - run: npm run test:t03
+      - run: npm run test:t04
+      - run: npm run a11y
+      - run: npm run smoke
+      - run: npm run smoke:mobile
+      - run: npm run perf:size
+      - run: npm run perf:throttle

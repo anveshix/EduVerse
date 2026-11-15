@@ -1,3 +1,6 @@
+/* Noto Sans Devanagari, self-hosted for readable Hindi even without system fonts. SIL OFL 1.1. */
+@font-face{font-family:'Noto Sans Devanagari';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/noto-sans-devanagari-400.woff2') format('woff2');unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+20F0,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09}
+@font-face{font-family:'Noto Sans Devanagari';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/noto-sans-devanagari-700.woff2') format('woff2');unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+20F0,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09}
 :root{--bg:#fbfaf6;--ink:#1b1f24;--mut:#4a5560;--line:#cfd6dd;--card:#fff;--pri:#0b5cad;--pri-ink:#fff;--ok:#146c2e;--ok-bg:#e6f4ea;--bad:#a4262c;--bad-bg:#fdecea;--warn:#8a5a00;--warn-bg:#fff4d6;--d:#c0392b;--s:#1f6fb2;--eq:#1b1f24;--focus:#ff9f1c;--fs:1rem;--r:10px}
 html.projector{--fs:1.25rem}
 @media (prefers-color-scheme:dark){:root{--bg:#12161a;--ink:#eef1f4;--mut:#b4bec8;--line:#3a444e;--card:#1b2127;--pri:#6fb1f2;--pri-ink:#0a1622;--ok:#7fd69a;--ok-bg:#12301c;--bad:#ff9d9d;--bad-bg:#3a1a1a;--warn:#ffd27a;--warn-bg:#3a2e10;--d:#ff8a7a;--s:#7cc0ff;--eq:#eef1f4}}
@@ -195,3 +198,95 @@ ol.try{padding-left:1.3rem}ol.try li{margin:.35rem 0}.ctl-label{margin-top:.6rem
 .chart [data-set]{cursor:pointer;transition:opacity .15s ease}.chart [data-set]:hover{opacity:.85}
 
 
+/* Step 0 foundation: continue, path progress, search, howto, narration, chapter complete */
+.continue-bar{display:flex;flex-wrap:wrap;gap:.5rem .9rem;align-items:center;background:linear-gradient(90deg,var(--ok-bg),var(--card));border:1px solid var(--ok);border-radius:12px;padding:.65rem .9rem;margin-bottom:.85rem}
+.continue-txt{font-size:.98em;flex:1 1 260px;min-width:0}
+.continue-btn{text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}
+.path-progress{flex:1 1 160px;height:10px;background:var(--bg);border:1px solid var(--line);border-radius:99px;overflow:hidden;min-width:120px}
+.path-progress-fill{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--ok));transition:width .3s ease}
+.path-txt{font-size:.88em;color:var(--mut);white-space:nowrap}
+.home-search{font:inherit;min-height:44px;padding:.4rem .8rem;border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--ink);flex:1 1 200px;min-width:180px}
+.howto{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.4rem 1rem;margin-bottom:1rem}
+.howto-list{margin:.4rem 0 .7rem;padding-left:1.3rem}
+.howto-list li{margin:.3rem 0}
+.card-progress{display:block;height:8px;background:var(--bg);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:.35rem}
+.card-progress-fill{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--ok))}
+.card-progress-txt{font-size:.82em;color:var(--mut)}
+.opening-head{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center;justify-content:space-between}
+.narrate-btn{min-height:44px}
+.chapter-done{background:var(--ok-bg);border:1px solid var(--ok);color:var(--ok);border-radius:10px;padding:.5rem .8rem;font-weight:700;margin:.6rem 0 0}
+
+/* T02: representative India landform atlas, paired with the existing gallery. */
+.india-atlas{margin:0 0 1.2rem;padding:1rem;border:1px solid var(--line);border-top:4px solid var(--pri);border-radius:12px;background:var(--card)}
+.atlas-heading{margin:.1rem 0 .25rem}.atlas-intro{margin:.3rem 0 .8rem;color:var(--mut)}
+.atlas-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:start}
+.atlas-map{border:1px solid var(--line);border-radius:10px;overflow:hidden}.atlas-map .chart{width:100%}
+.atlas-map-note,.atlas-fallback{font-size:.85em;margin:.4rem 0}.atlas-fallback[hidden]{display:none}
+.atlas-content{min-width:0}.atlas-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}
+.atlas-choice{display:flex;align-items:center;gap:.45rem;text-align:left;padding:.4rem .55rem;font-size:.88em;line-height:1.3;min-width:0}
+.atlas-choice[aria-pressed="true"]{border-color:var(--pri);background:var(--ok-bg);box-shadow:inset 0 0 0 1px var(--pri)}
+.atlas-number{display:inline-grid;place-items:center;flex:0 0 1.5rem;height:1.5rem;border-radius:50%;background:#164b78;color:#fff;font-size:.84rem;font-weight:700}
+.atlas-choice[aria-pressed="true"] .atlas-number{background:#12613c;color:#fff}.atlas-choice-name{min-width:0;overflow-wrap:anywhere}
+.atlas-detail{margin-top:.75rem;padding:.75rem .9rem;border-radius:10px;background:var(--bg);border:1px solid var(--line)}
+.atlas-detail h4{margin:0 0 .35rem;color:var(--pri)}.atlas-detail p{margin:.35rem 0;font-size:.93em}.atlas-detail strong{color:var(--ink)}
+@media (max-width:760px){.atlas-layout{grid-template-columns:1fr}.atlas-map{max-width:600px}.atlas-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* T03: a learner-owned weather record and a map-linked monsoon explanation. */
+.weather-diary,.monsoon-inquiry{margin:.35rem 0 1.15rem;padding:clamp(.8rem,2vw,1.3rem);border:1px solid var(--line);border-top:4px solid var(--pri);border-radius:14px;background:var(--card);box-shadow:0 4px 16px #0b1f330d}
+.weather-kicker{margin:0;color:var(--pri);font-size:.73em;font-weight:700;letter-spacing:.07em}
+.weather-title,.monsoon-title{margin:.1rem 0 .25rem;font-size:1.28em}.weather-intro,.monsoon-intro{margin:.35rem 0 .75rem;color:var(--mut)}
+.weather-safety,.weather-climate,.monsoon-limits{margin:.75rem 0;padding:.65rem .8rem;border-left:4px solid var(--pri);border-radius:0 8px 8px 0;background:var(--bg);font-size:.92em}
+.weather-safety{border-left-color:var(--warn);background:var(--warn-bg)}
+.weather-board{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,1fr);gap:1rem;margin-top:1rem;align-items:start}
+.weather-entry,.weather-summary{min-width:0}.weather-subhead,.weather-summary-title{margin:.1rem 0 .5rem}.weather-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.35rem}
+.weather-day{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.05rem;padding:.35rem .2rem;min-width:0;line-height:1.22;font-size:.82em;overflow-wrap:anywhere}
+.weather-day[aria-pressed="true"]{background:var(--pri);color:var(--pri-ink);border-color:var(--pri)}.weather-day-symbol{font-size:1.25em;font-weight:700}
+.weather-legend{margin:.35rem 0 .8rem;font-size:.82em}.weather-editor{min-width:0;margin:0;padding:.7rem;border:1px solid var(--line);border-radius:10px}.weather-editor-title{padding:0 .3rem;font-weight:700;color:var(--pri)}
+.weather-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.weather-field{min-width:0}.weather-field label{display:block;margin-bottom:.2rem;font-weight:700;font-size:.9em}
+.weather-field input,.weather-field select,.weather-field textarea{display:block;width:100%;min-width:0;max-width:100%;min-height:44px;padding:.48rem .6rem;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+.weather-field textarea{resize:vertical}.weather-field input[aria-invalid="true"]{border:2px solid var(--bad)}.weather-field-hint{margin:.3rem 0 0;font-size:.81em}.weather-error{margin:.3rem 0;color:var(--bad);font-size:.86em;font-weight:700}.weather-error[hidden]{display:none}
+.weather-summary{padding:.8rem;border:1px solid var(--line);border-radius:10px;background:var(--bg)}.weather-summary p{margin:.45rem 0;font-size:.9em}.weather-summary progress{display:block;width:100%;height:12px;accent-color:var(--pri)}.weather-summary .weather-progress-label{font-weight:700}.weather-summary .weather-field{margin-top:.9rem}.weather-warning{color:var(--bad);font-weight:700}.weather-warning .hi-line{color:inherit}
+.weather-source,.monsoon-sources{font-size:.86em}.weather-storage{margin:.65rem 0;font-size:.86em}.weather-actions{margin-top:.5rem}.weather-confirm{margin-top:.5rem;padding:.65rem .8rem;border:1px solid var(--warn);border-radius:8px;background:var(--warn-bg)}.weather-confirm[hidden]{display:none}.weather-confirm p{margin:0 0 .4rem}
+.monsoon-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem}.monsoon-step{display:flex;align-items:center;gap:.45rem;text-align:left;min-width:0;font-size:.9em;line-height:1.3;overflow-wrap:anywhere}
+.monsoon-step-number{display:inline-grid;place-items:center;flex:0 0 1.55rem;height:1.55rem;border-radius:50%;background:var(--bg);color:var(--pri);font-weight:700}.monsoon-step[aria-pressed="true"]{border-color:var(--pri);background:var(--pri);color:var(--pri-ink)}.monsoon-step[aria-pressed="true"] .hi-line{color:var(--pri-ink)}
+.monsoon-detail{margin-top:.7rem;padding:.8rem;border:1px solid var(--line);border-radius:10px;background:var(--bg)}.monsoon-detail h4{margin:0 0 .5rem;color:var(--pri)}
+.monsoon-chain{display:flex;align-items:stretch;gap:.3rem}.monsoon-chain-item{display:flex;flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;text-align:center;padding:.55rem .35rem;border:1px solid var(--line);border-radius:8px;background:var(--card);font-size:.88em;font-weight:700;overflow-wrap:anywhere}.monsoon-chain-arrow{display:flex;align-items:center;justify-content:center;width:15px;flex:0 0 15px;font-size:0}.monsoon-chain-arrow::after{content:'';width:8px;height:8px;border-top:2px solid var(--pri);border-right:2px solid var(--pri);transform:rotate(45deg)}
+.monsoon-explanation{margin:.7rem 0}.monsoon-question{margin:.6rem 0 0;padding:.55rem .7rem;border-left:3px solid var(--ok);background:var(--ok-bg);font-size:.91em}.monsoon-sources{display:flex;flex-wrap:wrap;gap:.35rem 1rem}
+@media (max-width:820px){.weather-board{grid-template-columns:1fr}.monsoon-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.weather-days{grid-template-columns:repeat(4,minmax(0,1fr))}.weather-fields{grid-template-columns:1fr}.monsoon-chain{flex-direction:column}.monsoon-chain-arrow{align-self:center;height:12px;flex:0 0 12px}.monsoon-chain-arrow::after{transform:rotate(135deg)}}
+/* Accessible data alternative to the illustrative climograph. */
+.climate-data{margin:.8rem 0;padding:.5rem .8rem;border:1px solid var(--line);border-radius:10px;background:var(--card)}.climate-data summary{min-height:44px;color:var(--pri);font-weight:700;cursor:pointer}.climate-data p{margin:.4rem 0;font-size:.9em}.climate-table-scroll{max-width:100%;overflow-x:auto}.climate-data table{width:100%;min-width:540px;border-collapse:collapse;font-size:.9em}.climate-data caption{text-align:left;margin:.4rem 0;font-weight:700}.climate-data th,.climate-data td{padding:.45rem .6rem;border:1px solid var(--line);text-align:left;vertical-align:top}.climate-data thead{background:var(--bg)}.climate-data td{font-variant-numeric:tabular-nums}
+
+/* T04: archaeological case files and an evidence-led Harappan tour. */
+.detective-kit,.harappa-tour{--hist:#934719;--hist-bg:#fff4e7;margin:.35rem 0 1.2rem;padding:clamp(.8rem,2vw,1.35rem);border:1px solid var(--line);border-top:4px solid var(--hist);border-radius:14px;background:var(--card);box-shadow:0 4px 16px #0b1f330d}
+@media (prefers-color-scheme:dark){.detective-kit,.harappa-tour{--hist:#ffc18f;--hist-bg:#392719}}
+.detective-kicker{margin:0;color:var(--hist);font-size:.74em;font-weight:800;letter-spacing:.07em}
+.detective-title,.harappa-tour-title{margin:.08rem 0 .25rem;font-size:1.3em}.detective-intro,.harappa-intro{margin:.3rem 0 .7rem;color:var(--mut)}
+.detective-fictional,.harappa-limit{margin:.7rem 0;padding:.65rem .8rem;background:var(--hist-bg);border-left:4px solid var(--hist);border-radius:0 8px 8px 0;font-size:.9em}
+.detective-cases,.harappa-stops{display:grid;gap:.5rem;margin:.85rem 0}.detective-cases{grid-template-columns:repeat(3,minmax(0,1fr))}.harappa-stops{grid-template-columns:repeat(6,minmax(0,1fr))}
+.detective-case,.harappa-stop{display:flex;align-items:center;gap:.5rem;min-width:0;text-align:left;padding:.5rem .6rem;line-height:1.3;font-size:.9em;overflow-wrap:anywhere}
+.detective-case-number,.harappa-stop-number{display:inline-grid;place-items:center;flex:0 0 1.65rem;height:1.65rem;border-radius:50%;background:var(--hist-bg);color:var(--hist);font-size:.85rem;font-weight:800}
+.detective-case[aria-pressed=true],.harappa-stop[aria-pressed=true]{background:var(--pri);color:var(--pri-ink);border-color:var(--pri)}
+.detective-case[aria-pressed=true] .hi-line,.harappa-stop[aria-pressed=true] .hi-line{color:inherit}
+.detective-file{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:clamp(.75rem,2vw,1rem)}.detective-file[hidden]{display:none}
+.detective-file-head{display:flex;gap:.75rem;align-items:center;margin-bottom:.75rem}.detective-file-head h4{margin:0;font-size:1.13em}.detective-setting{margin:0;color:var(--mut);font-size:.82em}
+.detective-file-index{display:grid;place-items:center;flex:0 0 2.65rem;height:2.65rem;border-radius:9px;background:var(--hist-bg);color:var(--hist);font-weight:800}
+.detective-observations{padding:.7rem .85rem;border:1px solid var(--line);border-left:4px solid var(--hist);border-radius:8px;background:var(--card)}.detective-observations h5{margin:0;font-size:.98em}.detective-observations ul{margin:.4rem 0 0;padding-left:1.3rem}.detective-observations li{margin:.25rem 0}
+.detective-question{min-width:0;margin:.9rem 0 0;padding:0;border:0}.detective-question legend{padding:0;font-weight:750}.detective-options{display:grid;gap:.4rem;margin:.5rem 0}
+.detective-option{width:100%;min-height:44px;padding:.55rem .7rem;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;cursor:pointer;overflow-wrap:anywhere}
+.detective-option[aria-pressed=true]{border:2px solid var(--pri);background:var(--card)}.detective-feedback{padding:.6rem .75rem;border-radius:8px;font-size:.93em}.detective-feedback[hidden]{display:none}.detective-feedback.is-useful{background:var(--ok-bg);border-left:4px solid var(--ok)}.detective-feedback.is-reconsider{background:var(--warn-bg);border-left:4px solid var(--warn)}
+.detective-notebook{margin-top:1rem}.detective-notebook label{display:block;font-weight:700}.detective-notebook .note{margin:.2rem 0 .4rem}.detective-notebook textarea{width:100%;min-height:90px;max-width:100%;padding:.55rem .65rem;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;resize:vertical}
+.detective-storage{margin:.6rem 0;font-size:.86em}.detective-storage-warning{font-weight:700;color:var(--bad)}.detective-storage-warning .hi-line{color:inherit}.detective-sources{font-size:.88em}.detective-sources summary{color:var(--pri)}.detective-sources ul{margin:.2rem 0;padding-left:1.3rem}.evidence-sorter{margin:1.4rem 0}
+.harappa-status{margin:.5rem 0;padding:.4rem .65rem;border-radius:7px;background:var(--ok-bg);font-size:.88em;font-weight:700}.harappa-status.is-hidden-feature{background:var(--warn-bg)}.harappa-status-label,.harappa-status-message{display:block}.harappa-status-label{margin-bottom:.2rem}
+.harappa-detail{border:1px solid var(--line);border-radius:10px;padding:.8rem;background:var(--bg)}.harappa-site{margin:0;color:var(--mut);font-size:.82em}.harappa-detail h4{margin:.1rem 0 .65rem;font-size:1.1em}
+.harappa-evidence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin:0}.harappa-evidence-item{min-width:0;padding:.65rem .75rem;border:1px solid var(--line);border-radius:8px;background:var(--card)}.harappa-evidence-item dt{font-weight:800;color:var(--hist);font-size:.85em}.harappa-evidence-item dd{margin:.2rem 0 0;font-size:.91em;overflow-wrap:anywhere}.harappa-sources{display:flex;flex-wrap:wrap;gap:.2rem .7rem;margin-top:.7rem;font-size:.82em}.harappa-compare{margin:.7rem 0 .1rem;font-size:.88em;color:var(--mut)}
+@media (max-width:850px){.harappa-stops{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.detective-cases,.harappa-stops{grid-template-columns:repeat(2,minmax(0,1fr))}.harappa-evidence-grid{grid-template-columns:1fr}}
+/* Keep the tour and its model visible together on wide screens; provide a jump on narrow screens. */
+.harappa-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:start}
+.harappa-layout .harappa-tour{margin:0}.harappa-layout>.lab-grid{grid-template-columns:minmax(0,1fr);min-width:0}.harappa-layout .lab-main{min-width:0}.harappa-layout .harappa-stops{grid-template-columns:repeat(3,minmax(0,1fr))}.harappa-jump{display:none}
+.gl-presets[hidden]{display:none}.harappa-plan .txt{fill:#17212b}.harappa-plan .txt.light-label{fill:#fff}
+@media (max-width:950px){.harappa-layout{grid-template-columns:minmax(0,1fr)}.harappa-jump{display:inline-flex;align-items:center;margin:.1rem 0 .7rem}}
+@media (max-width:560px){.harappa-layout .harappa-stops{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.harappa-plan-hint{display:none;margin:.6rem .3rem .25rem;color:var(--mut);font-size:.86em}.harappa-plan-scroll{overflow-x:auto;overscroll-behavior-x:contain;max-width:100%}
+@media (max-width:950px){.harappa-plan-hint{display:block}.harappa-plan-scroll .harappa-plan{min-width:560px}}
