@@ -47,6 +47,25 @@ test('prediction explanations survive reload without rerunning a model', async (
     const stars = Object.keys(store.get().stars).length;
     legacy.querySelectorAll('.opt')[0].click();
     assert.equal(Object.keys(store.get().stars).length, stars, 'retrying an already-correct legacy prediction does not award a second star');
+
+    // If the actual question changed, retain the old record without claiming it answered the new wording.
+    store.set({ lang: 'en' });
+    const prior = { choice: 'no', actual: 'yes', ok: false, explanation: { en: 'Old wording', hi: 'पुराना प्रश्न' } };
+    const revisedDone = { story: prior };
+    const revisedDef = { ...def, revision: 'v2' };
+    const before = runs;
+    const revised = predict(revisedDef, { done: revisedDone });
+    assert.equal(runs, before, 'opening a revised question must not rerun a simulation');
+    assert.ok([...revised.querySelectorAll('.opt')].every((button) => !button.disabled));
+    assert.match(revised.querySelector('.feedback').textContent, /question has changed/i);
+    assert.doesNotMatch(revised.querySelector('.feedback').textContent, /Old wording/);
+    revised.querySelectorAll('.opt')[0].click();
+    assert.equal(revisedDone.story.revision, 'v2');
+    assert.deepEqual(revisedDone.story.previous, prior, 'the earlier answer is kept locally');
+    const restoredRevision = predict(revisedDef, { done: revisedDone });
+    assert.equal(runs, before + 1, 'a revised result restores without rerunning');
+    assert.match(restoredRevision.querySelector('.feedback').textContent, /Observed 21/);
+    assert.ok([...restoredRevision.querySelectorAll('.opt')].every((button) => button.disabled));
   } finally {
     dom.window.close();
   }

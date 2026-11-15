@@ -60,7 +60,7 @@ export function createInteractivePlate(getPlate, onSet) {
   return { el: wrap, update, relabel: update, reset() { activeIdx = -1; update(); } };
 }
 
-export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
+export function createLab(spec, themeId, { onDraw, onSpot, skipAuto3d = false } = {}) {
   const S = store.simState(spec.id, spec.init());
   const base = spec.init(); for (const k of Object.keys(base)) if (!(k in S)) S[k] = base[k];
   S.done ??= {};
@@ -116,8 +116,9 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
       const idx = Number(spotBtn.dataset.spot);
       activeSpotIdx = idx;
       const sp = lastPlate.spots[idx];
-      if (sp?.set) { Object.assign(S, sp.set); sync(); }
-      else draw();
+      if (sp?.set) Object.assign(S, sp.set);
+      onSpot?.(sp, idx, S);
+      if (sp?.set) sync(); else draw();
       return;
     }
     const svgTarget = e.target.closest?.('[data-set]');
@@ -200,7 +201,8 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
   if (discover) dockList.push({ id: 'try', key: 'lab.dock.try', el: discover });
   if (exitBox) dockList.push({ id: 'quiz', key: 'lab.dock.quiz', el: exitBox });
   if (noteBox) dockList.push({ id: 'reflect', key: 'lab.dock.note', el: noteBox });
-  const dock = dockList.length ? mkTabs({ active: dockList[0].id, tabs: dockList }) : null;
+  // Every lab can coexist in the DOM, even when its panel is hidden; scope dock IDs accordingly.
+  const dock = dockList.length ? mkTabs({ idPrefix: `${spec.id.replace(/\./g, '-')}-dock`, active: dockList[0].id, tabs: dockList }) : null;
 
   side.append(h('div', { class: 'row' }, demoBtn, button('btn.reset', reset, 'btn')));
   const el = h('div', { class: 'lab', id: `lab-${spec.id.replace(/\./g, '-')}` },
@@ -275,6 +277,7 @@ export function createThreeLab(spec, themeId, create3dView, opts = {}) {
     ...lab,
     enable: stage3d.enable,
     disable: stage3d.disable,
+    focus: stage3d.focus,
     relabel() { lab.relabel(); stage3d.relabel(); },
     destroy() { stage3d.destroy(); lab.destroy?.(); },
   };

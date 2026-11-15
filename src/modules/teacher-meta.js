@@ -29,12 +29,14 @@ export const TEACHER = {
   },
   T04: {
     flow: [
-      b('Deep-Time Clock & Evidence Room (12 min): squeeze 2 million years into 24 hours; separate stone evidence from inference.', 'गहन-काल घड़ी व प्रमाण कक्ष (12 मिनट): 20 लाख वर्षों को 24 घंटे में समेटें और प्रमाण व निष्कर्ष अलग करें।'),
-      b('Settlement Sim & 3D Harappan City (15 min): inspect citadel, Great Bath, drains, and granary layout in 3D.', 'बस्ती प्रयोग व 3D हड़प्पा नगर (15 मिनट): गढ़ी, विशाल स्नानागार और जल-निकासी का निरीक्षण करें।'),
-      b('Comparative Bronze Age Atlas (8 min): connect Harappa with Mesopotamia, Egypt, and Yellow River.', 'तुलनात्मक सभ्यता मानचित्र (8 मिनट): हड़प्पा, मेसोपोटामिया, मिस्र व चीन की तुलना करें।'),
+      b('Clock and detective kit (15 min): compare the two-million-year window with older known tools. For each imagined case, separate observations, alternative inferences, uncertainty and the next test; let students revise answers.', 'घड़ी और जासूस किट (15 मिनट): 20 लाख वर्ष के अंतराल की पुराने ज्ञात औज़ारों से तुलना करें। हर काल्पनिक केस में प्रेक्षण, वैकल्पिक निष्कर्ष, अनिश्चितता और अगली जाँच अलग करें; उत्तर बदलने दें।'),
+      b('Harappan tour (15 min): inspect six stops in 3D or the same 2D/text tour. Compare the Great Bath and drains with the disputed “granary” interpretation; discuss what the composite model cannot show.', 'हड़प्पा यात्रा (15 मिनट): छह पड़ाव 3D या उसी 2D/पाठ यात्रा में देखें। महास्नानागार और नालियों की विवादित “अन्नागार” व्याख्या से तुलना करें; मिश्रित मॉडल की सीमाएँ समझें।'),
+      b('Settlement and atlas (as time allows): question the toy population assumptions and compare sites and dates without treating all cultures as identical or simultaneous.', 'बस्ती और मानचित्र (समयानुसार): काल्पनिक जनसंख्या धारणाओं पर प्रश्न करें और सभी संस्कृतियों को समान या समकालीन माने बिना स्थल व तिथियाँ तुलना करें।'),
     ],
     misconceptions: [
-      b('“Farming instantly made life easier than foraging.” Early farming raised calories per hectare but also brought harder labour and contagious disease.', '“खेती ने तुरंत जीवन आसान बना दिया।” आरंभिक खेती से अनाज बढ़ा पर श्रम और रोग जोखिम भी बढ़े।'),
+      b('“One object proves a whole story.” Marks, grains and foundations need context and comparison; plausible interpretations can change with new evidence.', '“एक वस्तु पूरी कहानी सिद्ध करती है।” निशान, अनाज और आधार को संदर्भ व तुलना चाहिए; नए प्रमाण से संभावित व्याख्या बदल सकती है।'),
+      b('“The so-called granary proves a king stored grain there.” The use of these large foundations is debated; material remains do not by themselves identify rulers.', '“तथाकथित अन्नागार सिद्ध करता है कि राजा वहाँ अनाज रखता था।” बड़े आधारों के उपयोग पर मतभेद है; अवशेष अकेले शासक की पहचान नहीं करते।'),
+      b('“Farming instantly made life easier for everyone.” Practices and trade-offs varied, and foraging and farming could coexist.', '“खेती ने तुरंत सभी का जीवन आसान बना दिया।” पद्धतियाँ और लाभ-हानि अलग थे; संग्रह और खेती साथ भी हो सकते थे।'),
     ],
   },
   T05: {
@@ -118,7 +120,7 @@ export const LIMITS = {
   T01: b('Illustrative four-lens summaries and simplified six-node society graph for introductory framing.', 'प्रारंभिक समझ के लिए संक्षिप्त चार-लेंस विवरण और 6-नोड समाज आरेख।'),
   T02: T02_LIMITS,
   T03: b('Station values are illustrative, not official climate normals. Diary entries are learner observations stored locally, not verified station data. Monsoon arrows, catchment and carbon models are simplified; none is a weather forecast.', 'केंद्र के मान उदाहरण हैं, आधिकारिक जलवायु औसत नहीं। डायरी स्थानीय रूप से सहेजे विद्यार्थी प्रेक्षण हैं, सत्यापित केंद्र आँकड़े नहीं। मानसून तीर, जलग्रहण व कार्बन मॉडल सरल हैं; इनमें कोई मौसम पूर्वानुमान नहीं है।'),
-  T04: b('Dates are approximate archaeological ranges; the 3D Harappan town is a synthetic educational reconstruction, not a survey of one exact dig.', 'तिथियाँ अनुमानित पुरातात्विक परास हैं; 3D हड़प्पा नगर एक शैक्षिक पुनर्निर्माण है, किसी एक उत्खनन का सटीक मानचित्र नहीं।'),
+  T04: b('Detective records are fictional; the tour is a composite, not a site survey. The large platform’s function is disputed. Settlement numbers and rates are invented; dates and cultural bands vary by region. Notes remain local and Hindi needs teacher review.', 'जासूस केस काल्पनिक हैं; यात्रा मिश्रित मॉडल है, स्थल सर्वेक्षण नहीं। बड़े चबूतरे का उपयोग विवादित है। बस्ती की संख्याएँ और दरें काल्पनिक हैं; तिथियाँ व काल क्षेत्रानुसार बदलते हैं। नोट स्थानीय रहते हैं और हिंदी की शिक्षक से जाँच चाहिए।'),
   T05: b('Schematic regional extents and simplified governance flow diagrams representing centuries of diverse change.', 'सदियों के विविध ऐतिहासिक परिवर्तनों के लिए योजनाबद्ध क्षेत्रीय विस्तार और सरलीकृत प्रशासन आरेख।'),
   T06: b('Fictional assessment cases and concise constitutional summaries; real democracies involve many evolving institutions.', 'काल्पनिक परीक्षण केस और संक्षिप्त संवैधानिक तुलना; वास्तविक लोकतंत्र में कई गतिशील संस्थाएँ होती हैं।'),
   T07: b('All party names, block populations, and vote shares in the sandboxes are strictly fictional for teaching mechanics.', 'प्रयोगशालाओं में सभी दल, मत-प्रतिशत और ब्लॉक जनसंख्या केवल शिक्षण हेतु काल्पनिक हैं।'),

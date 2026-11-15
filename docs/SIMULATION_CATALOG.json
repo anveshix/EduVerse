@@ -780,33 +780,33 @@
    "implementation": "src/modules/history/t04-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Compare mobile foraging bands with early farming villages across food surplus, storage, population growth and harvest shocks.",
-    "hi": "भोजन अधिशेष, भंडारण, जनसंख्या वृद्धि और फसल जोखिम के आधार पर घुमंतू संग्राहक समूहों और आरंभिक कृषि गाँवों की तुलना करें।"
+    "en": "Compare a toy foraging and farming scenario and discuss the limits of its assumptions.",
+    "hi": "संग्रह और खेती के एक काल्पनिक मॉडल की तुलना करें और उसकी धारणाओं की सीमाएँ समझें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "mode",
      "type": "chips",
      "label": {
-      "en": "Subsistence strategy",
-      "hi": "जीवन-निर्वाह पद्धति"
+      "en": "Toy subsistence scenario",
+      "hi": "काल्पनिक निर्वाह मॉडल"
      }
     },
     {
      "id": "rainVar",
      "type": "slider",
      "label": {
-      "en": "Weather / rainfall variability",
-      "hi": "मौसम / वर्षा उतार-चढ़ाव"
+      "en": "Model weather variability",
+      "hi": "मॉडल में मौसम का उतार-चढ़ाव"
      }
     },
     {
      "id": "storage",
      "type": "slider",
      "label": {
-      "en": "Granary storage capacity",
-      "hi": "अन्नागार भंडारण क्षमता"
+      "en": "Model storage setting",
+      "hi": "मॉडल में भंडारण स्तर"
      }
     }
    ],
@@ -838,8 +838,8 @@
    "implementation": "src/modules/history/t04-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Plan an Indus-Sarasvati (Harappan) town with Citadel, Great Bath, Granary, right-angle grid streets and covered drains, and inspect its 3D layout.",
-    "hi": "दुर्ग, विशाल स्नानागार, अन्नागार, समकोण ग्रिड सड़कों और ढकी नालियों के साथ हड़प्पा नगर की योजना बनाएँ और उसका 3D रूप देखें।"
+    "en": "Explore a schematic Harappan town and distinguish excavated features from interpretations of their use.",
+    "hi": "एक योजनाबद्ध हड़प्पा नगर देखें और खुदी संरचनाओं को उनके उपयोग की व्याख्याओं से अलग करें।"
    },
    "provenance": "reconstruction",
    "controls": [
@@ -847,40 +847,40 @@
      "id": "gridStreets",
      "type": "toggle",
      "label": {
-      "en": "Right-angle north–south / east–west grid",
-      "hi": "समकोण उत्तर–दक्षिण / पूर्व–पश्चिम ग्रिड"
+      "en": "Aligned model blocks / grid streets",
+      "hi": "संरेखित मॉडल खंड / ग्रिड सड़कें"
      }
     },
     {
      "id": "coveredDrains",
      "type": "toggle",
      "label": {
-      "en": "Kiln-brick covered drains & soak-pits",
-      "hi": "पक्की ईंट की ढकी नालियाँ व सोख्ता-गड्ढे"
+      "en": "Show covered street drains",
+      "hi": "ढकी सड़क नालियाँ दिखाएँ"
      }
     },
     {
      "id": "granary",
      "type": "toggle",
      "label": {
-      "en": "Raised Citadel granary platform",
-      "hi": "दुर्ग पर ऊँचा अन्नागार चबूतरा"
+      "en": "Show large brick platform (use uncertain)",
+      "hi": "बड़ा ईंट-चबूतरा दिखाएँ (उपयोग अनिश्चित)"
      }
     },
     {
      "id": "greatBath",
      "type": "toggle",
      "label": {
-      "en": "Bitumen-lined Great Bath reservoir",
-      "hi": "विशाल स्नानागार (जलरोधी ईंट)"
+      "en": "Show Great Bath",
+      "hi": "विशाल स्नानागार दिखाएँ"
      }
     },
     {
      "id": "wells",
      "type": "slider",
      "label": {
-      "en": "Brick wells per neighbourhood block",
-      "hi": "प्रति मोहल्ला ईंट के कुएँ"
+      "en": "Illustrated wells per block",
+      "hi": "प्रति खंड चित्रित कुएँ"
      }
     }
    ],

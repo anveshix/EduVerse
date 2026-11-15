@@ -9,7 +9,7 @@ import { xrSupport } from '../engines/xr.js';
 import { createScene } from '../engines/three-scene.js';
 import { THEME_NEP } from '../data/nep-cbq.js';
 
-export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.gl.aria', insertBeforeEl, themeId, tourStops } = {}) {
+export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.gl.aria', mode2dKey = 'pb.mode.2d', mode3dKey = 'pb.mode.3d', insertBeforeEl, themeId, tourStops, onInspect } = {}) {
   const stops = tourStops || (themeId && THEME_NEP[themeId]?.tours) || [];
   const glHost = h('div', { class: 'gl-host', 'aria-label': t(ariaKey), 'data-k-aria': ariaKey });
   const glLabels = h('div', { class: 'gl-labels', 'aria-hidden': 'true' });
@@ -19,6 +19,9 @@ export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.
   const modeNote = h('p', { class: 'note gl-mode-note' });
   let api = null, view3dObj = null, destroyed = false, lastPick = null;
   let tourIdx = -1, currentStop = null;
+  // Keep at most one asynchronous scene construction alive. A tab or preference
+  // change invalidates it before it can attach a stale WebGL context.
+  let wanted = false, generation = 0, loading = null, pendingFocus = null;
 
   const spinBtn = h('button', {
     type: 'button',
@@ -30,7 +33,7 @@ export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.
       if (!api) return;
       const next = !api.isAutoRotate();
       api.setAutoRotate(next);
-      spinBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+      spinBtn.setAttribute('aria-pressed', String(api.isAutoRotate()));
     },
   }, t('pb.btn.spin'));
 
@@ -57,6 +60,7 @@ export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.
       if (!api || !stops.length) return;
       tourIdx = (tourIdx + 1) % stops.length;
       currentStop = stops[tourIdx];
+      pendingFocus = null; delete view3d.dataset.tourFocus;
       api.setAutoRotate(false);
       spinBtn.setAttribute('aria-pressed', 'false');
       api.flyTo({ az: currentStop.az, pol: currentStop.pol, r: currentStop.r }, 900);
@@ -82,7 +86,7 @@ export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.
 
   const presets = h('div', { class: 'row gl-presets' },
     ...['overview', 'close', 'section', 'top'].map((p) => button(`pb.cam.${p}`, () => {
-      currentStop = null;
+      currentStop = null; pendingFocus = null; delete view3d.dataset.tourFocus;
       tourPill.hidden = true;
       api?.preset(p);
     }, 'btn ghost')),
@@ -108,58 +112,82 @@ export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.
     inspectPill.hidden = false;
   }
 
-  async function enable() {
-    if (destroyed) return;
-    if (lowG()) {
-      disable();
-      modeNote.dataset.k = 'pb.mode.2d';
-      modeNote.textContent = t('pb.mode.2d');
-      return;
-    }
-    if (api) { view3dObj?.update(getState()); return; }
-    view3d.hidden = false;
-    modeNote.dataset.k = 'pb.mode.load';
-    modeNote.textContent = t('pb.mode.load');
-    try {
-      api = await createScene(glHost, {
-        lowGraphics: store.get().lowGraphics,
-        reducedMotion: store.get().reducedMotion,
-        vrStage: true,
-        onTick: (now) => view3dObj?.tick?.(now),
-        onAfterRender: (stereoOn) => view3dObj?.place?.(!stereoOn),
-        onPick: showInspect,
-      });
-      if (destroyed) { api.dispose(); api = null; return; }
-      const built = create3dView(api, glLabels);
-      view3dObj = typeof built?.then === 'function' ? await built : built;
-      if (destroyed || !view3dObj) { view3dObj?.dispose?.(); api?.dispose(); api = null; view3dObj = null; return; }
-      view3dObj.update(getState());
-      presets.hidden = false;
-      modeNote.dataset.k = 'pb.mode.3d';
-      modeNote.textContent = t('pb.mode.3d');
-    } catch {
-      api = null; view3dObj = null; view3d.hidden = true; presets.hidden = true;
-      modeNote.dataset.k = 'pb.mode.2d';
-      modeNote.textContent = t('pb.mode.2d');
-    }
+  function setMode(key) { modeNote.dataset.k = key; modeNote.textContent = t(key); }
+
+  function applyFocus() {
+    if (!api || !pendingFocus) return;
+    currentStop = null; tourPill.hidden = true;
+    api.setAutoRotate(false);
+    spinBtn.setAttribute('aria-pressed', 'false');
+    api.flyTo(pendingFocus.view, 900);
+    if (pendingFocus.id) view3d.dataset.tourFocus = pendingFocus.id;
   }
 
-  function disable() {
-    if (!api) return;
-    view3dObj?.dispose?.();
-    api.dispose();
+  // Companion tours may request a camera focus while 3D is loading or disabled.
+  function focus(view, id) { pendingFocus = { view, id }; applyFocus(); }
+
+  function clearStage() {
+    view3dObj?.dispose?.(); api?.dispose();
     api = null; view3dObj = null; lastPick = null; currentStop = null; tourIdx = -1;
     glHost.replaceChildren(); glLabels.replaceChildren();
-    inspectPill.hidden = true;
-    tourPill.hidden = true;
+    inspectPill.hidden = true; tourPill.hidden = true;
     view3d.classList.remove('gl-stereo');
-    stereoBtn.setAttribute('aria-pressed', 'false');
-    spinBtn.setAttribute('aria-pressed', 'false');
+    delete view3d.dataset.tourFocus;
+    stereoBtn.setAttribute('aria-pressed', 'false'); spinBtn.setAttribute('aria-pressed', 'false');
     view3d.hidden = true; presets.hidden = true;
   }
 
+  async function enable() {
+    if (destroyed) return;
+    wanted = true;
+    if (lowG()) { clearStage(); setMode(mode2dKey); return; }
+    if (api && view3dObj) { view3dObj.update(getState()); return; }
+    if (loading) return loading;
+    const request = ++generation;
+    const stale = () => destroyed || !wanted || request !== generation || lowG();
+    view3d.hidden = false; setMode('pb.mode.load');
+    const job = (async () => {
+      let sceneApi = null, built = null;
+      try {
+        sceneApi = await createScene(glHost, {
+          lowGraphics: store.get().lowGraphics,
+          reducedMotion: store.get().reducedMotion,
+          vrStage: true,
+          onTick: (now) => view3dObj?.tick?.(now),
+          onAfterRender: (stereoOn) => view3dObj?.place?.(!stereoOn),
+          onPick: (info) => { showInspect(info); onInspect?.(info); },
+        });
+        if (stale()) { sceneApi.dispose(); return; }
+        sceneApi.renderer.domElement.setAttribute('aria-label', t(ariaKey));
+        sceneApi.renderer.domElement.dataset.kAria = ariaKey;
+        const result = create3dView(sceneApi, glLabels);
+        built = typeof result?.then === 'function' ? await result : result;
+        if (stale() || !built) {
+          built?.dispose?.(); sceneApi.dispose(); glLabels.replaceChildren(); return;
+        }
+        api = sceneApi; view3dObj = built; sceneApi = null; built = null;
+        view3dObj.update(getState());
+        presets.hidden = false; setMode(mode3dKey); applyFocus();
+      } catch {
+        built?.dispose?.(); sceneApi?.dispose();
+        if (request === generation && !destroyed) { clearStage(); setMode(mode2dKey); }
+        else if (!api) glLabels.replaceChildren();
+      }
+    })();
+    loading = job;
+    await job;
+    if (loading === job) loading = null;
+    // If a tab was closed and reopened during loading, build only the latest request.
+    if (!destroyed && wanted && request !== generation && !lowG() && !api) return enable();
+  }
+
+  function disable() {
+    wanted = false; generation++;
+    clearStage();
+  }
+
   const offStore = store.subscribe((_s, keys) => {
-    if (keys.includes('lowGraphics')) {
+    if (keys.includes('lowGraphics') || keys.includes('reducedMotion')) {
       disable();
       if (!destroyed && !view3d.closest('.tabpanel')?.hidden) enable();
     }
@@ -169,11 +197,12 @@ export function attachThreeStage(labEl, getState, create3dView, { ariaKey = 'pb.
     enable,
     disable,
     update(S) { view3dObj?.update(S); },
+    focus,
     relabel() {
       view3dObj?.relabel?.();
       if (lastPick && !inspectPill.hidden) inspectPill.textContent = pair(lastPick.en, lastPick.hi);
       if (currentStop && !tourPill.hidden) tourPill.textContent = `🥽 (${tourIdx + 1}/${stops.length}) ${pair(currentStop.en, currentStop.hi)}`;
-      modeNote.textContent = t(modeNote.dataset.k || 'pb.mode.2d');
+      modeNote.textContent = t(modeNote.dataset.k || mode2dKey);
     },
     destroy() { destroyed = true; offStore(); disable(); },
   };

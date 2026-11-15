@@ -1,5 +1,5 @@
 // T04 Early Humans: pure model for the deep-time clock. All dates are approximate "years ago" (ya) and vary by region and source.
-export const SPAN = 2_000_000;          // years shown on the timeline (first stone tools to today)
+export const SPAN = 2_000_000;          // years shown on the timeline (a teaching window ending today; some stone tools are older)
 export const LOG_MIN = 100;             // the log scale cannot reach 0, so it stops 100 years before today
 export const AGES = [
   { id: 'palaeo', from: 2_000_000, to: 12_000 },

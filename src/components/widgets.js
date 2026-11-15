@@ -30,13 +30,14 @@ export function chips({ name, options, value, onSelect }) {
   function select(id) { btns.forEach((b) => b.setAttribute('aria-checked', b.dataset.id === id ? 'true' : 'false')); }
   return { root, select };
 }
-export function tabs({ tabs: list, active, onChange }) {
+export function tabs({ tabs: list, active, onChange, idPrefix = '' }) {
   const bar = h('div', { class: 'tabbar', role: 'tablist' });
   const panels = h('div', { class: 'tabpanels' });
   const els = {};
   list.forEach((tb) => {
-    const b = h('button', { type: 'button', role: 'tab', id: `tab-${tb.id}`, 'aria-controls': `panel-${tb.id}`, class: 'tab', 'data-k': tb.key, onclick: () => { playTap(); show(tb.id); }, onkeydown: (e) => keynav(e, tb.id) }, t(tb.key));
-    const p = h('div', { role: 'tabpanel', id: `panel-${tb.id}`, 'aria-labelledby': `tab-${tb.id}`, class: 'tabpanel', hidden: true }, tb.el);
+    const domId = idPrefix ? `${idPrefix}-${tb.id}` : tb.id;
+    const b = h('button', { type: 'button', role: 'tab', id: `tab-${domId}`, 'aria-controls': `panel-${domId}`, class: 'tab', 'data-k': tb.key, onclick: () => { playTap(); show(tb.id); }, onkeydown: (e) => keynav(e, tb.id) }, t(tb.key));
+    const p = h('div', { role: 'tabpanel', id: `panel-${domId}`, 'aria-labelledby': `tab-${domId}`, class: 'tabpanel', hidden: true }, tb.el);
     els[tb.id] = { b, p }; bar.append(b); panels.append(p);
   });
   function keynav(e, id) {
@@ -69,6 +70,8 @@ export function predict(def, { done = {}, onDone } = {}) {
   const opts = h('div', { class: 'predict-opts', role: 'radiogroup' });
   const fb = h('div', { class: 'feedback', 'aria-live': 'polite' });
   const state = done[def.id] || null;
+  // Revised questions must not display an older choice as if it answered the new wording.
+  const outdated = !!(def.revision && state?.choice && state.revision !== def.revision);
   const render = (choice) => {
     opts.innerHTML = '';
     def.options.forEach((o) => {
@@ -84,6 +87,12 @@ export function predict(def, { done = {}, onDone } = {}) {
     // Save the explanation at experiment time so revisiting it never reruns or changes the model.
     const explanation = def.explain();
     done[def.id] = { choice, ok, actual, explanation };
+    if (def.revision) {
+      done[def.id].revision = def.revision;
+      // Keep the earlier record locally, without presenting its old choice as a new answer.
+      if (outdated) done[def.id].previous = state;
+      else if (state?.previous) done[def.id].previous = state.previous;
+    }
     if (ok) { if (!state?.ok) store.awardStar(`pred:${def.id}:${stem.textContent.slice(0, 18)}`); playWin(); }
     else playTry();
     onDone?.(def.id, done[def.id]);
@@ -95,7 +104,11 @@ export function predict(def, { done = {}, onDone } = {}) {
     fb.className = 'feedback ' + (ok ? 'ok' : 'try');
     fb.innerHTML = `<strong data-k="${ok ? 'fb.right' : 'fb.notquite'}">${esc(t(ok ? 'fb.right' : 'fb.notquite'))}</strong> ` + biHtml(explanation, { block: true });
   }
-  if (state?.choice && state.actual && state.explanation?.en && state.explanation?.hi) showResult(state.choice, state.actual, state.ok, state.explanation);
+  if (outdated) {
+    render(null);
+    fb.className = 'feedback hint';
+    fb.innerHTML = biHtml({ en: 'This question has changed since your saved prediction. Your earlier answer is retained; choose again for the updated question.', hi: 'आपके सहेजे अनुमान के बाद यह प्रश्न बदल गया है। पिछला उत्तर सुरक्षित है; बदले प्रश्न के लिए फिर चुनें।' }, { block: true });
+  } else if (state?.choice && state.actual && state.explanation?.en && state.explanation?.hi) showResult(state.choice, state.actual, state.ok, state.explanation);
   else {
     render(null);
     if (state?.choice) {

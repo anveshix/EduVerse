@@ -45,7 +45,7 @@
 | **Step 1 — T01** Understanding Social Science | + Patna place (6th lens place), + Q5/Q6 Patna questions, Inquiry Cycle in L1, Patna discover tasks | Local anchor: "my city, my Social Science" | Done (`ec7b9a0`) |
 | **Step 2 — T02** Earth's Surface | India landform atlas (Himalaya/Deccan/Plains/Coast/Islands), Everest fossil story front-and-centre | India-first geography | Done |
 | **Step 3 — T03** Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather in your own locality; Patna is an optional example | Done |
-| Step 4 — T04 Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist | Next, on request |
+| **Step 4 — T04** Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist | Done |
 | Step 5 — T05 State & Society | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines |
 | Step 6 — T06 Democracy | Panchayati Raj + classroom vote simulation | Democracy you practise daily |
 | Step 7 — T07 Elections | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government |
@@ -133,7 +133,31 @@
 
 ---
 
+## Step 4 — T04: Early Humans
+
+### Audit and improvements
+- **Evidence detective kit (L2):** three explicitly fictional field records—a marked bone, charred grain and a brick platform—ask students to separate recorded observations from competing interpretations and choose a useful next check. Feedback explains uncertainty and is revisable; optional notes and answers remain in this browser, with a clear warning if storage is blocked. The original six-card sorter remains, now allows revisions and has a separate reset that does not erase field notes. No notes are sent to a server.
+- **Harappan guided tour (L4):** six bilingual stops cover a raised sector, the Great Bath, streets and houses, covered drains, wells and a disputed large platform. Each distinguishes evidence, a possible inference, what is unknown and a next investigation, with linked sources. Selecting a stop focuses the 3D camera and highlights the matching 2D plan; controls, model reset, the prediction, illustration pins and 3D feature selection also update the tour. A hidden feature is reported and can be restored by selecting its stop. The same text and 2D interaction work with low graphics, no WebGL, a failed Three.js load or on a first offline chapter visit. The small-screen plan scrolls within its own region rather than shrinking the whole page.
+- **Historical limits:** the town is a schematic composite mainly inspired by Mohenjo-daro, **not a measured site reconstruction**. Its locations, sizes and repeated well counts are invented; Dholavira's distinct layout and reservoirs are not the Great Bath. The purpose of the so-called “granary” foundations remains debated. The former invented sanitation, flood-safety and overall percentages were removed; model controls show features, not ancient health outcomes. The Lothal case now presents a dock and a reservoir as competing basin interpretations. The comparative atlas labels its points and route schematic and makes clear that the Mature Harappan and Shang spans shown are not contemporary.
+- **Timeline and settlement:** two million years is a chosen clock window, not the beginning of stone toolmaking; the 8,000-year farming date is an example, not a universal starting date. The log axis stops at 100 years ago. The L3 settlement model is clearly fictional: initial populations, rates, weather and food units are invented, and real communities could combine practices. Its reserve arithmetic now covers a shortfall before a simulated decline; a covered shortfall pauses growth and an unmet one causes decline in this toy. A low/high-storage comparison is not a historical forecast.
+- **Compatibility and access:** existing city control keys, sorter choices, reflections and LO exit IDs are retained. An old clock prediction gets the corrected explanation without rerunning it. For substantially reworded L3–L5 predictions, an older answer stays in local state but the updated question can be attempted again, instead of falsely displaying the old choice as a response to new wording. Shared lab dock IDs are now unique, and asynchronous 3D construction is guarded against stale tab, graphics and motion changes. T04's opening question and teacher guidance now emphasize evidence and alternative explanations.
+- These are companions to the existing five LOs, not additional simulations: the catalog remains **78/78 LOs and 79 simulations**. Notes disappear with browser data; images and Three.js are cached on first use, so they can be absent on the first offline visit. New Hindi remains **draft pending subject-teacher review**. Automated checks do not replace a screen-reader review.
+
+### Teaching references
+- NCERT *Bricks, Beads and Bones*: [Harappan material remains, context, town planning and interpretations](https://ncert.nic.in/textbook/pdf/lehs101.pdf); NCERT's [discussion of early cities and Dholavira](https://ncert.nic.in/textbook/pdf/fees106.pdf).
+- UNESCO: [Mohenjo-daro](https://whc.unesco.org/en/list/138/) and [Dholavira](https://whc.unesco.org/en/list/1645/); Harappa.com: [Great Bath](https://www.harappa.com/slide/great-bath-mohenjo-daro-0) and the [debated “granary” label](https://www.harappa.com/category/slide-subject/granary).
+- Lothal basin interpretations: [Harappa.com](https://www.harappa.com/lothal/1.html) and [recent palaeochannel research reported by Archaeology Magazine](https://archaeologymag.com/2024/09/ancient-harappan-dockyard-at-lothal-india/); the latter supports a dock interpretation but does not eliminate the debate.
+- Smithsonian Human Origins: [early stone tool kit](https://humanorigins.si.edu/education/fun-facts/early-human-tool-kit), [alternative interpretations of marked bones](https://humanorigins.si.edu/research/whats-hot-human-origins/oldest-use-stone-tools) and [the varied beginnings of agriculture](https://humanorigins.si.edu/human-characteristics/humans-change-world).
+
+### Verification
+- `npm run catalog` and `npm run sw` generated the **78-LO/79-simulation catalog** and **126-file** content-hashed precache. `npm run verify` passed architecture checks and **52/52 tests**.
+- `npm run test:t04` passed the three revisable cases, keyboard/touch, 360 px layout, EN/HI/both, local persistence, earlier prediction migration, denied storage, first-open offline 2D, failed Three.js fallback, actual WebGL picking and synchronization, rapid tab/preference changes, reduced motion, dark-mode selected-text contrast and all five LO exit checks. It reported no network writes or JavaScript errors. `npm run test:t02` and `npm run test:t03` passed their prior regressions.
+- `npm run a11y`, `npm run smoke` and `npm run smoke:mobile` passed across all 16 themes; the desktop and 360 px smoke runs reported no errors or horizontal page overflow. Human accessibility and Hindi subject review remain outstanding.
+- `npm run perf:size` estimated **841.0 KB gzip / 52 requests** for the T04 entry and **1,008.6 KB / 53 requests** after opening its guided 3D, excluding background service-worker precaching. The broader `perf:throttle` emulation passed its existing home/T09/T11/T16 and offline checks; it does not measure T04 on a physical device.
+
+---
+
 ## How to Continue
-1. On the user's request, audit and upgrade **Step 4 — T04** only.
+1. On the user's request, audit and upgrade **Step 5 — T05** only.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

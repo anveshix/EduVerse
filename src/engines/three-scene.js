@@ -98,6 +98,7 @@ export async function createScene(host, { lowGraphics = false, reducedMotion = f
       view.az = tween.from.az + (tween.to.az - tween.from.az) * e;
       view.pol = tween.from.pol + (tween.to.pol - tween.from.pol) * e;
       view.r = tween.from.r + (tween.to.r - tween.from.r) * e;
+      target.lerpVectors(tween.targetFrom, tween.targetTo, e);
       if (k >= 1) tween = null; dirty = true;
     }
     if (rotating && !tween && !reducedMotion) {
@@ -147,8 +148,13 @@ export async function createScene(host, { lowGraphics = false, reducedMotion = f
         pol: toView.pol ?? view.pol,
         r: toView.r ?? view.r,
       };
-      if (reducedMotion) { Object.assign(view, to); dirty = true; schedule(); }
-      else { tween = { from: { ...view }, to, t0: performance.now(), dur }; schedule(); }
+      // Optional orbit target lets an evidence-led tour focus a particular feature.
+      // Existing tours keep their current target when none is supplied.
+      const dest = toView.target
+        ? new THREE.Vector3(toView.target.x ?? target.x, toView.target.y ?? target.y, toView.target.z ?? target.z)
+        : target.clone();
+      if (reducedMotion || dur <= 0) { Object.assign(view, to); target.copy(dest); tween = null; dirty = true; schedule(); }
+      else { tween = { from: { ...view }, to, targetFrom: target.clone(), targetTo: dest, t0: performance.now(), dur }; schedule(); }
     },
     async enterWebXR(onEnd) {
       if (xrSession) { await xrSession.end().catch(() => {}); return false; }
@@ -175,7 +181,8 @@ export async function createScene(host, { lowGraphics = false, reducedMotion = f
         section: { az: 0, pol: Math.PI / 2, r: 20 },
         top: { az: 0, pol: 0.25, r: 19 },
       }[p] || { az: 0.58, pol: 1.15, r: 21 };
-      api.flyTo(to, 550);
+      // Camera presets return to the whole-scene target after a focused tour.
+      api.flyTo({ ...to, target: { x: 0, y: -0.6, z: 0 } }, 550);
     },
     project(v3) {
       const v = v3.clone().project(camera);
