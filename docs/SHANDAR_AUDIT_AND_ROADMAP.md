@@ -52,7 +52,7 @@
 | **Step 8 — T08 Economics Basics** | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket | Done |
 | **Step 9 — T09 Price Puzzle** | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week | Done |
 | **Step 10 — T10 Oceans** | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar | Done |
-| Step 11 — T11 Life on Earth | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you |
+| **Step 11 — T11 Life on Earth** | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you | Done |
 | Step 12 — T12 Resistance | Multiple perspectives (ruler, farmer, trader, woman) | History with many voices |
 | Step 13 — T13 India & World-I | Silk Road + maritime map lab, Patliputra trade | India connected to world |
 | Step 14 — T14 Authority | School rules → Constitution, grievance timeline | Why rules are fair (or not) |
@@ -272,7 +272,28 @@
 
 ---
 
+## Step 11 — T11: Life on Earth
+
+### Audit and improvements
+- **Four habitats (L1):** a sourced, numbered India-map inquiry compares Thar's grasslands, Sundarbans mangroves, Western Ghats and Kabartal/Kanwar Jheel in Begusarai, Bihar. It connects local livelihoods and biodiversity, distinguishes the 2020 Ramsar designation from a biosphere reserve, and considers seasonal farming, fishing, birds and water management. Map dots are examples, not habitat boundaries. Two clearly invented warm/dry and warm/wet presets update the existing climate matcher; temperature and rain alone cannot classify a mangrove or wetland. The matcher now labels its nearest-envelope fallback and does not claim cold Ladakh as an example of its hot-desert category.
+- **Reserve accuracy (L2):** the map is explicitly a selection with approximate dots and representative state shading. Palamau/Betla, a tiger reserve, was incorrectly listed as a biosphere reserve; it has been replaced with nationally designated Achanakmar-Amarkantak. Manas is no longer conflated with Kaziranga. A legacy Palamau selection is retained as `previousReserve` while the working selection falls back to Nilgiri; existing answers and progress remain. A link points to the MoEFCC list as of December 2023.
+- **Tourism and livelihoods (L3):** an interactive fictional visit-count reference gives exact above/equal/below arithmetic and asks whose decisions, rights, livelihoods and ecological safeguards matter. Its invented 80 visits is neither an actual carrying capacity nor a safety or sustainability threshold. The 50-year harvest lab now shows actual outcomes, including depletion when a low starting stock is combined with a harvest below peak growth; it no longer promises perpetual production. The two-species food-web model explicitly does not calculate plants, grazing or food scarcity.
+- **Fire and forest knowledge (L4–L5):** the fire index and assumed fuel-break effect are explicitly fictional; invented spread-speed claims and guarantees of safety were removed. A local-preparation inquiry asks students to discuss prevention and reporting with adults and authorities; its smoke scenario warns never to approach or fight a real fire. Current local emergency/forest instructions take precedence over the app. A sourced comparison of Forest Rights Act recognition and Apatani water/forest knowledge distinguishes legal processes from an app decision and UNESCO's tentative list from World Heritage inscription. Traditional-practice and CBQ claims were qualified; the formerly purported Palamau “source case” is now an explicitly fictional village scenario. Revised predictions preserve prior answers via revision markers.
+- Companions are within existing LOs, add no catalog simulations and store only example choices locally, with reset and blocked-storage notices. Source links require internet; content works offline after service-worker installation. New Hindi is **draft pending subject-teacher review**; automated checks do not replace human accessibility review.
+
+### Teaching references
+- [Ramsar Sites Information Service, Kabartal (2020)](https://rsis.ramsar.org/ris/2436); [Wildlife Institute of India, Thar research](https://wii.gov.in/uploads/media/pdf/rti/RTI_2018_19_Q2_035_Reply_Aman_Bansal_GIB_Thar_report_2015.pdf); UNESCO's [Sundarbans National Park](https://whc.unesco.org/en/list/452/) and [Western Ghats](https://whc.unesco.org/en/list/1342/) descriptions.
+- [MoEFCC biosphere-reserve list](https://moef.gov.in/uploads/pdf/Approved%20copy%20of%20Website%20note%20of%20BR.pdf), dated December 2023; [MoEFCC elephant conservation planning framework](https://moef.gov.in/uploads/pdf/framework_preparation_elephant_conservation_plan.pdf), which discusses ecological concerns, carrying capacity and community participation.
+- [Uttarakhand Forest Department, forest fire information](https://forest.uk.gov.in/forest-fire-info); [FSI/NDMA example forest-fire alert (2025)](https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1743501749456010). The dated alert is not a current local warning.
+- [Ministry of Tribal Affairs, Forest Rights Act training manual](https://tribal.nic.in/FRA/data/FRATrainingManual.pdf); [UNESCO tentative list, Apatani cultural landscape](https://whc.unesco.org/en/tentativelists/5893/). Actual rights and local rules require current authoritative information.
+
+### Verification
+- `npm run catalog && npm run sw`: 78/78 LOs, 79 simulations, 146 precached files. `npm run verify` passed architecture checks and 83/83 tests.
+- `npm run test:t11` checked all four habitats, wetland designation, sources, approximate map selection, linked climate controls, tourism arithmetic, low-stock harvest, fire-model limits and safe-response inquiry, forest rights and knowledge, reserve migration and old-prediction retention, EN/HI/both, keyboard, 360 px, blocked storage, first-open offline after installation, 5/5 progress and no network writes. `test:t09` and `test:t10` passed as regressions. Targeted accessibility and desktop/360 px smoke passed without reported page errors or horizontal overflow; the mobile habitat card was visually inspected.
+
+---
+
 ## How to Continue
-1. Continue with **Step 11 — T11**, then follow the roadmap in order, one chapter at a time.
+1. Continue with **Step 12 — T12**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

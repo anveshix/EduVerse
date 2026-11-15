@@ -320,3 +320,6 @@ ol.try{padding-left:1.3rem}ol.try li{margin:.35rem 0}.ctl-label{margin-top:.6rem
 @media(max-width:620px){.budget-rows{grid-template-columns:minmax(0,1fr)}.time-slots{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .t08-systems .txt{fill:#17212b;font-size:42px}
 .t08-light-label{fill:#17212b}
+
+/* Schematic maps inside the ocean and habitat inquiry cards. */
+.ocean-motion-map,.habitat-map{margin:.8rem 0;min-width:0}.ocean-motion-map figcaption,.habitat-map figcaption{margin-top:.35rem}

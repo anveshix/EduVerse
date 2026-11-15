@@ -11,8 +11,8 @@ const opt = (id, en, hi, why) => ({ id, en, hi, ...(why ? { why } : {}) });
 // ---------------------------------------------------------------- T11.L3 forest harvest and food web
 export const harvest = {
   id: 'T11.L3',
-  objective: b('Decide how much of a forest can be harvested each year without destroying it, using regrowth and the maximum sustainable yield.', 'पुनर्वृद्धि और अधिकतम धारणीय उपज के आधार पर तय करें कि वन को नष्ट किए बिना हर वर्ष कितना काटा जा सकता है।'),
-  note: { kind: 'schematic', en: 'A logistic-growth teaching model. Units are arbitrary; real forests also depend on species, soil and climate.', hi: 'लॉजिस्टिक वृद्धि का शिक्षण-मॉडल। इकाइयाँ काल्पनिक हैं; वास्तविक वन प्रजाति, मिट्टी और जलवायु पर भी निर्भर करते हैं।' },
+  objective: b('Compare harvest and regrowth in an invented forest-stock model, and discuss why real forest management requires more evidence.', 'काल्पनिक वन-भंडार मॉडल में कटाई और पुनर्वृद्धि की तुलना करें और चर्चा करें कि वास्तविक प्रबंधन में अधिक साक्ष्य क्यों चाहिए।'),
+  note: { kind: 'schematic', en: 'A 50-year logistic-growth teaching model with arbitrary units, not a real forest or harvest recommendation. Biodiversity, land rights, species and climate are not modelled.', hi: 'काल्पनिक इकाइयों का 50-वर्षीय वृद्धि शिक्षण मॉडल, वास्तविक वन या कटाई सलाह नहीं। जैव-विविधता, भूमि अधिकार, प्रजातियाँ और जलवायु मॉडल में नहीं हैं।' },
   init: () => ({ harvest: 80, stock0: 800 }),
   controls: [
     { id: 'harvest', type: 'slider', label: b('Harvest per year', 'प्रति वर्ष कटाई'), min: 0, max: 160, step: 5 },
@@ -22,40 +22,40 @@ export const harvest = {
     const r = Eco.harvestRun({ harvest: S.harvest, stock0: S.stock0, years: 50 }), msy = Eco.maxSustainableYield();
     const ch = new Chart({ xMax: 50, yMax: 1100, xLabel: P('Years', 'वर्ष'), yLabel: P('Forest stock', 'वन भंडार'), xTicks: 5, yTicks: 5 });
     ch.axes(); ch.hline(Eco.forest.K, 'guide', 0, 50); ch.text(49, Eco.forest.K, P('capacity', 'क्षमता'), 'lbl', 'end', 0, -6);
-    ch.line(r.stock.map((v, y) => [y, v]), r.sustainable ? 'curve g' : 'curve d');
+    ch.line(r.stock.map((v, y) => [y, v]), r.collapsedAt ? 'curve d' : 'curve g');
     const lines = [
-      { en: `Regrowth is fastest when the forest is half full; the most you can take every year for ever (maximum sustainable yield) is ${fmt(msy, 0)}.`, hi: `पुनर्वृद्धि सबसे तेज़ तब होती है जब वन आधा भरा हो; हर वर्ष हमेशा के लिए अधिकतम ${fmt(msy, 0)} लिया जा सकता है (अधिकतम धारणीय उपज)।` },
-      S.harvest > msy ? { en: `You harvest ${S.harvest} per year, more than regrowth can replace${r.collapsedAt ? `: the forest is gone in year ${r.collapsedAt}.` : '; the forest shrinks and will eventually collapse.'}`, hi: `आप प्रति वर्ष ${S.harvest} काटते हैं, जो पुनर्वृद्धि से अधिक है${r.collapsedAt ? `: वन वर्ष ${r.collapsedAt} में समाप्त हो जाता है।` : '; वन घटता है और अंततः समाप्त हो जाएगा।'}`, cls: 'warn' }
-        : { en: `You harvest ${S.harvest} per year, within the sustainable yield: the forest settles at about ${fmt(r.final, 0)} and keeps producing.`, hi: `आप प्रति वर्ष ${S.harvest} काटते हैं, जो धारणीय उपज के भीतर है: वन लगभग ${fmt(r.final, 0)} पर स्थिर हो जाता है और उत्पादन देता रहता है।`, cls: 'balanced' },
-      { en: `Total wood taken in 50 years: ${fmt(r.total, 0)}.`, hi: `50 वर्षों में कुल लकड़ी: ${fmt(r.total, 0)}।`, cls: 'note' },
+      { en: `In this model, peak annual regrowth is ${fmt(msy, 0)} units at half the assumed capacity. A harvest below that peak can still deplete a low starting stock.`, hi: `इस मॉडल में अनुमानित क्षमता के आधे पर अधिकतम वार्षिक पुनर्वृद्धि ${fmt(msy, 0)} इकाई है। इससे कम कटाई भी कम शुरुआती भंडार को समाप्त कर सकती है।` },
+      r.collapsedAt ? { en: `With ${S.harvest} units requested per year and starting stock ${S.stock0}, the model stock is depleted in year ${r.collapsedAt}.`, hi: `प्रति वर्ष ${S.harvest} इकाई और शुरुआती भंडार ${S.stock0} पर मॉडल भंडार वर्ष ${r.collapsedAt} में समाप्त होता है।`, cls: 'warn' }
+        : { en: `With ${S.harvest} units requested per year and starting stock ${S.stock0}, model stock after 50 years is ${fmt(r.final, 0)}. This does not guarantee future or real-world sustainability.`, hi: `प्रति वर्ष ${S.harvest} इकाई और शुरुआती भंडार ${S.stock0} पर 50 वर्ष बाद मॉडल भंडार ${fmt(r.final, 0)} है। इससे भविष्य या वास्तविक टिकाऊपन की गारंटी नहीं मिलती।`, cls: 'balanced' },
+      { en: `Total model harvest in 50 years: ${fmt(r.total, 0)} invented units.`, hi: `50 वर्षों में कुल मॉडल कटाई: ${fmt(r.total, 0)} काल्पनिक इकाई।`, cls: 'note' },
     ];
     return {
       plate: {
         src: 'assets/images/plates/t11-grove.jpg',
-        en: 'Forest stewardship & carrying capacity: tap pins to compare sustainable village harvest vs rapid over-logging.',
-        hi: 'वन प्रबंधन व धारण क्षमता: टिकाऊ कटाई बनाम अति-कटाई परखने हेतु पिन पर टैप करें।',
+        en: 'Forest stewardship: tap pins to compare three invented harvests in the model.',
+        hi: 'वन प्रबंधन: मॉडल में तीन काल्पनिक कटाई विकल्पों की तुलना हेतु पिन चुनें।',
         spots: [
-          { x: 26, y: 42, en: 'Sustainable Community Harvest', hi: 'धारणीय सामुदायिक कटाई', detail: b('Taking 60 units/yr stays below natural regrowth, sustaining timber for generations.', 'प्रति वर्ष 60 इकाई कटाई प्राकृतिक पुनर्वृद्धि से कम रहती है और वन सदा बना रहता है।'), set: { harvest: 60, stock0: 800 } },
-          { x: 56, y: 58, en: 'Max Sustainable Yield (~Half Stock)', hi: 'अधिकतम धारणीय उपज', detail: b('Regrowth peaks near half forest capacity — check how close 95 units gets to the edge.', 'आधी क्षमता पर पुनर्वृद्धि सर्वाधिक होती है — 95 पर सीमा रेखा जाँचें।'), set: { harvest: 95, stock0: 800 } },
-          { x: 80, y: 48, en: 'Clear-Cut Over-Harvest', hi: 'अति-कटाई संकट', detail: b('Harvesting 135/yr outstrips regrowth and drives rapid ecological collapse.', '135/वर्ष कटाई पुनर्वृद्धि से आगे निकलकर पूरे वन को समाप्त कर देती है।'), set: { harvest: 135, stock0: 800 } },
+          { x: 26, y: 42, en: '60 units per year', hi: 'प्रति वर्ष 60 इकाई', detail: b('Try 60 units from a starting stock of 800; change the starting stock to test a different result.', '800 शुरुआती भंडार से 60 इकाई आज़माएँ; दूसरा परिणाम देखने के लिए शुरुआती भंडार बदलें।'), set: { harvest: 60, stock0: 800 } },
+          { x: 56, y: 58, en: '95 units per year', hi: 'प्रति वर्ष 95 इकाई', detail: b('In this model peak regrowth is 100; try 95, then change the starting stock.', 'मॉडल की अधिकतम पुनर्वृद्धि 100 है; 95 आज़माकर शुरुआती भंडार बदलें।'), set: { harvest: 95, stock0: 800 } },
+          { x: 80, y: 48, en: '135 units per year', hi: 'प्रति वर्ष 135 इकाई', detail: b('Compare the model outcome when the requested harvest exceeds its peak growth.', 'जब माँगी कटाई मॉडल की अधिकतम वृद्धि से अधिक हो तो परिणाम तुलना करें।'), set: { harvest: 135, stock0: 800 } },
         ],
       },
       svg: ch.html({ label: P('Forest stock over 50 years', '50 वर्षों में वन भंडार') }), aria: `Forest stock after 50 years: ${fmt(r.final, 0)}.`, lines,
     };
   },
-  discover: [b('Raise the harvest slowly from 0. Find the highest value that still lets the forest survive.', 'कटाई को 0 से धीरे-धीरे बढ़ाएँ। वह सबसे अधिक मान खोजें जिस पर वन फिर भी बचा रहता है।'), b('Set harvest to 120. Does the total wood after 50 years beat a harvest of 90? Think about short-term gain and long-term loss.', 'कटाई 120 करें। क्या 50 वर्षों की कुल लकड़ी 90 की कटाई से अधिक है? अल्पकालिक लाभ और दीर्घकालिक हानि पर सोचें।')],
-  predictions: [{ id: 'p1', stem: b('The forest regrows 100 units a year at best. You harvest 130 every year. What happens?', 'वन अधिक से अधिक प्रति वर्ष 100 इकाई पुनः उगता है। आप हर वर्ष 130 काटते हैं। क्या होगा?'), options: [opt('collapse', 'The forest collapses', 'वन समाप्त हो जाता है'), opt('stable', 'It settles at a lower, stable size', 'वह कम, स्थिर आकार पर टिक जाता है')],
+  discover: [b('Try harvest 80 with starting stock 800, then 100. Does the same harvest have the same 50-year outcome?', '800 शुरुआती भंडार पर कटाई 80 आज़माएँ, फिर 100 शुरुआती भंडार पर। क्या 50-वर्षीय परिणाम समान है?'), b('Compare total model harvest at 120 and 90. Why is a 50-year index not enough to decide real forest policy?', '120 और 90 पर कुल मॉडल कटाई तुलना करें। वास्तविक वन नीति तय करने के लिए 50-वर्षीय सूचक पर्याप्त क्यों नहीं?')],
+  predictions: [{ id: 'p1', revision: 't11-step11', stem: b('In this model, peak regrowth is 100 units/year and starting stock is 800. Request 130 units/year. What happens within 50 years?', 'इस मॉडल में अधिकतम पुनर्वृद्धि 100 इकाई/वर्ष और शुरुआती भंडार 800 है। प्रति वर्ष 130 इकाई माँगने पर 50 वर्ष में क्या होता है?'), options: [opt('collapse', 'The model stock is depleted', 'मॉडल भंडार समाप्त होता है'), opt('stable', 'The model stock remains above zero', 'मॉडल भंडार शून्य से ऊपर रहता है')],
     run: (S) => { S.harvest = 130; S.stock0 = 800; return Eco.harvestRun({ harvest: 130, stock0: 800 }).collapsedAt != null ? 'collapse' : 'stable'; },
-    explain: () => ({ en: `Regrowth peaks at ${fmt(Eco.maxSustainableYield(), 0)}. Taking more than that every year uses up the stock; it collapsed in year ${Eco.harvestRun({ harvest: 130, stock0: 800 }).collapsedAt}.`, hi: `पुनर्वृद्धि अधिकतम ${fmt(Eco.maxSustainableYield(), 0)} होती है। हर वर्ष इससे अधिक लेने पर भंडार खत्म होता है; वन वर्ष ${Eco.harvestRun({ harvest: 130, stock0: 800 }).collapsedAt} में समाप्त हो गया।` }) }],
+    explain: () => ({ en: `With these assumptions, model regrowth peaks at ${fmt(Eco.maxSustainableYield(), 0)} and the model stock is depleted in year ${Eco.harvestRun({ harvest: 130, stock0: 800 }).collapsedAt}. This is not a real-forest prediction.`, hi: `इन मान्यताओं में मॉडल की अधिकतम पुनर्वृद्धि ${fmt(Eco.maxSustainableYield(), 0)} है और मॉडल भंडार वर्ष ${Eco.harvestRun({ harvest: 130, stock0: 800 }).collapsedAt} में समाप्त होता है। यह वास्तविक वन का पूर्वानुमान नहीं है।` }) }],
   exit: [{ id: 'e1', stem: b('What does “sustainable” harvesting mean?', '“धारणीय” कटाई का क्या अर्थ है?'), correct: 'a', options: [
-    { id: 'a', ...b('Taking no more each year than the forest can regrow, so it keeps producing.', 'हर वर्ष उतना ही लेना जितना वन पुनः उगा सके, ताकि वह उत्पादन देता रहे।') }, { id: 'b', ...b('Taking as much as possible as quickly as possible.', 'जितना संभव हो उतना जल्दी लेना।'), why: b('That is over-harvesting: it can empty the forest, as the red line shows.', 'यह अति-कटाई है: यह वन को खाली कर सकती है, जैसा लाल रेखा दिखाती है।') }],
-    explain: b('Sustainable use keeps the resource available for future generations.', 'धारणीय उपयोग संसाधन को भावी पीढ़ियों के लिए उपलब्ध रखता है।'), hint: b('Compare the green line (survives) and the red line (collapses).', 'हरी रेखा (बची रहती है) और लाल रेखा (समाप्त होती है) की तुलना करें।') }],
+    { id: 'a', ...b('Use within regeneration while also protecting biodiversity and people’s rights.', 'पुनर्वृद्धि के भीतर उपयोग तथा जैव-विविधता और लोगों के अधिकारों की रक्षा।') }, { id: 'b', ...b('Taking as much as possible as quickly as possible.', 'जितना संभव हो उतना जल्दी लेना।'), why: b('Over-harvesting can deplete a resource; real ecosystems require more than a stock calculation.', 'अति-कटाई संसाधन घटा सकती है; वास्तविक पारिस्थितिकी को भंडार गणना से अधिक की आवश्यकता है।') }],
+    explain: b('Regrowth matters, but biodiversity, local livelihoods and rights also matter; this toy model cannot certify sustainability.', 'पुनर्वृद्धि महत्त्वपूर्ण है, पर जैव-विविधता, स्थानीय आजीविका और अधिकार भी हैं; यह मॉडल टिकाऊपन सिद्ध नहीं कर सकता।'), hint: b('Compare the model stock and consider what the model leaves out.', 'मॉडल भंडार की तुलना करें और सोचें कि क्या इसमें शामिल नहीं है।') }],
   reflect: b('Suggest one rule a village could make so forest produce is not over-harvested.', 'एक नियम सुझाएँ जो कोई गाँव बना सकता है ताकि वन-उपज की अति-कटाई न हो।'),
 };
 export const foodweb = {
   id: 'T11.L3w',
-  objective: b('Show how plants, herbivores and predators depend on one another and how removing predators changes the whole food web.', 'दिखाएँ कि पौधे, शाकाहारी और शिकारी एक-दूसरे पर कैसे निर्भर हैं और शिकारियों को हटाने से पूरा खाद्य-जाल कैसे बदलता है।'),
-  note: { kind: 'schematic', en: 'Predator–prey (Lotka–Volterra) teaching model with illustrative numbers; real food webs have many more species.', hi: 'शिकारी–शिकार (लोटका–वोल्टेरा) शिक्षण-मॉडल, उदाहरण-संख्याओं के साथ; वास्तविक खाद्य-जालों में कहीं अधिक प्रजातियाँ होती हैं।' },
+  objective: b('Compare a two-population predator–prey model and discuss possible wider food-web effects that it does not calculate.', 'दो-जनसंख्या शिकारी–शिकार मॉडल तुलना करें और खाद्य-जाल पर उन संभावित प्रभावों की चर्चा करें जिनकी गणना यह नहीं करता।'),
+  note: { kind: 'schematic', en: 'Lotka–Volterra teaching model with invented numbers. It models predators and prey only—not plant biomass, grazing, food shortage or a real forest.', hi: 'काल्पनिक संख्याओं का लोटका–वोल्टेरा शिक्षण मॉडल। यह केवल शिकारी व शिकार दिखाता है—पौधों का भंडार, चराई, भोजन की कमी या वास्तविक वन नहीं।' },
   init: () => ({ cull: 0, cullYear: 10 }),
   controls: [
     { id: 'cull', type: 'slider', label: b('Share of predators removed', 'हटाए गए शिकारियों का अनुपात'), min: 0, max: 0.9, step: 0.1, fmt: (v) => `${Math.round(v * 100)}%` },
@@ -69,8 +69,8 @@ export const foodweb = {
     if (S.cull > 0) ch.vline(S.cullYear, 'guide');
     ch.text(1, ymax * 0.95, P('Green: herbivores (prey)', 'हरा: शाकाहारी (शिकार)'), 'lbl', 'start'); ch.text(1, ymax * 0.88, P('Red: predators', 'लाल: शिकारी'), 'lbl', 'start');
     const pk = (a) => Math.max(...a.map((p) => p.prey)), lines = [
-      { en: S.cull > 0 ? `After ${Math.round(S.cull * 100)}% of predators are removed in year ${S.cullYear}, herbivores can rise to ${fmt(pk(tr), 0)} (peak without removal: ${fmt(pk(base), 0)}).` : 'Without human action the two populations rise and fall in linked cycles: more prey feeds more predators; more predators eat the prey down again.', hi: S.cull > 0 ? `वर्ष ${S.cullYear} में ${Math.round(S.cull * 100)}% शिकारी हटाने पर शाकाहारी बढ़कर ${fmt(pk(tr), 0)} तक जा सकते हैं (बिना हटाए शिखर: ${fmt(pk(base), 0)})।` : 'मानव हस्तक्षेप के बिना दोनों जनसंख्याएँ जुड़े चक्रों में घटती-बढ़ती हैं: अधिक शिकार से अधिक शिकारी पलते हैं; अधिक शिकारी शिकार को फिर घटा देते हैं।' },
-      { en: 'More herbivores eat more plants. A change at one level of the food web reaches every other level.', hi: 'अधिक शाकाहारी अधिक पौधे खाते हैं। खाद्य-जाल के एक स्तर का बदलाव हर दूसरे स्तर तक पहुँचता है।', cls: 'note' },
+      { en: S.cull > 0 ? `In this model, removing ${Math.round(S.cull * 100)}% of predators in year ${S.cullYear} gives a 40-year prey peak of ${fmt(pk(tr), 0)} (without removal: ${fmt(pk(base), 0)}).` : 'In this model, predator and prey populations cycle together; the numbers and timing are invented.', hi: S.cull > 0 ? `इस मॉडल में वर्ष ${S.cullYear} में ${Math.round(S.cull * 100)}% शिकारी हटाने पर 40-वर्षीय शिकार शिखर ${fmt(pk(tr), 0)} है (बिना हटाए: ${fmt(pk(base), 0)})।` : 'इस मॉडल में शिकारी और शिकार चक्रों में बदलते हैं; संख्याएँ और समय काल्पनिक हैं।' },
+      { en: 'More herbivores could increase grazing pressure, but plants and food shortage are not represented here. Real food webs have multiple interacting species.', hi: 'अधिक शाकाहारी चराई का दबाव बढ़ा सकते हैं, पर पौधे और भोजन की कमी यहाँ नहीं दिखाए गए हैं। वास्तविक खाद्य-जाल में अनेक परस्पर जुड़ी प्रजातियाँ होती हैं।', cls: 'note' },
     ];
     return {
       plate: {
@@ -78,21 +78,21 @@ export const foodweb = {
         en: 'Deer grazing beside forest stream & patrol edge — tap pins to simulate intact food webs vs predator removal.',
         hi: 'नदी किनारे हिरण व वन्य खाद्य-जाल — प्राकृतिक शिकारी संतुलन बनाम शिकारी हटाने का प्रभाव पिन से परखें।',
         spots: [
-          { x: 20, y: 56, en: 'Intact Deer–Predator Web', hi: 'संतुलित हिरण-शिकारी जाल', detail: b('Predators keep herbivore surges in check so forest undergrowth regenerates safely.', 'शिकारी शाकाहारियों को संतुलित रखकर नए पौधों को बढ़ने देते हैं।'), set: { cull: 0, cullYear: 10 } },
-          { x: 50, y: 66, en: 'Remove 80% Top Predators', hi: '80% शीर्ष शिकारी हटाना', detail: b('Watch herbivore numbers spike after year 10, overgrazing young saplings!', 'वर्ष 10 के बाद शाकाहारियों में तेज़ उछाल और वनस्पति पर दबाव देखें!'), set: { cull: 0.8, cullYear: 10 } },
-          { x: 80, y: 58, en: 'Early Year-4 Disturbance', hi: 'वर्ष 4 का प्रारंभिक हस्तक्षेप', detail: b('Removing predators early in year 4 destabilises trophic cycles right away.', 'वर्ष 4 में ही शिकारी हटने पर पूरा खाद्य-चक्र तुरंत डगमगा जाता है।'), set: { cull: 0.7, cullYear: 4 } },
+          { x: 20, y: 56, en: 'No predator removal', hi: 'शिकारी नहीं हटाए', detail: b('Observe the model’s two linked populations without a removal event.', 'शिकारी हटाए बिना मॉडल की दो जुड़ी जनसंख्याएँ देखें।'), set: { cull: 0, cullYear: 10 } },
+          { x: 50, y: 66, en: 'Remove 80% of model predators', hi: '80% मॉडल शिकारी हटाएँ', detail: b('Compare the model prey curve after year 10. Plants are not shown in this model.', 'वर्ष 10 के बाद मॉडल की शिकार रेखा तुलना करें। इस मॉडल में पौधे नहीं दिखाए गए हैं।'), set: { cull: 0.8, cullYear: 10 } },
+          { x: 80, y: 58, en: 'Year-4 disturbance', hi: 'वर्ष 4 का हस्तक्षेप', detail: b('Compare an earlier removal in this two-species model.', 'दो-प्रजाति मॉडल में पहले हटाने की तुलना करें।'), set: { cull: 0.7, cullYear: 4 } },
         ],
       },
       svg: ch.html({ label: P('Predator and prey populations', 'शिकारी और शिकार की जनसंख्या') }), aria: 'Predator and prey populations over 40 years.', lines,
     };
   },
   discover: [b('With no removal, notice that the red line peaks AFTER the green line. Why is there a delay?', 'बिना हटाए देखें कि लाल रेखा हरी रेखा के बाद शिखर पर पहुँचती है। यह देरी क्यों है?'), b('Remove 90% of predators in year 10. What happens to the herbivores?', 'वर्ष 10 में 90% शिकारी हटाएँ। शाकाहारियों का क्या होता है?')],
-  predictions: [{ id: 'p1', stem: b('Most predators are removed from a forest. In the next few years the herbivores will…', 'किसी वन से अधिकांश शिकारी हटा दिए जाते हैं। अगले कुछ वर्षों में शाकाहारी…'), options: [opt('up', 'Increase, then strain the plants', 'बढ़ेंगे, फिर पौधों पर दबाव डालेंगे'), opt('down', 'Decrease', 'घटेंगे'), opt('same', 'Stay the same', 'वही रहेंगे')],
+  predictions: [{ id: 'p1', revision: 't11-step11', stem: b('In this model, remove 90% of predators in year 10. How does the highest prey count over 40 years compare with no removal?', 'इस मॉडल में वर्ष 10 में 90% शिकारी हटाएँ। 40 वर्षों का अधिकतम शिकार स्तर बिना हटाए शिखर से कैसा है?'), options: [opt('up', 'Higher', 'अधिक'), opt('down', 'Lower', 'कम')],
     run: (S) => { S.cull = 0.9; S.cullYear = 10; const m = (a) => Math.max(...a.map((p) => p.prey)); return m(Eco.webRun({ cullYear: 10, cullFrac: 0.9 })) > m(Eco.webRun()) ? 'up' : 'down'; },
-    explain: () => ({ en: 'Fewer predators means fewer herbivores are eaten, so their number rises until food runs short: everything in a food web is connected.', hi: 'कम शिकारी यानी कम शाकाहारी खाए जाते हैं, इसलिए उनकी संख्या तब तक बढ़ती है जब तक भोजन कम न पड़ जाए: खाद्य-जाल में सब कुछ जुड़ा है।' }) }],
+    explain: () => ({ en: 'For these assumptions the peak prey count is higher. This model does not calculate plant abundance or predict a particular real forest.', hi: 'इन मान्यताओं में शिकार का शिखर अधिक है। मॉडल पौधों की मात्रा नहीं गिनता या किसी वास्तविक वन का पूर्वानुमान नहीं देता।' }) }],
   exit: [{ id: 'e1', stem: b('Why might removing a top predator harm the plants of a forest?', 'किसी शीर्ष शिकारी को हटाने से वन के पौधों को हानि क्यों हो सकती है?'), correct: 'a', options: [
     { id: 'a', ...b('More herbivores survive and eat more plants.', 'अधिक शाकाहारी बचते हैं और अधिक पौधे खाते हैं।') }, { id: 'b', ...b('Plants need predators for sunlight.', 'पौधों को धूप के लिए शिकारियों की आवश्यकता होती है।'), why: b('Plants get energy from the Sun; the link is through the herbivores.', 'पौधे ऊर्जा सूर्य से पाते हैं; संबंध शाकाहारियों के माध्यम से है।') }],
-    explain: b('A food web links levels: fewer predators → more herbivores → more grazing on plants.', 'खाद्य-जाल स्तरों को जोड़ता है: कम शिकारी → अधिक शाकाहारी → पौधों की अधिक चराई।'), hint: b('Follow the green line after the removal.', 'हटाने के बाद हरी रेखा का अनुसरण करें।') }],
+    explain: b('A possible chain is fewer predators → more herbivores → more grazing. Actual effects vary; plants are not calculated by this model.', 'एक संभावित क्रम है कम शिकारी → अधिक शाकाहारी → अधिक चराई। वास्तविक प्रभाव अलग हो सकते हैं; मॉडल पौधों की गणना नहीं करता।'), hint: b('Follow the prey line and consider what might happen to plants outside the model.', 'शिकार रेखा देखें और मॉडल के बाहर पौधों पर संभावित प्रभाव सोचें।') }],
   reflect: b('Draw a three-link food chain from your region and say what would happen if the middle link vanished.', 'अपने क्षेत्र की तीन कड़ियों वाली खाद्य-शृंखला बनाएँ और बताएँ कि बीच की कड़ी लुप्त होने पर क्या होगा।'),
 };
 
@@ -101,15 +101,15 @@ export const foodweb = {
 export const biomeMap = {
   id: 'T11.L1',
   objective: b('Match temperature and rainfall belts to Earth’s major biomes on a world map.', 'विश्व मानचित्र पर तापमान और वर्षा पट्टियों का पृथ्वी के प्रमुख बायोम से मिलान करें।'),
-  note: { kind: 'documented', en: 'Natural Earth 110m countries (world-atlas) projected with d3.geoNaturalEarth1; climate zones are simplified Whittaker-style envelopes.', hi: 'world-atlas के साथ d3.geoNaturalEarth1 मानचित्र; जलवायु क्षेत्र सरलीकृत व्हिटेकर-शैली पर आधारित।' },
+  note: { kind: 'schematic', en: 'The climate envelopes and map markers are illustrative examples, not measured boundaries or a complete classification. Overlapping envelopes use the first match; otherwise the model shows its closest category.', hi: 'जलवायु सीमाएँ और मानचित्र बिंदु शिक्षण उदाहरण हैं, मापी सीमाएँ या संपूर्ण वर्गीकरण नहीं। जहाँ सीमाएँ मिलती हैं वहाँ पहला मिलान है; अन्यथा मॉडल निकटतम वर्ग दिखाता है।' },
   init: () => ({ temp: 26, rain: 2400 }),
   controls: [
     { id: 'temp', type: 'slider', label: b('Mean annual temperature (°C)', 'औसत वार्षिक तापमान (°C)'), min: -12, max: 32, step: 2, fmt: (v) => `${v}°C` },
     { id: 'rain', type: 'slider', label: b('Annual precipitation (mm)', 'वार्षिक वर्षा (मिमी)'), min: 80, max: 3200, step: 80, fmt: (v) => `${v} mm` },
   ],
   view(S) {
-    const match = Eco.BIOMES.find((bm) => S.temp >= bm.temp[0] && S.temp <= bm.temp[1] && S.rain >= bm.rain[0] && S.rain <= bm.rain[1])
-      || Eco.BIOMES.slice().sort((a, c) => (Math.abs((a.temp[0] + a.temp[1]) / 2 - S.temp) * 80 + Math.abs((a.rain[0] + a.rain[1]) / 2 - S.rain)) - (Math.abs((c.temp[0] + c.temp[1]) / 2 - S.temp) * 80 + Math.abs((c.rain[0] + c.rain[1]) / 2 - S.rain)))[0];
+    const within = Eco.BIOMES.find((bm) => S.temp >= bm.temp[0] && S.temp <= bm.temp[1] && S.rain >= bm.rain[0] && S.rain <= bm.rain[1]);
+    const match = within || Eco.BIOMES.slice().sort((a, c) => (Math.abs((a.temp[0] + a.temp[1]) / 2 - S.temp) * 80 + Math.abs((a.rain[0] + a.rain[1]) / 2 - S.rain)) - (Math.abs((c.temp[0] + c.temp[1]) / 2 - S.temp) * 80 + Math.abs((c.rain[0] + c.rain[1]) / 2 - S.rain)))[0];
     const markers = Eco.BIOMES.map((bm) => ({
       lon: bm.lon, lat: bm.lat, r: bm.id === match.id ? 10 : 5.5, fill: bm.color,
       label: bm.id === match.id ? { en: bm.en, hi: bm.hi } : null,
@@ -123,26 +123,26 @@ export const biomeMap = {
         spots: [
           { x: 20, y: 42, en: 'Tropical Rainforest', hi: 'उष्णकटिबंधीय वर्षावन', detail: b('Warm (26°C) + very wet (2,400 mm): towering evergreen biodiversity.', 'गर्म (26°C) + भारी वर्षा (2,400 मिमी): घना सदाबहार वन।'), set: { temp: 26, rain: 2400 } },
           { x: 48, y: 45, en: 'Tropical Savanna', hi: 'उष्णकटिबंधीय सवाना', detail: b('Warm (24°C) + seasonal rain (960 mm): scattered acacia trees and grasslands.', 'गर्म (24°C) + मौसमी वर्षा (960 मिमी): घास मैदान व छितरे वृक्ष।'), set: { temp: 24, rain: 960 } },
-          { x: 66, y: 60, en: 'Hot Arid Desert', hi: 'गर्म मरुस्थल', detail: b('Hot (28°C) + scant rain (160 mm): cacti, succulents and Thar dunes.', 'तप्त (28°C) + बहुत कम वर्षा (160 मिमी): थार रेतीले टिब्बे व नागफनी।'), set: { temp: 28, rain: 160 } },
+          { x: 66, y: 60, en: 'Hot Arid Desert', hi: 'गर्म मरुस्थल', detail: b('Invented warm-dry values (28°C, 160 mm): compare with the Thar’s dunes, native grasses and thorn scrub.', 'काल्पनिक गर्म-शुष्क मान (28°C, 160 मिमी): थार के टिब्बों, स्थानीय घास और कँटीली झाड़ियों से तुलना करें।'), set: { temp: 28, rain: 160 } },
           { x: 78, y: 22, en: 'Cold Alpine Tundra', hi: 'शीत पर्वतीय टुंड्रा', detail: b('Freezing (-6°C) + low precipitation (240 mm): high-Himalayan snow & lichens.', 'अति-शीत (-6°C) + कम वर्षण (240 मिमी): उच्च हिमालयी हिम व काई।'), set: { temp: -6, rain: 240 } },
         ],
       },
       svg,
       aria: `Closest biome for ${S.temp}C and ${S.rain} mm: ${match.en}`,
       lines: [
-        { en: `Matched biome: ${match.en} · Indian example: ${match.indiaEx.en}.`, hi: `मिलता-जुलता बायोम: ${match.hi} · भारतीय उदाहरण: ${match.indiaEx.hi}।`, cls: 'balanced' },
-        { en: `Climate envelope: ${match.temp[0]}°C to ${match.temp[1]}°C, ${match.rain[0]}–${match.rain[1]} mm/year.`, hi: `जलवायु सीमा: ${match.temp[0]}°C से ${match.temp[1]}°C, ${match.rain[0]}–${match.rain[1]} मिमी/वर्ष।`, cls: 'note' },
+        { en: `${within ? 'Model category' : 'Closest model category (no envelope match)'}: ${match.en} · Indian comparison: ${match.indiaEx.en}.`, hi: `${within ? 'मॉडल वर्ग' : 'निकटतम मॉडल वर्ग (सीमा का मिलान नहीं)'}: ${match.hi} · भारतीय तुलना: ${match.indiaEx.hi}।`, cls: 'balanced' },
+        { en: `Illustrative envelope: ${match.temp[0]}°C to ${match.temp[1]}°C, ${match.rain[0]}–${match.rain[1]} mm/year. Local habitats also depend on soils, water, seasons and human use.`, hi: `उदाहरण सीमा: ${match.temp[0]}°C से ${match.temp[1]}°C, ${match.rain[0]}–${match.rain[1]} मिमी/वर्ष। स्थानीय आवास मिट्टी, जल, ऋतु और मानव उपयोग पर भी निर्भर हैं।`, cls: 'note' },
       ],
     };
   },
   discover: [b('Keep temperature at 26°C and slide rainfall from 3,000 mm down to 160 mm. Watch Rainforest → Savanna → Desert.', 'तापमान 26°C रखकर वर्षा को 3,000 से 160 मिमी तक लाएँ। वर्षावन → सवाना → मरुस्थल क्रम देखें।')],
   predictions: [
     {
-      id: 'p1',
-      stem: b('A region stays warm (~26°C) all year but gets under 200 mm rain/year. Its biome is…', 'एक क्षेत्र साल भर गर्म (~26°C) है पर 200 मिमी से कम वर्षा पाता है। इसका बायोम है…'),
+      id: 'p1', revision: 't11-step11',
+      stem: b('In this model, a warm example (26°C) gets 160 mm rain/year. Which category is selected?', 'इस मॉडल में गर्म उदाहरण (26°C) में वर्षा 160 मिमी/वर्ष है। कौन-सा वर्ग चुना जाता है?'),
       options: [opt('desert', 'Desert (like Thar)', 'मरुस्थल (जैसे थार)'), opt('rainforest', 'Tropical Rainforest', 'उष्णकटिबंधीय वर्षावन')],
       run: (S) => { S.temp = 26; S.rain = 160; return 'desert'; },
-      explain: () => b('Warm air without moisture creates hot deserts with thorny scrub and cacti.', 'नमी के बिना ऊँचा तापमान कँटीली झाड़ियों वाला गर्म मरुस्थल बनाता है।'),
+      explain: () => b('The invented warm, dry setting falls inside this model’s hot-desert envelope. Actual ecosystems depend on more than annual temperature and rainfall.', 'काल्पनिक गर्म, शुष्क मान मॉडल की गर्म-मरुस्थल सीमा में है। वास्तविक पारितंत्र वार्षिक ताप व वर्षा से अधिक बातों पर निर्भर हैं।'),
     },
   ],
   exit: [
@@ -165,8 +165,14 @@ export const biomeMap = {
 export const reserveMap = {
   id: 'T11.L2',
   objective: b('Locate India’s biosphere reserves on a map and understand how Core, Buffer and Transition zones protect biodiversity alongside local communities.', 'मानचित्र पर भारत के जैवमंडल आरक्षित क्षेत्र खोजें और जानें कि कोर, बफ़र व संक्रमण क्षेत्र स्थानीय लोगों संग जैव-विविधता कैसे बचाते हैं।'),
-  note: { kind: 'documented', en: 'Reserve coordinates and establishment years from India’s Biosphere Reserve network; boundaries via datta07/INDIAN-SHAPEFILES.', hi: 'भारत के जैवमंडल आरक्षित क्षेत्र नेटवर्क से स्थान व वर्ष; सीमाएँ datta07/INDIAN-SHAPEFILES द्वारा।' },
+  note: { kind: 'documented', en: 'Selected national biosphere reserves from the MoEFCC list as of December 2023. Dots are approximate; one shaded state is not a reserve boundary, and some reserves cross states.', hi: 'दिसंबर 2023 की MoEFCC सूची के कुछ राष्ट्रीय जैवमंडल आरक्षित क्षेत्र। बिंदु अनुमानित हैं; रंगा राज्य आरक्षित सीमा नहीं है और कुछ क्षेत्र कई राज्यों में हैं।' },
   init: () => ({ reserve: 'nilgiri', zone: 'core' }),
+  prepareState(S) {
+    // Palamau is a tiger reserve, not in the national biosphere-reserve list.
+    if (S.reserve === 'palamau') { S.previousReserve = S.reserve; S.reserve = 'nilgiri'; }
+    else if (!Eco.INDIA_RESERVES.some((r) => r.id === S.reserve)) S.reserve = 'nilgiri';
+    if (!['core', 'buffer', 'trans'].includes(S.zone)) S.zone = 'core';
+  },
   controls: [
     { id: 'reserve', type: 'chips', label: b('Select biosphere reserve', 'जैवमंडल क्षेत्र चुनें'), options: Eco.INDIA_RESERVES.map((r) => ({ id: r.id, en: r.en.split(' (')[0], hi: r.hi.split(' (')[0] })) },
     { id: 'zone', type: 'chips', label: b('Biosphere zone', 'क्षेत्र परत'), options: [opt('core', 'Core zone (strict)', 'कोर क्षेत्र (सख्त)'), opt('buffer', 'Buffer zone (research)', 'बफ़र क्षेत्र (शोध)'), opt('trans', 'Transition zone (sustainable villages)', 'संक्रमण क्षेत्र (धारणीय गाँव)')] },
@@ -181,19 +187,19 @@ export const reserveMap = {
     }));
     const svg = indiaMapSvg({ w: 640, h: 420, stateColors: { [res.state]: '#bbf7d0' }, selectedState: res.state, markers, aria: `India biosphere reserves map highlighting ${res.en}` });
     const zInfo = S.zone === 'core'
-      ? b('Core zone: legally protected undisturbed habitat where wildlife breeds without commercial extraction.', 'कोर क्षेत्र: कानूनी रूप से पूरी तरह सुरक्षित क्षेत्र जहाँ वन्यजीव बिना व्यावसायिक दखल के पनपते हैं।')
+      ? b('Core zone: protected habitat prioritised for biodiversity. Applicable laws, existing rights and site rules determine activities.', 'कोर क्षेत्र: जैव-विविधता को प्राथमिकता देने वाला संरक्षित आवास। गतिविधियाँ लागू कानून, मौजूदा अधिकार और स्थानीय नियम तय करते हैं।')
       : S.zone === 'buffer'
-        ? b('Buffer zone: surrounds the core; allows scientific research, environmental education, and carefully regulated eco-tourism.', 'बफ़र क्षेत्र: कोर के चारों ओर स्थित; यहाँ वैज्ञानिक शोध, शिक्षा व सीमित पारिस्थितिक पर्यटन की अनुमति होती है।')
-        : b('Transition zone: outer belt where local communities farm, gather non-timber produce sustainably, and co-manage forests.', 'संक्रमण क्षेत्र: बाहरी पट्टी जहाँ स्थानीय समुदाय टिकाऊ खेती व वन-उपज सह-प्रबंधन करते हैं।');
+        ? b('Buffer zone: generally surrounds or adjoins the core; research, education and regulated activities may be supported under local rules.', 'बफ़र क्षेत्र: सामान्यतः कोर के पास; स्थानीय नियमों के अनुसार शोध, शिक्षा और नियंत्रित गतिविधियाँ संभव हो सकती हैं।')
+        : b('Transition zone: an area for cooperation on livelihoods and conservation. Practices and participation differ between places.', 'संक्रमण क्षेत्र: आजीविका और संरक्षण के सहयोग का क्षेत्र। व्यवहार व भागीदारी अलग-अलग स्थानों पर भिन्न हैं।');
     return {
       plate: {
         src: 'assets/images/plates/t11-reserves.jpg',
         en: 'Indian biosphere reserve landscape: tap dense river Core forest, ranger Buffer station or terraced Transition village.',
         hi: 'भारतीय जैवमंडल क्षेत्र: नदी तटीय कोर वन, बफ़र रेंजर चौकी और संक्रमण क्षेत्र के गाँव पर टैप करें।',
         spots: [
-          { x: 20, y: 56, en: 'Core Zone (Dense Deer Refuge)', hi: 'कोर क्षेत्र (कठोर वन्यजीव संरक्षण)', detail: b('Zero logging or construction — safe sanctuary where deer, tigers & rare flora breed.', 'पूर्णतः सुरक्षित क्षेत्र जहाँ वन्यजीव बिना मानवीय दखल के पनपते हैं।'), set: { zone: 'core', reserve: 'nilgiri' } },
-          { x: 50, y: 66, en: 'Buffer Zone (Ranger Watchtower)', hi: 'बफ़र क्षेत्र (रेंजर निगरानी चौकी)', detail: b('Field stations, regulated trails and ecological monitoring ring the Core.', 'वैज्ञानिक शोध, निगरानी व नियंत्रित पारिस्थितिक अध्ययन की मध्यवर्ती पट्टी।'), set: { zone: 'buffer', reserve: 'nanda' } },
-          { x: 80, y: 58, en: 'Transition Zone (Bamboo & Honey)', hi: 'संक्रमण क्षेत्र (समुदाय साझेदारी)', detail: b('Surrounding villages farm terraces and tend bee hives sustainably alongside forests.', 'बाहरी गाँव टिकाऊ कृषि व मधुमक्खी पालन संग संरक्षण में साझेदार बनते हैं।'), set: { zone: 'trans', reserve: 'sundarbans' } },
+          { x: 20, y: 56, en: 'Core Zone (Wildlife Habitat)', hi: 'कोर क्षेत्र (वन्यजीव आवास)', detail: b('A core prioritises biodiversity protection; activities and rights are governed by applicable rules.', 'कोर में जैव-विविधता को प्राथमिकता है; गतिविधियाँ व अधिकार लागू नियमों से संचालित हैं।'), set: { zone: 'core', reserve: 'nilgiri' } },
+          { x: 50, y: 66, en: 'Buffer Zone (Ranger Watchtower)', hi: 'बफ़र क्षेत्र (रेंजर निगरानी चौकी)', detail: b('A buffer may adjoin the core and support research or regulated activities under local rules.', 'बफ़र कोर के पास हो सकता है और स्थानीय नियमों के तहत शोध या नियंत्रित गतिविधियों का समर्थन कर सकता है।'), set: { zone: 'buffer', reserve: 'nanda' } },
+          { x: 80, y: 58, en: 'Transition Zone (Community)', hi: 'संक्रमण क्षेत्र (समुदाय साझेदारी)', detail: b('Transition zones can support cooperation on livelihoods and biodiversity; local practices and rights vary.', 'संक्रमण क्षेत्र आजीविका व जैव-विविधता में सहयोग का अवसर दे सकते हैं; स्थानीय प्रथाएँ और अधिकार अलग हैं।'), set: { zone: 'trans', reserve: 'sundarbans' } },
         ],
       },
       svg, aria: `${res.en} — ${res.species.en}`, lines: [{ en: `${res.en} · Key species: ${res.species.en}.`, hi: `${res.hi} · प्रमुख प्रजातियाँ: ${res.species.hi}।`, cls: 'balanced' }, zInfo],
@@ -212,13 +218,13 @@ export const reserveMap = {
   exit: [
     {
       id: 'e1',
-      stem: b('Why do biosphere reserves wrap Core habitats inside Buffer and Transition zones instead of a bare fence?', 'जैवमंडल आरक्षित क्षेत्र केवल बाड़ लगाने के बजाय कोर के चारों ओर बफ़र व संक्रमण क्षेत्र क्यों रखते हैं?'),
+      stem: b('Why do biosphere reserves use Core, Buffer and Transition zones?', 'जैवमंडल आरक्षित क्षेत्र कोर, बफ़र व संक्रमण क्षेत्र क्यों उपयोग करते हैं?'),
       correct: 'coexist',
       options: [
-        { id: 'coexist', ...b('To cushion human-wildlife conflict and make local communities partners in conservation.', 'ताकि मानव-वन्यजीव टकराव कम हो और स्थानीय समुदाय संरक्षण में साझेदार बनें।') },
+        { id: 'coexist', ...b('To support biodiversity protection alongside cooperation on local livelihoods.', 'जैव-विविधता संरक्षण के साथ स्थानीय आजीविका पर सहयोग का समर्थन करने के लिए।') },
         { id: 'cut', ...b('So the Core forest can be cleared first.', 'ताकि पहले कोर जंगल काटा जा सके।'), why: b('The Core is the most strictly protected area.', 'कोर सबसे कड़ाई से संरक्षित भाग होता है।') },
       ],
-      explain: b('Graduated zones connect ecological safety with community trust.', 'क्रमबद्ध क्षेत्र पारिस्थितिक सुरक्षा को सामुदायिक विश्वास से जोड़ते हैं।'),
+      explain: b('Zones have different conservation and cooperation roles. Local rights, participation and outcomes depend on actual rules and practice.', 'क्षेत्रों की संरक्षण व सहयोग में अलग भूमिकाएँ हैं। स्थानीय अधिकार, भागीदारी व परिणाम वास्तविक नियमों और व्यवहार पर निर्भर हैं।'),
       hint: b('Click through Core, Buffer and Transition chips.', 'कोर, बफ़र और संक्रमण विकल्प पढ़ें।'),
     },
   ],
@@ -228,15 +234,15 @@ export const reserveMap = {
 // ================================================================ T11.L4 Forest-fire factors & prevention planner
 export const firePlanner = {
   id: 'T11.L4',
-  objective: b('Test how heat, dry humidity, wind and dry pine needles drive forest-fire spread, and how firebreaks and community patrols lower risk.', 'परखें कि तापमान, सूखापन, पवन और सूखी पत्तियाँ जंगल की आग को कैसे बढ़ाती हैं, और फायर-लाइन तथा सामुदायिक गश्त जोखिम कैसे घटाती हैं।'),
-  note: { kind: 'schematic', en: 'Educational fire-triangle danger index (0–100) for classroom prevention planning.', hi: 'निवारण योजना हेतु शैक्षणिक अग्नि-त्रिकोण सूचकांक (0–100)।' },
+  objective: b('Compare fire-related conditions in an invented index and discuss prevention and local safety guidance.', 'काल्पनिक सूचक में आग से जुड़ी परिस्थितियों की तुलना करें और रोकथाम व स्थानीय सुरक्षा निर्देशों पर चर्चा करें।'),
+  note: { kind: 'fictional', en: 'The 0–100 index and fuel-break effect are invented teaching assumptions, not measured danger, fire-spread forecasts or operational advice. Follow current local authorities.', hi: '0–100 सूचक व ईंधन-विराम का प्रभाव काल्पनिक शिक्षण मान्यताएँ हैं, मापा खतरा, फैलाव पूर्वानुमान या कार्य-सलाह नहीं। वर्तमान स्थानीय प्रशासन के निर्देश मानें।' },
   init: () => ({ temp: 36, humidity: 25, wind: 22, litter: 0.7, firebreak: false }),
   controls: [
     { id: 'temp', type: 'slider', label: b('Air temperature (°C)', 'वायु तापमान (°C)'), min: 15, max: 45, step: 1, fmt: (v) => `${v}°C` },
     { id: 'humidity', type: 'slider', label: b('Relative humidity', 'सापेक्ष आर्द्रता'), min: 10, max: 85, step: 5, fmt: (v) => `${v}%` },
     { id: 'wind', type: 'slider', label: b('Slope wind speed (km/h)', 'पवन गति (किमी/घं)'), min: 0, max: 50, step: 2 },
     { id: 'litter', type: 'slider', label: b('Dry leaf/pine litter load', 'सूखी पत्तियों/पिरुल की मात्रा'), min: 0.1, max: 1.0, step: 0.1, fmt: (v) => `${Math.round(v * 100)}%` },
-    { id: 'firebreak', type: 'toggle', label: b('Clear 10 m firebreaks + controlled litter removal', '10 मी फायर-लाइन + सूखी पत्तियाँ हटाना') },
+    { id: 'firebreak', type: 'toggle', label: b('Assume a model fuel break', 'मॉडल में ईंधन-विराम मानें') },
   ],
   view(S) {
     const r = Eco.fireRisk({ tempC: S.temp, humidityPct: S.humidity, windKmh: S.wind, dryLitter: S.litter, firebreak: S.firebreak });
@@ -246,37 +252,38 @@ export const firePlanner = {
     g += `<polygon points="150,42 75,165 225,165" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>`;
     g += `<text class="txt sm b" x="150" y="36" text-anchor="middle">${esc(P(`Heat (${S.temp}°C)`, `ताप (${S.temp}°C)`))}</text>`;
     g += `<text class="txt sm b" x="72" y="182" text-anchor="middle">${esc(P(`Dry fuel (${Math.round(S.litter * 100)}%)`, `ईंधन (${Math.round(S.litter * 100)}%)`))}</text>`;
-    g += `<text class="txt sm b" x="228" y="182" text-anchor="middle">${esc(P(`Wind/O₂ (${S.wind} km/h)`, `हवा (${S.wind} किमी/घं)`))}</text>`;
+    g += `<text class="txt sm b" x="228" y="182" text-anchor="middle">${esc(P(`O₂; wind ${S.wind} km/h`, `O₂; हवा ${S.wind} किमी/घं`))}</text>`;
     // Danger meter
-    g += `<text class="txt b" x="445" y="56" text-anchor="middle">${esc(P('Fire risk index', 'आग जोखिम सूचकांक'))}</text>`;
+    g += `<text class="txt b" x="445" y="56" text-anchor="middle">${esc(P('Invented index', 'काल्पनिक सूचक'))}</text>`;
     g += `<rect x="335" y="72" width="220" height="26" rx="6" fill="var(--line)"/><rect x="335" y="72" width="${(r.effectiveIndex * 2.2).toFixed(0)}" height="26" rx="6" fill="${col}"/>`;
-    g += `<text class="txt b" x="445" y="122" text-anchor="middle" fill="${col}">${r.effectiveIndex}/100 · ${esc(P(`Spread: ${r.spreadMMin} m/min`, `फैलाव: ${r.spreadMMin} मी/मि`))}</text>`;
+    g += `<text class="txt b" x="445" y="122" text-anchor="middle" fill="${col}">${r.effectiveIndex}/100</text>`;
     return {
       plate: {
         src: 'assets/images/plates/t11-reserves.jpg',
-        en: 'Forest canopy, cleared earthen firebreak & hillside village — tap pins to test dry wind danger vs firebreak defence.',
-        hi: 'वन आवरण, साफ़ मिट्टी की फायर-लाइन व ग्राम सीमा — सूखी हवा के खतरे बनाम फायर-लाइन सुरक्षा हेतु पिन पर टैप करें।',
+        en: 'Schematic forest, break and village: tap pins to compare invented model conditions, not real danger or safety.',
+        hi: 'योजनाबद्ध वन, विराम और गाँव: वास्तविक खतरे या सुरक्षा के बजाय काल्पनिक मॉडल परिस्थितियों की तुलना हेतु पिन चुनें।',
         spots: [
-          { x: 20, y: 56, en: 'Moist River Forest (Low Risk)', hi: 'नम नदी वन (कम जोखिम)', detail: b('75% humidity and moist green floor halt wildfire spread naturally.', '75% आर्द्रता व हरी-नम सतह प्राकृतिक रूप से आग को रोक देती है।'), set: { temp: 24, humidity: 75, wind: 10, litter: 0.3, firebreak: false } },
-          { x: 50, y: 66, en: '10 m Cleared Earthen Firebreak', hi: '10 मी साफ़ फायर-लाइन पट्टी', detail: b('Clearing dry litter along this road cuts fire spread in half so villages stay safe!', 'इस मार्ग पर सूखी पत्तियाँ हटाने से आग फैलने की गति आधी रह जाती है!'), set: { temp: 38, humidity: 20, wind: 26, litter: 0.7, firebreak: true } },
-          { x: 80, y: 58, en: 'Peak Summer Wind Danger', hi: 'ग्रीष्म पवन व सूखी घास खतरा', detail: b('41°C heat, 15% dry air and 38 km/h wind push danger extreme without firebreaks!', '41°C गर्मी, 15% सूखापन व 38 किमी/घं हवा बिना फायर-लाइन के खतरा चरम पर लाते हैं!'), set: { temp: 41, humidity: 15, wind: 38, litter: 0.9, firebreak: false } },
+          { x: 20, y: 56, en: 'Moister model conditions', hi: 'अधिक नम मॉडल परिस्थितियाँ', detail: b('Compare the invented index under moister assumptions. Moisture does not guarantee that fire will stop.', 'अधिक नमी की मान्यता पर काल्पनिक सूचक तुलना करें। नमी आग रुकने की गारंटी नहीं है।'), set: { temp: 24, humidity: 75, wind: 10, litter: 0.3, firebreak: false } },
+          { x: 50, y: 66, en: 'Model fuel break', hi: 'मॉडल ईंधन-विराम', detail: b('The model assumes a lower index with a break. Real fires can cross barriers; no village is guaranteed safe.', 'मॉडल विराम के साथ छोटा सूचक मानता है। वास्तविक आग बाधा पार कर सकती है; किसी गाँव की सुरक्षा की गारंटी नहीं।'), set: { temp: 38, humidity: 20, wind: 26, litter: 0.7, firebreak: true } },
+          { x: 80, y: 58, en: 'Hot, windy model example', hi: 'गर्म, तेज़ हवा का मॉडल उदाहरण', detail: b('Compare the invented index for heat, dryness and wind without a break.', 'बिना विराम के गर्मी, सूखेपन और पवन पर काल्पनिक सूचक तुलना करें।'), set: { temp: 41, humidity: 15, wind: 38, litter: 0.9, firebreak: false } },
         ],
       },
       svg: `<svg viewBox="0 0 640 205" class="chart" role="img" xmlns="http://www.w3.org/2000/svg">${g}</svg>`,
-      aria: `Fire index ${r.effectiveIndex} of 100, spread ${r.spreadMMin} m/min`,
+      aria: P(`Invented fire-condition index ${r.effectiveIndex} of 100; not a forecast.`, `काल्पनिक अग्नि-परिस्थिति सूचक ${r.effectiveIndex} बटा 100; यह पूर्वानुमान नहीं है।`),
       lines: [
-        { en: `Danger index: ${r.effectiveIndex}/100 (${r.level}). Spread rate ~${r.spreadMMin} m/min.${S.firebreak ? ' Firebreaks cut fuel continuity nearly in half!' : ''}`, hi: `खतरा सूचकांक: ${r.effectiveIndex}/100। फैलाव गति ~${r.spreadMMin} मी/मि।${S.firebreak ? ' फायर-लाइन ने ईंधन की निरंतरता लगभग आधी कर दी!' : ''}`, cls: r.level === 'extreme' ? 'warn' : 'balanced' },
+        { en: `Invented model index: ${r.effectiveIndex}/100.${S.firebreak ? ' The model assumes a reduction when a fuel break is selected.' : ''} This is not a fire-spread forecast or a measure of safety.`, hi: `काल्पनिक मॉडल सूचक: ${r.effectiveIndex}/100।${S.firebreak ? ' ईंधन-विराम चुनने पर मॉडल में कमी मानी गई है।' : ''} यह आग फैलने का पूर्वानुमान या सुरक्षा का माप नहीं है।`, cls: r.level === 'extreme' ? 'warn' : 'balanced' },
+        { en: 'For a real fire, stay away, alert local forest or emergency services and follow their current instructions. Do not use this model for response decisions.', hi: 'वास्तविक आग से दूर रहें, स्थानीय वन या आपात सेवा को सूचित करें और उनके वर्तमान निर्देश मानें। प्रतिक्रिया के निर्णय के लिए मॉडल का उपयोग न करें।', cls: 'note' },
       ],
     };
   },
-  discover: [b('Raise wind to 45 km/h on a dry hot day (40°C, 15% humidity), then toggle firebreaks ON.', 'गर्म सूखे दिन (40°C, 15% नमी) पर हवा 45 किमी/घं करें और फिर फायर-लाइन चालू करें।')],
+  discover: [b('Set wind to 44 km/h in the invented dry-hot example, then toggle the assumed fuel break. What does the index leave out?', 'काल्पनिक गर्म-सूखे उदाहरण में पवन 44 किमी/घं करें, फिर ईंधन-विराम चुनें। सूचक क्या नहीं दिखाता?')],
   predictions: [
     {
-      id: 'p1',
-      stem: b('Clearing dry pine needles (fuel) into briquettes and maintaining bare 10 m firebreaks before summer…', 'गर्मियों से पहले सूखी पिरुल (ईंधन) हटाकर ईंटें बनाना और 10 मी चौड़ी फायर-लाइन साफ़ रखना…'),
-      options: [opt('cuts', 'Cuts fire risk index and slows spread dramatically', 'आग जोखिम और फैलाव को काफ़ी घटाता है'), opt('helps', 'Makes fires burn hotter', 'आग और तेज़ करता है')],
-      run: (S) => { S.temp = 38; S.humidity = 20; S.wind = 24; S.litter = 0.8; S.firebreak = true; return 'cuts'; },
-      explain: () => b('Breaking the fuel leg of the fire triangle prevents small ground sparks from leaping across ridges.', 'अग्नि-त्रिकोण की ईंधन भुजा तोड़ने से छोटी चिंगारी पूरे जंगल में नहीं फैलती।'),
+      id: 'p1', revision: 't11-step11',
+      stem: b('Under this invented model’s assumptions, what happens to the index when its fuel break is switched on?', 'इस काल्पनिक मॉडल की मान्यताओं में ईंधन-विराम चुनने से सूचक का क्या होता है?'),
+      options: [opt('cuts', 'The model index decreases', 'मॉडल सूचक घटता है'), opt('helps', 'The model index increases', 'मॉडल सूचक बढ़ता है')],
+      run: (S) => { S.temp = 38; S.humidity = 20; S.wind = 24; S.litter = 0.8; S.firebreak = true; const r = Eco.fireRisk({ tempC: S.temp, humidityPct: S.humidity, windKmh: S.wind, dryLitter: S.litter, firebreak: true }); return r.effectiveIndex < r.rawIndex ? 'cuts' : 'helps'; },
+      explain: () => b('A reduction is built into this model. Actual firebreak effectiveness depends on conditions, and fire can cross a break; follow local authorities.', 'मॉडल में कमी पहले से मानी गई है। वास्तविक फायर-लाइन का प्रभाव परिस्थितियों पर निर्भर है और आग उसे पार कर सकती है; स्थानीय प्रशासन के निर्देश मानें।'),
     },
   ],
   exit: [
@@ -285,21 +292,21 @@ export const firePlanner = {
       stem: b('Why are early summer pine forests in the western Himalaya especially prone to fires?', 'पश्चिमी हिमालय के चीड़ वन शुरुआती गर्मियों में आग के प्रति अधिक संवेदनशील क्यों होते हैं?'),
       correct: 'dry',
       options: [
-        { id: 'dry', ...b('Resin-rich dry pine needles accumulate on dry slopes right as pre-monsoon heat and wind peak.', 'मानसून-पूर्व गर्मी व हवा बढ़ने पर राल-युक्त सूखी पिरुल ढलानों पर जमा रहती है।') },
+        { id: 'dry', ...b('Resin-rich dry pine needles can accumulate while pre-monsoon weather is hot and dry.', 'मानसून-पूर्व गर्म और शुष्क मौसम में राल-युक्त सूखी पिरुल जमा हो सकती है।') },
         { id: 'snow', ...b('Snow acts as liquid petrol.', 'बर्फ़ पेट्रोल की तरह जलती है।'), why: b('Snow cools and wets fuel; pre-monsoon dryness drives risk.', 'बर्फ़ नमी देती है; मानसून-पूर्व सूखापन आग बढ़ाता है।') },
       ],
-      explain: b('Dry fuel + heat + slope winds explain peak May–June forest fire season.', 'सूखा ईंधन + गर्मी + ढलानी हवा मई–जून के अग्नि-काल को समझाते हैं।'),
+      explain: b('Dry fuel, heat and wind can increase fire risk. Ignition sources, weather and local conditions also matter.', 'सूखा ईंधन, गर्मी और पवन आग का जोखिम बढ़ा सकते हैं। चिंगारी के स्रोत, मौसम और स्थानीय परिस्थितियाँ भी महत्त्वपूर्ण हैं।'),
       hint: b('Look at the three corners of the fire triangle.', 'अग्नि-त्रिकोण के तीनों कोने देखें।'),
     },
   ],
-  reflect: b('How can village *Van Panchayats* turn dry forest pine needles from a fire hazard into local fuel or compost income?', 'ग्राम वन-पंचायतें सूखी पत्तियों/पिरुल को आग के खतरे के बजाय स्थानीय ईंधन या खाद की आय में कैसे बदल सकती हैं?'),
+  reflect: b('What questions could residents and local forest authorities discuss about prevention, livelihoods and safe reporting? Who should be included?', 'रोकथाम, आजीविका और सुरक्षित सूचना देने पर निवासी व स्थानीय वन अधिकारी कौन-से प्रश्न चर्चा कर सकते हैं? किसे शामिल करना चाहिए?'),
 };
 
 // ================================================================ T11.L5 Traditional conservation gallery
 const TRAD_CASES = {
-  sacred: { en: 'Sacred Groves (Devrai / Sarna / Kavu / Oran)', hi: 'पवित्र उपवन (देवराई / सरना / कावु / ओरान)', place: b('Maharashtra, Jharkhand, Kerala, Rajasthan, Meghalaya', 'महाराष्ट्र, झारखंड, केरल, राजस्थान, मेघालय'), desc: b('Community-protected sal, banyan and forest patches dedicated to local traditions where cutting trees is forbidden — preserving rare medicinal plants and spring water.', 'समुदाय द्वारा संरक्षित साल, वट और वन-खंड जहाँ कटाई वर्जित है — दुर्लभ औषधीय पौधों और झरनों की रक्षा होती है।') },
-  bishnoi: { en: 'Bishnoi Community Ethic (Khejarli)', hi: 'बिश्नोई समाज संरक्षण परंपरा (खेजड़ली)', place: b('Western Rajasthan (1730 CE Khejarli sacrifice)', 'पश्चिमी राजस्थान (1730 ई. खेजड़ली)'), desc: b('29 principles strictly forbid felling green Khejri trees or harming blackbuck/chinkara, keeping desert wildlife thriving near villages.', '29 नियम हरे खेजड़ी वृक्ष काटने व काले हिरण को हानि पहुँचाने से रोकते हैं, जिससे मरुस्थल में भी वन्यजीव गाँवों संग पलते हैं।') },
-  johad: { en: 'Johad & Apatani Water-Forest Farming', hi: 'जोहड़ व अपातानी जल-वन कृषि', place: b('Alwar (Rajasthan) & Ziro Valley (Arunachal)', 'अलवर (राजस्थान) व ज़ीरो घाटी (अरुणाचल)'), desc: b('Community earthen check-dams (johads) revived dry rivers; Apatani terraced paddy integrates bamboo forests with fish culture cleanly.', 'ग्रामीण मिट्टी के जोहड़ों ने सूखी नदियाँ जीवित कीं; अपातानी सीढ़ीदार धान-मछली व बाँस वनों को जोड़ती है।') },
+  sacred: { en: 'Sacred Groves (Devrai / Sarna / Kavu / Oran)', hi: 'पवित्र उपवन (देवराई / सरना / कावु / ओरान)', place: b('Maharashtra, Jharkhand, Kerala, Rajasthan, Meghalaya', 'महाराष्ट्र, झारखंड, केरल, राजस्थान, मेघालय'), desc: b('Some communities protect woodland through cultural practices and limits on cutting. Groves, species and customary rules differ by place and can change over time.', 'कुछ समुदाय सांस्कृतिक प्रथाओं और कटाई की सीमाओं से वन-खंड बचाते हैं। उपवन, प्रजातियाँ व नियम स्थानानुसार भिन्न हैं और समय के साथ बदल सकते हैं।') },
+  bishnoi: { en: 'Bishnoi Community Ethic (Khejarli)', hi: 'बिश्नोई समाज संरक्षण परंपरा (खेजड़ली)', place: b('Western Rajasthan (1730 CE Khejarli sacrifice)', 'पश्चिमी राजस्थान (1730 ई. खेजड़ली)'), desc: b('Bishnoi traditions include care for green trees and wildlife; the Khejarli story remembers people who resisted the felling of khejri trees.', 'बिश्नोई परंपराओं में हरे वृक्ष और वन्यजीवों की रक्षा शामिल है; खेजड़ली की कथा खेजड़ी की कटाई का प्रतिरोध करने वाले लोगों को याद करती है।') },
+  johad: { en: 'Johad & Apatani Water-Forest Farming', hi: 'जोहड़ व अपातानी जल-वन कृषि', place: b('Alwar (Rajasthan) & Ziro Valley (Arunachal)', 'अलवर (राजस्थान) व ज़ीरो घाटी (अरुणाचल)'), desc: b('Johads can retain runoff and support groundwater recharge. In Ziro Valley, Apatani rice–fish farming is linked to water channels and management of surrounding forests.', 'जोहड़ बहते वर्षाजल को रोककर भूजल भरने में मदद कर सकते हैं। ज़ीरो घाटी की अपातानी धान–मछली खेती जल नहरों और आसपास के वनों के प्रबंधन से जुड़ी है।') },
 };
 
 export const traditionalConservation = {
@@ -307,6 +314,7 @@ export const traditionalConservation = {
   objective: b('Examine how India’s traditional community practices—sacred groves, Bishnoi ethics and indigenous water-forest systems—conserve biodiversity.', 'परखें कि भारत की पारंपरिक सामुदायिक प्रथाएँ—पवित्र उपवन, बिश्नोई परंपरा व देशज जल-वन प्रणालियाँ—जैव-विविधता कैसे बचाती हैं।'),
   note: { kind: 'documented', en: 'Synthesises documented community-conserved traditions across India.', hi: 'भारत भर की प्रलेखित सामुदायिक संरक्षण परंपराओं का संकलन।' },
   init: () => ({ item: 'sacred' }),
+  prepareState(S) { if (!Object.hasOwn(TRAD_CASES, S.item)) S.item = 'sacred'; },
   controls: [{ id: 'item', type: 'chips', label: b('Community tradition', 'सामुदायिक परंपरा'), options: Object.entries(TRAD_CASES).map(([id, o]) => ({ id, en: o.en.split(' (')[0], hi: o.hi.split(' (')[0] })) }],
   view(S) {
     const it = TRAD_CASES[S.item];
@@ -317,9 +325,9 @@ export const traditionalConservation = {
         en: 'Community-protected sacred grove beside a village johad water tank — tap pins to explore India’s conservation traditions.',
         hi: 'ग्रामीण जोहड़ जल-कुंड व समुदाय-संरक्षित पवित्र उपवन — भारतीय परंपराओं की खोज हेतु पिन पर टैप करें।',
         spots: [
-          { x: 26, y: 42, en: 'Sacred Grove Canopy (Devrai / Sarna)', hi: 'पवित्र उपवन (देवराई / सरना)', detail: b('Moral custom bans felling — saving centuries-old medicinal seed trees & springs.', 'सामुदायिक नियम कटाई रोककर प्राचीन औषधीय वृक्ष व जलस्रोत बचाते हैं।'), set: { item: 'sacred' } },
-          { x: 56, y: 66, en: 'Bishnoi Desert Ethic (Khejri & Blackbuck)', hi: 'बिश्नोई समाज संरक्षण (खेजड़ी व हिरण)', detail: b('29 community precepts guard desert trees and wildlife alongside villages.', '29 नियम मरुस्थलीय वृक्षों और काले हिरण को गाँवों के साथ सुरक्षित रखते हैं।'), set: { item: 'bishnoi' } },
-          { x: 80, y: 54, en: 'Johad & Apatani Water-Forest', hi: 'जोहड़ व अपातानी जल-वन कृषि', detail: b('Earthen johad check-dams recharge wells and sustain wetland life without concrete.', 'मिट्टी के जोहड़ भूजल भरकर कुएँ और हरियाली पुनः जीवित करते हैं।'), set: { item: 'johad' } },
+          { x: 26, y: 42, en: 'Sacred Grove Canopy (Devrai / Sarna)', hi: 'पवित्र उपवन (देवराई / सरना)', detail: b('Some shared customs limit cutting in groves. Rules and habitats differ between places.', 'कुछ साझा प्रथाएँ उपवनों में कटाई सीमित करती हैं। नियम और आवास स्थानानुसार अलग हैं।'), set: { item: 'sacred' } },
+          { x: 56, y: 66, en: 'Bishnoi Desert Ethic (Khejri & Blackbuck)', hi: 'बिश्नोई समाज संरक्षण (खेजड़ी व हिरण)', detail: b('Bishnoi traditions include care for trees and wildlife; communities and conditions vary.', 'बिश्नोई परंपराओं में वृक्षों व वन्यजीवों की देखभाल है; समुदाय और परिस्थितियाँ भिन्न हैं।'), set: { item: 'bishnoi' } },
+          { x: 80, y: 54, en: 'Johad & Apatani Water-Forest', hi: 'जोहड़ व अपातानी जल-वन कृषि', detail: b('Johads can retain runoff and support recharge; the Apatani example has different water and forest practices.', 'जोहड़ बहाव रोककर पुनर्भरण में मदद कर सकते हैं; अपातानी उदाहरण की जल-वन प्रथाएँ अलग हैं।'), set: { item: 'johad' } },
         ],
       },
       svg,
@@ -327,14 +335,14 @@ export const traditionalConservation = {
       lines: [{ en: it.en, hi: it.hi, cls: 'balanced' }, it.desc],
     };
   },
-  discover: [b('Compare all three traditions. What replaces armed fences in every single case?', 'तीनों परंपराओं की तुलना करें। हर उदाहरण में कँटीली बाड़ की जगह क्या चीज़ रक्षा करती है?')],
+  discover: [b('Compare the traditions. How do local knowledge and shared rules contribute, and how might practices vary?', 'परंपराओं की तुलना करें। स्थानीय ज्ञान और साझा नियम कैसे मदद करते हैं, और प्रथाएँ कैसे अलग हो सकती हैं?')],
   predictions: [
     {
-      id: 'p1',
-      stem: b('What common rule allows sacred groves (Devrai / Kavu) to survive intact for centuries?', 'पवित्र उपवन (देवराई / कावु) सदियों तक सुरक्षित कैसे बचे रहते हैं?'),
+      id: 'p1', revision: 't11-step11',
+      stem: b('What can help some sacred groves (Devrai / Kavu) be protected?', 'कुछ पवित्र उपवनों (देवराई / कावु) की रक्षा में क्या मदद कर सकता है?'),
       options: [opt('taboo', 'Shared community respect and social prohibition against commercial cutting', 'साझा सामुदायिक आस्था और व्यावसायिक कटाई पर सामाजिक रोक'), opt('road', 'Building highways right through the middle', 'बीच से राजमार्ग निकालना')],
       run: (S) => { S.item = 'sacred'; return 'taboo'; },
-      explain: () => b('Shared moral norms enforced by villagers protect ancient seed banks and springs longer than distant policing.', 'ग्रामीणों के साझा नैतिक नियम दूरस्थ पहरेदारी से भी अधिक लंबे समय तक प्राचीन वृक्षों व झरनों की रक्षा करते हैं।'),
+      explain: () => b('Shared community norms can help protect groves; customs and outcomes vary, and these examples do not prove protection lasts forever.', 'साझा सामुदायिक नियम उपवनों की रक्षा में मदद कर सकते हैं; प्रथाएँ व परिणाम अलग हैं और ये उदाहरण हमेशा की सुरक्षा सिद्ध नहीं करते।'),
     },
   ],
   exit: [
@@ -343,10 +351,10 @@ export const traditionalConservation = {
       stem: b('How do traditional johads in Rajasthan help both soil moisture and village biodiversity?', 'राजस्थान के पारंपरिक जोहड़ मिट्टी की नमी और गाँव की जैव-विविधता दोनों की मदद कैसे करते हैं?'),
       correct: 'recharge',
       options: [
-        { id: 'recharge', ...b('By catching monsoon runoff to recharge groundwater, revive wells, and sustain trees & birds.', 'मानसूनी बहाव रोककर भूजल भरते हैं, कुएँ जीवित करते हैं और वृक्ष-पक्षियों को सहारा देते हैं।') },
+        { id: 'recharge', ...b('By retaining runoff, which can support groundwater recharge and habitat.', 'बहाव रोककर भूजल पुनर्भरण व आवास को सहारा दे सकते हैं।') },
         { id: 'drain', ...b('By draining rivers quickly into the ocean.', 'नदियों को तेज़ी से समुद्र में बहाकर।'), why: b('Johads hold rain where it falls rather than rushing it away.', 'जोहड़ वर्षा जल को वहीं रोकते हैं।') },
       ],
-      explain: b('Local water harvesting restores vegetation and habitat without heavy concrete dams.', 'स्थानीय जल संचयन बिना बड़े कंक्रीट बाँधों के हरियाली व आवास लौटाता है।'),
+      explain: b('Water harvesting can support vegetation, wildlife and livelihoods; results depend on site and maintenance.', 'जल संचयन वनस्पति, वन्यजीव और आजीविका में मदद कर सकता है; परिणाम स्थान व रखरखाव पर निर्भर हैं।'),
       hint: b('Open the Johad & Apatani card.', 'जोहड़ व अपातानी कार्ड खोलें।'),
     },
   ],

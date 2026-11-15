@@ -2280,7 +2280,7 @@
     "en": "Match temperature and rainfall belts to Earth’s major biomes on a world map.",
     "hi": "विश्व मानचित्र पर तापमान और वर्षा पट्टियों का पृथ्वी के प्रमुख बायोम से मिलान करें।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "temp",
@@ -2377,8 +2377,8 @@
    "implementation": "src/modules/geography/t11-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Show how plants, herbivores and predators depend on one another and how removing predators changes the whole food web.",
-    "hi": "दिखाएँ कि पौधे, शाकाहारी और शिकारी एक-दूसरे पर कैसे निर्भर हैं और शिकारियों को हटाने से पूरा खाद्य-जाल कैसे बदलता है।"
+    "en": "Compare a two-population predator–prey model and discuss possible wider food-web effects that it does not calculate.",
+    "hi": "दो-जनसंख्या शिकारी–शिकार मॉडल तुलना करें और खाद्य-जाल पर उन संभावित प्रभावों की चर्चा करें जिनकी गणना यह नहीं करता।"
    },
    "provenance": "schematic",
    "controls": [
@@ -2427,8 +2427,8 @@
    "implementation": "src/modules/geography/t11-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Decide how much of a forest can be harvested each year without destroying it, using regrowth and the maximum sustainable yield.",
-    "hi": "पुनर्वृद्धि और अधिकतम धारणीय उपज के आधार पर तय करें कि वन को नष्ट किए बिना हर वर्ष कितना काटा जा सकता है।"
+    "en": "Compare harvest and regrowth in an invented forest-stock model, and discuss why real forest management requires more evidence.",
+    "hi": "काल्पनिक वन-भंडार मॉडल में कटाई और पुनर्वृद्धि की तुलना करें और चर्चा करें कि वास्तविक प्रबंधन में अधिक साक्ष्य क्यों चाहिए।"
    },
    "provenance": "schematic",
    "controls": [
@@ -2477,10 +2477,10 @@
    "implementation": "src/modules/geography/t11-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Test how heat, dry humidity, wind and dry pine needles drive forest-fire spread, and how firebreaks and community patrols lower risk.",
-    "hi": "परखें कि तापमान, सूखापन, पवन और सूखी पत्तियाँ जंगल की आग को कैसे बढ़ाती हैं, और फायर-लाइन तथा सामुदायिक गश्त जोखिम कैसे घटाती हैं।"
+    "en": "Compare fire-related conditions in an invented index and discuss prevention and local safety guidance.",
+    "hi": "काल्पनिक सूचक में आग से जुड़ी परिस्थितियों की तुलना करें और रोकथाम व स्थानीय सुरक्षा निर्देशों पर चर्चा करें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "temp",
@@ -2518,8 +2518,8 @@
      "id": "firebreak",
      "type": "toggle",
      "label": {
-      "en": "Clear 10 m firebreaks + controlled litter removal",
-      "hi": "10 मी फायर-लाइन + सूखी पत्तियाँ हटाना"
+      "en": "Assume a model fuel break",
+      "hi": "मॉडल में ईंधन-विराम मानें"
      }
     }
    ],
