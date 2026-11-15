@@ -170,7 +170,7 @@ export const PART1_BUILDERS = {
     wheel.position.set(2.0, 3.05, -0.1);
     group.add(shaft, cap, wheel);
     animated.push({ fn: (t) => { wheel.rotation.z = t * 0.5; } });
-    pick(shaft, ironMode ? 'Mehrauli Rustless Iron Pillar' : 'Ashokan Edict Pillar', ironMode ? 'जंग-रहित महरौली लौह स्तंभ' : 'अशोक धम्म स्तंभ अभिलेख');
+    pick(shaft, ironMode ? 'Mehrauli corrosion-resistant iron pillar' : 'Ashokan Edict Pillar', ironMode ? 'जंग-प्रतिरोधी महरौली लौह स्तंभ' : 'अशोक धम्म स्तंभ अभिलेख');
     addLabel(new THREE.Vector3(2.0, 3.7, -0.1), ironMode ? 'Gupta Iron Pillar' : 'Ashokan Edict Pillar', ironMode ? 'महरौली लौह स्तंभ' : 'शिलालेख स्तंभ');
 
     // 3. Knowledge / AI Audit Desk & Trade Guild / Saptanga Highway
@@ -179,7 +179,7 @@ export const PART1_BUILDERS = {
     const scroll = box(1.4, 0.12, 0.65, mat(isDebunked ? 0x86efac : S.corroborate ? 0x93c5fd : 0xfff1c9), 5.1, -1.34, 2.1);
     group.add(desk, scroll);
     pick(desk, 'Palm-Leaf & Epigraphy Archive', 'ताड़पत्र व प्रमाण अभिलेखागार');
-    addLabel(new THREE.Vector3(5.1, -0.65, 2.1), S.claimId ? 'Evidence Verification Desk' : 'Nalanda & IKS Archive', S.claimId ? 'प्रमाण सत्यापन मेज़' : 'नालंदा ज्ञान अभिलेख');
+    addLabel(new THREE.Vector3(5.1, -0.65, 2.1), S.claimId ? 'Practice Clue Desk' : 'Nalanda & IKS Archive', S.claimId ? 'अभ्यास संकेत मेज़' : 'नालंदा ज्ञान अभिलेख');
 
     // Highway + Shreni Guild Caravan / Maritime Dock
     const roadW = S.roadsInvest ? 0.8 + (S.roadsInvest / 100) * 1.4 : 1.1;

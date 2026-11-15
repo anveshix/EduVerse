@@ -2,6 +2,8 @@
 import { mountLabs } from '../../components/lab-kit.js';
 import { loadGeoAll } from '../../engines/viz.js';
 import { vedicDatedMap, sourceRoom, empireAdmin, knowledgeGallery, guildTrade, aiAuditLab } from './t05-specs.js';
+import { createHistoryTimeline } from './timeline-chunks.js';
+import { createSaptangaBuilder } from './saptanga-builder.js';
 
 export function mount(root) {
   const res = mountLabs(
@@ -17,7 +19,18 @@ export function mount(root) {
       { en: 'AI Audit (L6)', hi: 'एआई तथ्य-जाँच (L6)' },
     ],
   );
+  const map = res.lab('T05.L1');
+  const admin = res.lab('T05.L3');
+  const timeline = createHistoryTimeline(map.state, { onSelect: (era) => map.setState({ era }) });
+  const builder = createSaptangaBuilder();
+  const stopTimeline = map.onDraw((state) => timeline.update(state));
+  map.el.querySelector('.lab-grid').before(timeline.el);
+  admin.el.querySelector('.lab-grid').before(builder.el);
   let alive = true;
   loadGeoAll().then(() => { if (alive) res.relabel(); });
-  return { ...res, destroy() { alive = false; res.destroy?.(); } };
+  return {
+    ...res,
+    relabel() { res.relabel(); timeline.relabel(); builder.relabel(); },
+    destroy() { alive = false; stopTimeline(); timeline.destroy(); builder.destroy(); res.destroy?.(); },
+  };
 }

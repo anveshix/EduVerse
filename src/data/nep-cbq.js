@@ -157,16 +157,16 @@ export const THEME_NEP = {
       summary: b('From Ashokan edicts and palm-leaf manuscripts to Takshashila, Nalanda, and trade guilds, T05 builds the cultural-institutional root for Class X Print Culture and Nationhood.', 'अशोक के शिलालेखों व ताड़पत्रों से नालंदा और व्यापार श्रेणियों तक, T05 कक्षा X की मुद्रण संस्कृति व राष्ट्र-निर्माण की नींव रखता है।'),
     },
     tours: [
-      { az: -0.75, pol: 1.05, r: 15, en: 'Step 1 · Stupa / Sabha / Chola Temple: Switch periods (L1) to watch Vedic Sabha evolve into Mauryan & Chola local governance.', hi: 'चरण 1 · स्तूप / सभा / चोल मंदिर: कालखंड (L1) बदलकर वैदिक सभा से मौर्य व चोल ग्राम स्वशासन देखें।' },
-      { az: 0.35, pol: 1.08, r: 14, en: 'Step 2 · Edict & Metallurgy Pillar: Inspect Ashokan Prakrit stone edicts alongside Gupta rustless iron engineering.', hi: 'चरण 2 · अभिलेख व धातु स्तंभ: अशोक शिलालेख और गुप्तकालीन जंग-रहित लौह स्तंभ देखें।' },
+      { az: -0.75, pol: 1.05, r: 15, en: 'Step 1 · Stupa / Sabha / Chola Temple: Compare schematic examples from different periods; they are not one continuous institution.', hi: 'चरण 1 · स्तूप / सभा / चोल मंदिर: अलग कालों के योजनाबद्ध उदाहरणों की तुलना करें; वे एक निरंतर संस्था नहीं हैं।' },
+      { az: 0.35, pol: 1.08, r: 14, en: 'Step 2 · Edict & Metallurgy Pillar: Compare a schematic Ashokan inscription with a corrosion-resistant iron pillar.', hi: 'चरण 2 · अभिलेख व धातु स्तंभ: अशोक के योजनाबद्ध अभिलेख और जंग-प्रतिरोधी लौह स्तंभ की तुलना करें।' },
       { az: 1.1, pol: 1.05, r: 15, en: 'Step 3 · Evidence & Shreni Precint: Verify manuscripts, Kudavolai ballot pots, and guild trade along the Uttarapatha.', hi: 'चरण 3 · प्रमाण मेज़ व श्रेणी मार्ग: पांडुलिपि सत्यापन, कुदावोलई चुनाव घड़ा और श्रेणी व्यापार देखें।' },
     ],
     ar: {
       id: 'cbq-t05-ar',
-      assertion: b('Ashoka engraved his Dhamma edicts on pillars and rocks in Prakrit using regional scripts like Brahmi and Kharoshthi.', 'अशोक ने अपने धम्म अभिलेख क्षेत्रीय लिपियों (ब्राह्मी, खरोष्ठी) और प्राकृत भाषा में शिलाओं व स्तंभों पर खुदवाए।'),
-      reason: b('He wanted ordinary people across diverse regions of his empire to read and understand royal ethical policies directly.', 'वे चाहते थे कि साम्राज्य के विविध क्षेत्रों के सामान्य नागरिक राज्य के नैतिक संदेश स्वयं पढ़ और समझ सकें।'),
+      assertion: b('Many Ashokan inscriptions use Prakrit with Brahmi or Kharoshthi; others use Greek or Aramaic.', 'अशोक के कई अभिलेख ब्राह्मी या खरोष्ठी में प्राकृत हैं; अन्य यूनानी या अरामी में हैं।'),
+      reason: b('Using languages familiar in different regions could help communicate royal messages to varied audiences.', 'अलग क्षेत्रों की परिचित भाषाएँ शाही संदेश अलग लोगों तक पहुँचाने में मदद कर सकती थीं।'),
       correct: 'A',
-      explain: b('Both A and R are true and R explains A: everyday spoken Prakrit rather than elite language maximised public reach.', 'A और R दोनों सत्य हैं तथा R, A की सही व्याख्या है: जनसामान्य की भाषा का उपयोग व्यापक संवाद के लिए था।'),
+      explain: b('Regional languages and scripts could aid communication, although not everyone could read and inscriptions alone do not show how every message was received.', 'क्षेत्रीय भाषाएँ और लिपियाँ संवाद में मदद कर सकती थीं, पर सभी पढ़ नहीं सकते थे और अभिलेख अकेले हर संदेश की प्रतिक्रिया नहीं बताते।'),
     },
     caseQ: {
       id: 'cbq-t05-case',
@@ -203,14 +203,14 @@ export const THEME_NEP = {
     },
     caseQ: {
       id: 'cbq-t06-case',
-      passage: b('Source Case: The 920 CE Uttaramerur stone inscription in Tamil Nadu describes village sabha committee selection using kudavolai (palm-leaf lots inside a mud pot) alongside strict eligibility and corruption disqualification rules.', 'स्रोत प्रसंग: तमिलनाडु के 920 ई. के उत्तरमेरूर अभिलेख में कुडावोलई (मिट्टी के घड़े से ताड़पत्र पर्ची द्वारा चुनाव) तथा ईमानदारी व योग्यता के कड़े नियमों का वर्णन है।'),
-      stem: b('What democratic principle does the Uttaramerur inscription demonstrate in early India?', 'उत्तरमेरूर अभिलेख प्राचीन भारत में किस लोकतांत्रिक सिद्धांत को दर्शाता है?'),
+      passage: b('Source Case: The tenth-century Uttaramerur inscriptions describe selection of eligible village committee members by drawing palm-leaf lots, and list qualifications and disqualifications. Eligibility was restricted.', 'स्रोत प्रसंग: दसवीं सदी के उत्तरमेरूर अभिलेख पात्र ग्राम समिति सदस्यों के ताड़पत्र पर्ची से चयन और योग्यता-अयोग्यता के नियम बताते हैं। पात्रता सीमित थी।'),
+      stem: b('What can we learn from these rules, and what do they not establish?', 'इन नियमों से क्या पता चलता है और वे क्या सिद्ध नहीं करते?'),
       options: [
-        { id: 'rules', ...b('Written accountability, fair selection & anti-corruption checks in local self-governance', 'स्थानीय स्वशासन में लिखित नियम, निष्पक्ष चयन और भ्रष्टाचार-रोधी जवाबदेही') },
-        { id: 'dyn', ...b('Hereditary lifetime monarchy inside villages', 'गाँवों में वंशानुगत आजीवन राजतंत्र'), why: b('Eligibility rules, rotation, and disqualifications prevented monopoly.', 'नियम और चक्रानुक्रम किसी एक के एकाधिकार को रोकते थे।') },
+        { id: 'rules', ...b('There were written selection and accountability rules for eligible candidates, but not universal adult suffrage.', 'पात्र उम्मीदवारों के चयन और जवाबदेही के लिखित नियम थे, पर सार्वभौमिक वयस्क मताधिकार नहीं।') },
+        { id: 'dyn', ...b('Every adult villager could vote on equal terms.', 'हर वयस्क ग्रामीण समान रूप से मतदान कर सकता था।'), why: b('The inscriptions set qualifications that restricted participation; they do not establish universal suffrage.', 'अभिलेखों की योग्यता शर्तें भागीदारी सीमित करती थीं; वे सार्वभौमिक मताधिकार सिद्ध नहीं करतीं।') },
       ],
       correct: 'rules',
-      explain: b('Early Indian sabhas, ganas, and sanghas practised rule-bound deliberation long before modern constitutions.', 'प्राचीन भारतीय सभाओं, गणों और संघों में नियमबद्ध लोकतांत्रिक निर्णय की गहरी परंपरा थी।'),
+      explain: b('The rules provide evidence of local selection and accountability in one place and time; they should not be equated with modern universal voting rights.', 'नियम एक स्थान और समय में स्थानीय चयन और जवाबदेही का प्रमाण हैं; इन्हें आधुनिक सार्वभौमिक मताधिकार के समान नहीं मानना चाहिए।'),
     },
   },
 

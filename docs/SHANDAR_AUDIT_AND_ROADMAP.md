@@ -46,7 +46,7 @@
 | **Step 2 — T02** Earth's Surface | India landform atlas (Himalaya/Deccan/Plains/Coast/Islands), Everest fossil story front-and-centre | India-first geography | Done |
 | **Step 3 — T03** Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather in your own locality; Patna is an optional example | Done |
 | **Step 4 — T04** Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist | Done |
-| Step 5 — T05 State & Society | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines |
+| **Step 5 — T05 State & Society** | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines | Done |
 | Step 6 — T06 Democracy | Panchayati Raj + classroom vote simulation | Democracy you practise daily |
 | Step 7 — T07 Elections | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government |
 | Step 8 — T08 Economics Basics | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket |
@@ -157,7 +157,25 @@
 
 ---
 
+## Step 5 — T05: State and Society
+
+### Audit and improvements
+- **Timeline (L1):** three bilingual windows compare Mauryan, Gupta and later Chola examples with an evidence item, a limit and a further question. Selecting a window updates the existing map; the map controls, picture pins, reset and prediction update the timeline. Dates are approximate, the windows are not equally spaced, and they do not imply one unbroken all-India succession. The map's modern state colours and dashed routes are orientation aids, not historical boundaries or period-specific routes. Its wider 320–650 CE map window separates seventh-century Harsha from the approximately 320–550 CE Gupta period. The 1000 CE cutoff does not imply the later Cholas ended then.
+- **Seven-part builder (L3):** students match ruler, officials, people and territory, fort, treasury, defence/law-and-order forces and allies to the seven Sanskrit terms. Answers can be checked, revised, reloaded or reset independently of the existing sandbox. This teaches an attributed textual theory, not a claim that every dynasty followed it. The separate five numerical tax-and-works indicators are explicitly invented and are no longer labelled as the historical seven parts. Legacy engine array IDs remain available for compatibility.
+- **Evidence and limits:** the source-comparison switch now asks students to plan corroboration instead of showing invented confidence percentages. The trade sandbox and AI audit identify their figures and clues as fictional or scripted, not real historical risk, automatic fact-checking or certainty. Knowledge-system comparisons and corrosion-resistance language were qualified. Uttaramerur's eligibility restrictions are explicit in T05 and the linked T06 case: its rules are not universal adult suffrage. The opening, teacher notes and 3D labels were adjusted accordingly.
+- Existing tab, control, exit and saved-progress identifiers are preserved; substantially revised L1, L3 and L5 predictions use a revision marker so earlier answers are retained without being presented as responses to different wording. The sixth AI lab remains supplementary to the five curriculum LOs. Local choices disappear with browser data; blocked storage gives a warning. Illustrations and Three.js can be absent on a first offline visit. New Hindi remains **draft pending subject-teacher review**; automated accessibility does not replace a human screen-reader review.
+
+### Teaching reference
+- [NCERT Class IX, State and Society up to 1000 CE](https://ncert.nic.in/textbook/pdf/iest105.pdf): Saptanga, evidence, chronology and the tenth-century Uttaramerur selection rules. Interpretations and restrictions require discussion rather than assuming an inscription is a complete record of practice.
+
+### Verification
+- `npm run catalog` and `npm run sw`: **78/78 LOs, 79 simulations and 128 precached files**. `npm run verify`: architecture checks and **57/57 tests** passed.
+- `npm run test:t05`: timeline synchronization, all seven builder roles, keyboard and 360 px touch controls, EN/HI/both, local persistence, denied storage, old prediction migration, first-open offline, 3D, dark-mode selected-label contrast, all five LO exits and supplementary-lab exclusion passed without network writes or JavaScript errors. The earlier `test:t02`, `test:t03` and `test:t04` browser regressions also passed.
+- Targeted T05 automated accessibility and desktop/360 px smoke passed with no horizontal page overflow or reported errors. They are not a manual accessibility audit.
+
+---
+
 ## How to Continue
-1. On the user's request, audit and upgrade **Step 5 — T05** only.
+1. Continue with **Step 6 — T06**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

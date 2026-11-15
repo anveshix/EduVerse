@@ -41,12 +41,12 @@ export const TEACHER = {
   },
   T05: {
     flow: [
-      b('Historical Map & Corroboration Workbench (12 min): track political centres from Sapta-Sindhu (1500 BCE) to Chola Uttaramerur (920 CE); triangulate edicts, texts, and coins.', 'मानचित्र व प्रमाण-मिलान (12 मिनट): सप्त-सिंधु से उत्तरमेरूर (920 ई.) तक बदलाव देखें और शिलालेख, ग्रंथ व सिक्कों का मिलान करें।'),
-      b('Saptanga & Guild Decision Labs (18 min): test over-taxation vs canal investment across Gana, Mauryan, Samanta & Chola Sabhas, plus overland/sea Shreni risk pooling.', 'सप्तांग व श्रेणी प्रयोगशाला (18 मिनट): गणसंघ, मौर्य, सामंत व चोल सभाओं में कर बनाम सिंचाई संतुलन तथा श्रेणी व्यापार जोखिम परखें।'),
+      b('Timeline and source inquiry (12 min): compare Mauryan, Gupta and later Chola examples, distinguish royal claims from evidence, and discuss restricted participation at Uttaramerur.', 'समय-रेखा और स्रोत जाँच (12 मिनट): मौर्य, गुप्त और बाद के चोल उदाहरणों की तुलना करें, शाही दावों व प्रमाणों का अंतर और उत्तरमेरूर में सीमित भागीदारी पर चर्चा करें।'),
+      b('Saptanga builder and toy scenario (18 min): match all seven terms; distinguish the Arthashastra’s theory from the separate invented tax-and-works scores.', 'सप्तांग रचना और काल्पनिक मॉडल (18 मिनट): सातों शब्द मिलाएँ; अर्थशास्त्र का सिद्धांत अलग रखें और कर व निर्माण के बनाए गए अंकों को ऐतिहासिक माप न समझें।'),
       b('AI Audit Studio (10 min): have groups debunk plausible AI bot claims using epigraphy, chronology, and material finds instead of rote memorisation.', 'एआई तथ्य-जाँच प्रयोगशाला (10 मिनट): रटने के बजाय अभिलेख, कालक्रम व उत्खनन प्रमाणों से एआई दावों की जाँच करें।'),
     ],
     prompts: [
-      b('If an AI summary claims “no village democracy existed before 1900”, which 920 CE Chola temple inscription and 6th BCE republic refute it?', 'यदि कोई एआई कहे “1900 से पहले कोई ग्राम लोकतंत्र नहीं था”, तो 920 ई. का कौन-सा चोल अभिलेख व गणसंघ इसे गलत सिद्ध करता है?'),
+      b('What do the Uttaramerur inscriptions say about committee selection, and why is that not the same as universal adult suffrage?', 'उत्तरमेरूर अभिलेख समिति चयन के बारे में क्या कहते हैं और यह सार्वभौमिक वयस्क मताधिकार जैसा क्यों नहीं है?'),
     ],
     misconceptions: [
       b('“History is just memorising king lists and dates.” Real historians test systems, corroborate conflicting sources, and separate royal praise (prashasti) from evidence.', '“इतिहास केवल राजाओं के नाम व तिथियाँ रटना है।” वास्तविक इतिहासकार प्रणालियों का विश्लेषण और स्रोतों की सत्यता जाँचते हैं।'),
