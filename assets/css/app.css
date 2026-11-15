@@ -33,7 +33,7 @@ main{max-width:1180px;margin:0 auto;padding:1rem}
 .card[hidden]{display:none}
 .card-media{position:relative;margin:-.9rem -.9rem .45rem;height:120px;overflow:hidden;border-bottom:1px solid var(--line);background:var(--bg)}
 .card-media img{width:100%;height:100%;object-fit:cover;display:block}
-.card-3d-tag{position:absolute;left:8px;bottom:8px;background:#0f172acc;color:#fff;font-size:.72em;font-weight:700;padding:.14rem .48rem;border-radius:99px;letter-spacing:.02em;backdrop-filter:blur(4px)}
+.card-tag{position:absolute;left:8px;bottom:8px;background:#0f172acc;color:#fff;font-size:.72em;font-weight:700;padding:.14rem .48rem;border-radius:99px;letter-spacing:.02em;backdrop-filter:blur(4px)}
 .card-ico{position:absolute;right:8px;bottom:8px;width:28px;height:28px;border-radius:99px;background:var(--card);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);box-shadow:0 1px 4px #0002}
 .theme-head-wrap{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:1rem;align-items:center}
 .theme-banner{margin:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--card)}

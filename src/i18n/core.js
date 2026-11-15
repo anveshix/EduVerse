@@ -1,5 +1,41 @@
 // Core shell, home HUD, glossary, shared lab-kit, 3D stage & NEP/VR UI strings (English + draft Hindi).
 export const UI_CORE = {
+  "nav.home": { "en": "Home", "hi": "मुखपृष्ठ" },
+  "nav.discover": { "en": "Explore themes", "hi": "विषय खोजें" },
+  "nav.how": { "en": "How it works", "hi": "कैसे सीखें" },
+  "nav.bridge": { "en": "Class X bridge", "hi": "कक्षा X सेतु" },
+  "nav.portfolio": { "en": "Portfolio", "hi": "पोर्टफोलियो" },
+  "nav.main": { "en": "Main navigation", "hi": "मुख्य नेविगेशन" },
+  "nav.menu": { "en": "Menu", "hi": "मेनू" },
+  "nav.settings": { "en": "Settings", "hi": "सेटिंग्स" },
+  "nav.settings.desc": { "en": "Make EduVerse yours", "hi": "EduVerse को अपनी सुविधा के अनुसार बदलें" },
+  "brand.subtitle": { "en": "CLASS IX · SOCIAL SCIENCE", "hi": "कक्षा IX · सामाजिक विज्ञान" },
+  "home.hero.eyebrow": { "en": "CLASS IX · SOCIAL SCIENCE", "hi": "कक्षा IX · सामाजिक विज्ञान" },
+  "home.hero.explore": { "en": "Explore the themes", "hi": "विषय खोजें" },
+  "home.hero.stat.themes": { "en": "themes to explore", "hi": "खोजने योग्य विषय" },
+  "home.hero.stat.goals": { "en": "learning goals", "hi": "सीखने के लक्ष्य" },
+  "home.hero.stat.lang": { "en": "learning languages", "hi": "सीखने की भाषाएँ" },
+  "home.globe.title": { "en": "AN INTERACTIVE WORLD", "hi": "एक इंटरैक्टिव दुनिया" },
+  "home.globe.hint": { "en": "Illustrative locations · Drag to rotate · Select a marker", "hi": "सांकेतिक स्थान · घुमाने के लिए खींचें · एक बिंदु चुनें" },
+  "home.globe.aria": { "en": "Illustrative globe with approximate locations. Use arrow keys to rotate and plus or minus to zoom. Topic links follow.", "hi": "अनुमानित स्थानों वाला सांकेतिक ग्लोब। घुमाने के लिए तीर कुंजियाँ और ज़ूम के लिए प्लस या माइनस दबाएँ। विषयों की कड़ियाँ आगे हैं।" },
+  "home.globe.shortcuts": { "en": "Explore a topic", "hi": "एक विषय खोजें" },
+  "home.globe.mountains": { "en": "Mountains", "hi": "पर्वत" },
+  "home.globe.oceans": { "en": "Oceans", "hi": "महासागर" },
+  "home.globe.trade": { "en": "Trade routes", "hi": "व्यापार मार्ग" },
+  "home.journey.kicker": { "en": "YOUR LEARNING JOURNEY", "hi": "आपकी सीखने की यात्रा" },
+  "home.journey.title": { "en": "Keep your curiosity going.", "hi": "अपनी जिज्ञासा को आगे बढ़ाएँ।" },
+  "home.journey.action": { "en": "Go to theme", "hi": "विषय पर जाएँ" },
+  "home.journey.more": { "en": "More ways to learn", "hi": "सीखने के और तरीके" },
+  "home.browse.kicker": { "en": "YOUR SUBJECT LIBRARY", "hi": "आपकी विषय लाइब्रेरी" },
+  "home.browse.title": { "en": "Find your next discovery.", "hi": "अपनी अगली खोज चुनें।" },
+  "home.browse.desc": { "en": "Choose a subject, search a topic, and learn at your own pace.", "hi": "विषय चुनें, खोजें और अपनी गति से सीखें।" },
+  "home.browse.filter": { "en": "Filter themes by subject", "hi": "विषय के अनुसार फ़िल्टर करें" },
+  "home.results": { "en": "{n} themes shown", "hi": "{n} विषय दिख रहे हैं" },
+  "home.result.one": { "en": "1 theme shown", "hi": "1 विषय दिख रहा है" },
+  "home.empty": { "en": "No themes match these filters. Try a different word or show all themes.", "hi": "इन फ़िल्टर से कोई विषय नहीं मिला। दूसरा शब्द आज़माएँ या सभी विषय दिखाएँ।" },
+  "home.clear": { "en": "Clear filters", "hi": "फ़िल्टर साफ़ करें" },
+  "home.card.inside": { "en": "Inside", "hi": "इसमें" },
+  "home.footer.tagline": { "en": "A little curiosity goes a long way.", "hi": "जिज्ञासा से सीखने की राह खुलती है।" },
   "skip": {
     "en": "Skip to content",
     "hi": "मुख्य सामग्री पर जाएँ"
@@ -49,24 +85,24 @@ export const UI_CORE = {
     "hi": "कोई लॉगिन, विज्ञापन या ट्रैकिंग नहीं। आपके उत्तर केवल इसी ब्राउज़र में रहते हैं।"
   },
   "home.h1": {
-    "en": "Interactive Social Science, Class IX",
-    "hi": "इंटरैक्टिव सामाजिक विज्ञान, कक्षा IX"
+    "en": "A world of learning, ready to explore.",
+    "hi": "सीखने की दुनिया, खोजने के लिए तैयार।"
   },
   "home.lead": {
-    "en": "Observe, question, explore, simulate, explain, apply and reflect. Pick a theme to begin.",
-    "hi": "देखें, प्रश्न पूछें, खोजें, अनुकरण करें, समझाएँ, लागू करें और चिंतन करें। शुरू करने के लिए कोई विषय चुनें।"
+    "en": "Explore history, geography, civics and economics through stories, experiments and interactive 3D.",
+    "hi": "कहानियों, प्रयोगों और इंटरैक्टिव 3D से इतिहास, भूगोल, नागरिक शास्त्र और अर्थशास्त्र खोजें।"
   },
   "home.honest": {
-    "en": "All 16 themes (78 interactive labs) are live. Models are classroom teaching simplifications, and draft Hindi awaits subject-teacher review.",
-    "hi": "सभी 16 विषय (78 इंटरैक्टिव प्रयोगशालाएँ) उपलब्ध हैं। मॉडल कक्षा-शिक्षण के सरलीकरण हैं और हिन्दी पाठ विषय-शिक्षक की समीक्षा की प्रतीक्षा में है।"
+    "en": "Teaching models simplify real life. Hindi is draft and awaits subject-teacher review.",
+    "hi": "शिक्षण मॉडल वास्तविक जीवन का सरलीकरण हैं। हिन्दी मसौदा विषय-शिक्षक की समीक्षा की प्रतीक्षा में है।"
   },
   "home.part1": {
-    "en": "Part 1 ({h} hours)",
-    "hi": "भाग 1 ({h} घंटे)"
+    "en": "Part 01 · Foundations ({h} hours)",
+    "hi": "भाग 01 · बुनियाद ({h} घंटे)"
   },
   "home.part2": {
-    "en": "Part 2 ({h} hours)",
-    "hi": "भाग 2 ({h} घंटे)"
+    "en": "Part 02 · Connections ({h} hours)",
+    "hi": "भाग 02 · जुड़ाव ({h} घंटे)"
   },
   "hours": {
     "en": "hours",
@@ -121,7 +157,7 @@ export const UI_CORE = {
     "hi": "सभी विषय"
   },
   "nav.back": {
-    "en": "← All themes",
+    "en": "All themes",
     "hi": "सभी विषय"
   },
   "th.opening": {
@@ -324,9 +360,9 @@ export const UI_CORE = {
     "en": "Stars",
     "hi": "सितारे"
   },
-  "home.badge.3d": {
-    "en": "3D Live",
-    "hi": "3D लाइव"
+  "home.badge.interactive": {
+    "en": "Interactive",
+    "hi": "इंटरैक्टिव"
   },
   "gloss.flip": {
     "en": "Tap card to flip",
@@ -389,8 +425,8 @@ export const UI_CORE = {
     "hi": "केस / स्रोत-आधारित"
   },
   "home.hud.cbq": {
-    "en": "CBQs mastered",
-    "hi": "CBQ पूर्ण"
+    "en": "CBQs answered correctly",
+    "hi": "सही उत्तर वाले CBQ"
   },
   "home.bridgeBtn": {
     "en": "Class X Bridge & Map Lab",
@@ -433,8 +469,8 @@ export const UI_CORE = {
     "hi": "LO में सही निकास उत्तर"
   },
   "home.search": {
-    "en": "Search themes… (e.g. monsoon, चुनाव)",
-    "hi": "विषय खोजें… (जैसे monsoon, चुनाव)"
+    "en": "Search themes or topics",
+    "hi": "विषय खोजें"
   },
   "home.search.label": {
     "en": "Search themes",

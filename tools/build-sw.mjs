@@ -1,10 +1,13 @@
 // Generates sw.js: a small service worker so the app works offline and on slow networks after the first visit.
-// Precaches the app shell, core modules, vendor d3/lucide bundles, and geodata (three.js & scene photos cache on first use).
+// Precaches the app shell, core modules, vendor d3/lucide bundles, geodata, and the home fallback image.
+// Three.js and lesson photos are cached on first use, rather than making the initial offline cache much larger.
 // Strategy: stale-while-revalidate for same-origin GET (fast from cache, refreshed in the background). Re-run after adding files.
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto';
 const roots = ['index.html', 'assets', 'src', 'data', 'vendor/d3', 'vendor/lucide'], files = [];
 const walk = (p) => { for (const e of fs.readdirSync(p, { withFileTypes: true })) { const f = path.join(p, e.name); if (e.isDirectory()) walk(f); else if (!/\.(md|png|jpg|jpeg|webp|pdf)$/.test(e.name) && !e.name.startsWith('LICENSE')) files.push(f.replaceAll('\\', '/')); } };
 for (const r of roots) if (fs.existsSync(r)) fs.statSync(r).isDirectory() ? walk(r) : files.push(r);
+// Keep the non-WebGL home visual available even immediately after the first online visit.
+if (fs.existsSync('assets/images/hero.jpg')) files.push('assets/images/hero.jpg');
 files.sort();
 // Hash paths and contents: a same-byte-length edit must still trigger a fresh offline cache.
 const digest = crypto.createHash('sha256');

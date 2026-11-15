@@ -149,9 +149,11 @@ const server = http.createServer((req, res) => {
     await modelSeason('sw').click();
     assert.equal(await step('heat').getAttribute('aria-pressed'), 'true', 'map control updates inquiry');
     // Low-graphics mode deliberately hides illustration pins; turn it off to exercise the real pin.
+    await page.click('#topbar .settings-menu > summary');
     await page.click('#topbar [data-pref=lowGraphics]');
     await lab.locator('.plate-spot').nth(1).click();
     assert.equal(await step('retreat').getAttribute('aria-pressed'), 'true', 'map pin updates inquiry');
+    await page.click('#topbar .settings-menu > summary');
     await page.click('#topbar [data-pref=lowGraphics]');
     await lab.locator('.lab-side .btn').filter({ hasText: /^Reset/ }).click();
     assert.equal(await step('heat').getAttribute('aria-pressed'), 'true', 'model Reset updates inquiry');

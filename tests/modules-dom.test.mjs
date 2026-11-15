@@ -58,6 +58,7 @@ test('DOM + module mount/relabel/a11y/interaction check across all 16 themes (T0
       assert.ok(LIMITS[th.id], `Missing LIMITS entry for ${th.id}`);
       const m = THEME_MEDIA[th.id];
       assert.ok(m && fs.existsSync(path.join(ROOT, m.src)), `Missing media file for ${th.id}`);
+      assert.ok(m.thumb && fs.existsSync(path.join(ROOT, m.thumb)), `Missing home thumbnail for ${th.id}`);
       const svg = iconEl(m.icon, { size: 16 });
       assert.equal(svg.tagName.toLowerCase(), 'svg', `Lucide icon failed for ${th.id}: ${m.icon}`);
       const banner = themeBannerEl(th.id);

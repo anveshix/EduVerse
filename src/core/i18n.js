@@ -56,6 +56,7 @@ export function termDef(id) {
 // Re-label every [data-k] / [data-k-aria] / [data-term] node under root. Does not touch widget state.
 export function apply(root = document) {
   document.documentElement.lang = lang() === 'hi' ? 'hi' : 'en';
+  document.documentElement.dataset.uiLang = lang();
   root.querySelectorAll('[data-k]').forEach((el) => {
     const p = el.dataset.p ? JSON.parse(el.dataset.p) : undefined;
     const e = dict[el.dataset.k];
@@ -63,8 +64,9 @@ export function apply(root = document) {
     if (el.dataset.block !== undefined) el.innerHTML = pairHtml(interp(e.en, p), interp(e.hi ?? e.en, p), { block: true });
     else el.textContent = t(el.dataset.k, p);
   });
-  root.querySelectorAll('[data-k-aria]').forEach((el) => el.setAttribute('aria-label', t(el.dataset.kAria)));
+  root.querySelectorAll('[data-k-aria]').forEach((el) => el.setAttribute('aria-label', t(el.dataset.kAria, el.dataset.p ? JSON.parse(el.dataset.p) : undefined)));
   root.querySelectorAll('[data-k-title]').forEach((el) => el.setAttribute('title', t(el.dataset.kTitle)));
+  root.querySelectorAll('[data-k-ph]').forEach((el) => el.setAttribute('placeholder', t(el.dataset.kPh)));
   root.querySelectorAll('[data-term]').forEach((el) => { el.textContent = term(el.dataset.term); el.title = termDef(el.dataset.term); });
   root.querySelectorAll('[data-term-def]').forEach((el) => { el.textContent = termDef(el.dataset.termDef); });
 }

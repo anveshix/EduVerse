@@ -4,16 +4,18 @@ Interactive, bilingual (English / हिन्दी / English + हिन्द
 
 ## Run
 ```
-npm run serve        # http://0.0.0.0:8080/   (tools/serve.mjs; any static server works)
-npm test             # engine, 67 lab-spec, DOM/module & HTTP server tests (Node 20+)
+npm run serve        # http://0.0.0.0:4173/ (tools/serve.mjs; any static server works)
+npm run verify       # architecture guardrails and Node/DOM tests (Node 20+)
+npm run test:home    # Chromium home, navigation, globe and fallback regression
 npm run smoke        # Chromium checks of all 16 themes (needs Playwright + Chromium)
 npm run a11y         # Chromium accessibility checks T01–T16 (needs Playwright + Chromium)
+npm run globe        # rebuild the decorative globe texture from bundled Natural Earth land
 npm run catalog      # regenerate docs/CURRICULUM_COVERAGE.json and docs/SIMULATION_CATALOG.json
-npm run sw           # regenerate sw.js (offline precache list) after adding files
+npm run sw           # regenerate sw.js (offline precache list) after changing files
 ```
 
 ## What is built (honest status)
-All **78 of 78 learning objects** across all **16 themes (`T01`–`T16`)** are implemented across **79 interactive simulations** (`67` declarative `lab-kit` / `three-lab` simulations + `12` custom interactive modules). Exact status per object: `docs/CURRICULUM_COVERAGE.json`; per simulation: `docs/SIMULATION_CATALOG.json`. Note: only the 27 LOs listed in `data/coverage/qa-passed.json` carry prior Chromium QA verification; the remaining 51 LOs are verified by unit + `jsdom` DOM/interaction suites pending headless Chromium verification.
+All **78 of 78 learning objects** across all **16 themes (`T01`–`T16`)** are implemented across **79 interactive simulations**. Exact status per object: `docs/CURRICULUM_COVERAGE.json`; per simulation: `docs/SIMULATION_CATALOG.json`. The coverage manifest records automated browser-smoke QA for all 78 learning objects; that is not a substitute for subject-teacher or human accessibility review.
 
 | Theme | Built Labs |
 |---|---|
@@ -36,8 +38,13 @@ All **78 of 78 learning objects** across all **16 themes (`T01`–`T16`)** are i
 
 Every lab states its learning objective and whether its data is documented, schematic, fictional or a reconstruction; explains changes live in English and Hindi; asks the student to predict before testing; ends with an exit ticket and a reflection; and includes a reset.
 
+## Finding your way
+The home library can be searched in English or Hindi and filtered by subject; the learning-journey section resumes a visited theme and shows locally saved progress. The home globe is illustrative: drag or use arrow keys to rotate it, select a marker, or use its topic links. Its positions are approximate, not official boundaries or routes. Use the top-bar **Settings** menu for low graphics, reduced motion, projector and teacher modes. The navigation and settings menus are keyboard operable, and topic links and lessons remain usable without WebGL.
+
+The service worker precaches the shell, fonts, data, globe texture and home fallback photo after the first online visit. Three.js and lesson photos are cached when requested by a controlled page; if they are unavailable offline, the non-WebGL activities remain available. Answers and progress stay in local browser storage.
+
 ## Layout
-`index.html`, `sw.js` (generated), `assets/css/app.css`, `assets/images/` (hero + 16 theme banners + `plates/` 2D lab figures), `src/core` (`dom`, `i18n`, `store`, `media`), `src/components` (`widgets`, `lab-kit`, `three-lab`), `src/engines` (`chart`, `viz`, `three-scene`, `webgl`, `xr`, and `domain/`), `src/modules/` (16 themes + `teacher-meta.js` + `openings.js` + `registry.js`), `src/i18n/ui.js`, `src/curriculum/curriculum.json`, `data/` (`glossary.json`, `geo/`, `coverage/`), `vendor/` (`three`, `d3`, `lucide`), `tests/`, `tools/`, `docs/`.
+`index.html`, `sw.js` (generated), `assets/css/app.css` and `assets/css/experience.css`, `assets/images/` (hero, theme banners, smaller home `thumbs/`, and `plates/` 2D lab figures), `src/core` (`dom`, `i18n`, `store`, `media`), `src/components` (`widgets`, `lab-kit`, `three-lab`), `src/engines` (`chart`, `viz`, `three-scene`, `webgl`, `xr`, and `domain/`), `src/modules/` (16 themes + `teacher-meta.js` + `openings.js` + `registry.js`), `src/i18n/ui.js`, `src/curriculum/curriculum.json`, `data/` (`glossary.json`, `geo/`, `coverage/`), `vendor/` (`three`, `d3`, `lucide`), `tests/`, `tools/`, `docs/`.
 
 ## Accessibility and performance
 Keyboard operable, ≥44 px touch targets, projector mode, reduced motion, low-graphics mode (disables WebGL & hides raster banners), no-WebGL fallback (`?nowebgl=1`), single-tab render-on-demand 3D, lazy module loading, offline service worker.
@@ -46,8 +53,12 @@ Keyboard operable, ≥44 px touch targets, projector mode, reduced motion, low-g
 - **Three.js** (MIT, vendored r170, licence in `vendor/three/LICENSE`)
 - **D3 & TopoJSON** (`d3-array`, `d3-force`, `d3-geo`, `d3-path`, `d3-scale`, `d3-shape`, `topojson-client`, bundled in `vendor/d3/d3-viz.esm.js`)
 - **Lucide Icons** (ISC, bundled in `vendor/lucide/lucide-icons.esm.js`)
-- **Geodata**: Natural Earth / `world-atlas` (`data/geo/countries-110m.json`, `WORLD_ATLAS_LICENSE`), `datta07/INDIAN-SHAPEFILES` simplified (`data/geo/india.simplified.json`, `INDIA_SHAPEFILES_LICENSE`), PB2002 tectonic plates (Bird 2003, ODC-By). See `data/geo/SOURCES.md`.
+- **Fonts**: Plus Jakarta Sans, DM Serif Display and Noto Sans Devanagari (SIL OFL 1.1, licence texts in `assets/fonts/`).
+- **Geodata**: Natural Earth / `world-atlas` (`data/geo/countries-110m.json`, `WORLD_ATLAS_LICENSE`), `datta07/INDIAN-SHAPEFILES` simplified (`data/geo/india.simplified.json`, `INDIA_SHAPEFILES_LICENSE`), PB2002 tectonic plates (Bird 2003, ODC-By). The home globe texture is derived from the public-domain Natural Earth land data. See `data/geo/SOURCES.md`.
 - Atmosphere values follow the US Standard Atmosphere 1976.
+
+## Design references
+The home redesign reviewed [Education-Website](https://github.com/sujitmahapatra/Education-Website) and [E-Learning-Website-HTML-CSS](https://github.com/keerti1924/E-Learning-Website-HTML-CSS) for general ideas about clear navigation and course listings. Neither reviewed repository contained a licence file, so their code and assets were **not installed or copied**; EduVerse's implementation and its existing lessons remain independent.
 
 ## Policies
 `docs/ACCURACY_AND_SOURCE_POLICY.md`. Hindi text is draft until reviewed by a subject teacher.

@@ -15,11 +15,13 @@
     "test:t06": "node tests/t06-step6.cjs",
     "test:t07": "node tests/t07-step7.cjs",
     "test:t08": "node tests/t08-step8.cjs",
+    "test:home": "node tests/home-redesign.cjs",
     "smoke": "node tests/lab-smoke.cjs T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12 T13 T14 T15 T16",
     "smoke:mobile": "W=360 MOBILE=1 node tests/lab-smoke.cjs T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12 T13 T14 T15 T16",
     "a11y": "node tests/a11y-smoke.cjs T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12 T13 T14 T15 T16",
     "perf:size": "node tests/perf-size.cjs",
     "perf:throttle": "node tests/perf-throttle.cjs",
+    "globe": "node tools/build-globe-texture.mjs",
     "catalog": "node tools/build-catalog.mjs",
     "sw": "node tools/build-sw.mjs"
   },
