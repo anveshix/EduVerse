@@ -2114,7 +2114,7 @@
     "en": "Balance fishing fleet size, net mesh rules, closed spawning seasons and mangrove nurseries to sustain coastal livelihoods.",
     "hi": "तटीय आजीविका टिकाए रखने के लिए नावों की संख्या, जाल के आकार, प्रजनन-काल बंद और मैंग्रोव संरक्षण का संतुलन समझें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "boats",
@@ -2136,8 +2136,8 @@
      "id": "closed",
      "type": "slider",
      "label": {
-      "en": "Monsoon closed months",
-      "hi": "मानसून प्रजनन-बंद (महीने)"
+      "en": "Imagined closed months",
+      "hi": "काल्पनिक बंद अवधि (महीने)"
      }
     },
     {
@@ -2177,8 +2177,8 @@
    "implementation": "src/modules/geography/t10-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Calculate how fast a tsunami travels, why it slows near the coast, and how much time a community has to evacuate after a warning.",
-    "hi": "गणना करें कि सुनामी कितनी तेज़ चलती है, तट के पास क्यों धीमी हो जाती है, और चेतावनी के बाद समुदाय के पास निकलने के लिए कितना समय है।"
+    "en": "Explore an idealised tsunami wave-speed calculation and distinguish it from a real warning or evacuation decision.",
+    "hi": "सुनामी गति की आदर्श गणना समझें और उसे वास्तविक चेतावनी या निकासी निर्णय से अलग पहचानें।"
    },
    "provenance": "documented",
    "controls": [
@@ -2202,8 +2202,8 @@
      "id": "siren",
      "type": "slider",
      "label": {
-      "en": "Minutes needed to reach high ground",
-      "hi": "ऊँचे स्थान तक पहुँचने के लिए आवश्यक मिनट"
+      "en": "Imagined travel time (minutes)",
+      "hi": "काल्पनिक यात्रा समय (मिनट)"
      }
     }
    ],

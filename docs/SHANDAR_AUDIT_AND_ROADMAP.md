@@ -51,7 +51,7 @@
 | **Step 7 — T07 Elections** | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government | Done |
 | **Step 8 — T08 Economics Basics** | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket | Done |
 | **Step 9 — T09 Price Puzzle** | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week | Done |
-| Step 10 — T10 Oceans | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar |
+| **Step 10 — T10 Oceans** | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar | Done |
 | Step 11 — T11 Life on Earth | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you |
 | Step 12 — T12 Resistance | Multiple perspectives (ruler, farmer, trader, woman) | History with many voices |
 | Step 13 — T13 India & World-I | Silk Road + maritime map lab, Patliputra trade | India connected to world |
@@ -251,7 +251,26 @@
 
 ---
 
+## Step 10 — T10: Oceans and Life
+
+### Audit and improvements
+- **Marine and inland livelihoods (L3):** sourced, revisitable choices cover coastal crews, processing and selling, and the difference between marine fisheries and Bihar's inland waters. A seasonal closure can protect stocks but also interrupt earnings; rules and assistance vary. Two presets update the existing model and its controls, making it possible to compare 0 versus 2 imagined closed months. Stock and cumulative catch are explicitly invented indices, not measured stocks, incomes, policy advice or a guarantee of sustainability. The updated prediction retains earlier answers under a revision marker.
+- **Bay-to-Bihar and safety (L4):** a historical IMD bulletin about Cyclone Montha and its separate Bihar rain forecast are marked as forecasts from 27 October 2025, not observations everywhere or current warnings. Coastal storm surge is not presented as a Bihar hazard. An interactive natural-warning scenario distinguishes tsunami from cyclone and says to drop, cover and hold during shaking, then move immediately inland to higher ground when it stops, without waiting for a siren or retreating sea; stay away until the local all-clear. For actual emergencies use current official and local instructions, not the app.
+- **Unsafe certainty removed:** the constant-depth speed calculation no longer claims a real evacuation margin or certifies that a route is safe. It shows signed arithmetic with explicit assumptions and prominently says never to wait for the calculation. The tsunami quiz, plate, warning-network explanation and CBQ were updated to avoid guaranteed wave heights or warning times. The fishery quiz and CBQ distinguish risks and evidence from guaranteed outcomes. All existing LO/exit IDs and saved answers remain intact; revised predictions keep their older records.
+- The reusable bilingual inquiry-card component validates local example choices, supports keyboard focus and reset, and warns about blocked storage. These companions add no catalog simulation. All T10 lab timers/stages are now destroyed on route exit. Sources need internet, while the content and models work offline after service-worker installation. New Hindi remains **draft pending subject-teacher review**; automated checks do not replace human accessibility review.
+
+### Teaching references
+- [IMD bulletin, 27 October 2025](https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2027-10-2025.pdf): Montha forecast and isolated heavy-rain forecasts including Bihar. These are historical forecasts, not current alerts.
+- [IMD cyclone safety guidance](https://mausam.imd.gov.in/chennai/mcdata/dos%26donts.pdf); [Indian Ocean Tsunami Ready guidelines](https://tsunami.incois.gov.in/tsunamiready/Guidelines_IOTR.pdf); [INCOIS early warning system](https://tsunami.incois.gov.in/TEWS/dsssop.jsp).
+- [Department of Fisheries annual report 2024–25](https://www.dof.gov.in/static/uploads/2025/08/4686b6bf87e0a1844293531a7ad72c74.pdf): marine and inland fisheries, livelihoods and welfare; actual rules differ by fishery and place.
+
+### Verification
+- `npm run catalog && npm run sw`: 78/78 LOs, 79 simulations and 144 precached files. `npm run verify` passed architecture checks and 75/75 tests.
+- `npm run test:t10` checked the fisheries controls, source scope, natural-warning decisions, model limits, old-answer retention, 5/5 LO progress, EN/HI/both, 360 px keyboard/touch, malformed state, blocked storage, offline first-open after installation and no network writes. `test:t09` passed as a regression. Targeted accessibility and desktop/mobile smoke passed without reported page errors or horizontal overflow.
+
+---
+
 ## How to Continue
-1. Continue with **Step 10 — T10**, then follow the roadmap in order, one chapter at a time.
+1. Continue with **Step 11 — T11**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

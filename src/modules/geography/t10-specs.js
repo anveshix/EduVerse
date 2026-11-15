@@ -40,7 +40,7 @@ export const tides = {
         { en: `${PH[psi].en}: tidal range ${fmt(range, 2)} m (high minus low).`, hi: `${PH[psi].hi}: ज्वारीय परिसर ${fmt(range, 2)} मी (उच्च घटा निम्न)।` },
         spring ? { en: 'Sun, Earth and Moon line up, so the Sun’s pull adds to the Moon’s: SPRING tides, the highest highs and lowest lows.', hi: 'सूर्य, पृथ्वी और चंद्रमा एक सीध में आते हैं, इसलिए सूर्य का खिंचाव चंद्रमा के खिंचाव में जुड़ता है: वृहत् (बड़े) ज्वार, सबसे ऊँचा और सबसे नीचा जल।', cls: 'warn' }
           : { en: 'Sun and Moon pull at right angles, so they partly cancel: NEAP tides with a smaller range.', hi: 'सूर्य और चंद्रमा समकोण पर खिंचाव डालते हैं, इसलिए आंशिक रूप से कट जाते हैं: निम्न ज्वार, छोटा परिसर।', cls: 'balanced' },
-        { en: 'Most coasts have two high tides a day, about 12 h 25 min apart.', hi: 'अधिकांश तटों पर दिन में दो उच्च ज्वार आते हैं, लगभग 12 घं 25 मि के अंतर पर।', cls: 'note' },
+        { en: 'Many coasts have roughly two high tides a lunar day; other coasts have different patterns. Use local tide tables.', hi: 'कई तटों पर एक चंद्र दिवस में लगभग दो उच्च ज्वार आते हैं; अन्य तटों पर क्रम अलग है। स्थानीय ज्वार सारणी देखें।', cls: 'note' },
       ],
     };
   },
@@ -56,25 +56,25 @@ export const tides = {
 // ---------------------------------------------------------------- T10.L4 tsunami
 export const tsunami = {
   id: 'T10.L4',
-  objective: b('Calculate how fast a tsunami travels, why it slows near the coast, and how much time a community has to evacuate after a warning.', 'गणना करें कि सुनामी कितनी तेज़ चलती है, तट के पास क्यों धीमी हो जाती है, और चेतावनी के बाद समुदाय के पास निकलने के लिए कितना समय है।'),
-  note: { kind: 'documented', en: 'Speed = √(g × depth) for long waves. Distances and depths are chosen examples, not a forecast for any coast.', hi: 'लंबी तरंगों के लिए गति = √(g × गहराई)। दूरी और गहराई उदाहरण हैं, किसी तट का पूर्वानुमान नहीं।' },
+  objective: b('Explore an idealised tsunami wave-speed calculation and distinguish it from a real warning or evacuation decision.', 'सुनामी गति की आदर्श गणना समझें और उसे वास्तविक चेतावनी या निकासी निर्णय से अलग पहचानें।'),
+  note: { kind: 'documented', en: 'Speed = √(g × depth) approximates long waves in uniform water. The chosen depth and distance are imaginary; this is not a real arrival time, warning or evacuation clock.', hi: 'एकसमान पानी में लंबी तरंग की अनुमानित गति = √(g × गहराई)। चुनी गहराई और दूरी काल्पनिक हैं; यह वास्तविक आगमन समय, चेतावनी या निकासी घड़ी नहीं है।' },
   init: () => ({ depth: 4000, dist: 1000, siren: 20 }),
   controls: [
     { id: 'depth', type: 'slider', label: b('Ocean depth (m)', 'महासागर की गहराई (मी)'), min: 10, max: 6000, step: 10, fmt: (v) => `${fmt(v, 0)} m` },
     { id: 'dist', type: 'slider', label: b('Distance to the coast (km)', 'तट तक दूरी (किमी)'), min: 50, max: 5000, step: 50, fmt: (v) => `${fmt(v, 0)} km` },
-    { id: 'siren', type: 'slider', label: b('Minutes needed to reach high ground', 'ऊँचे स्थान तक पहुँचने के लिए आवश्यक मिनट'), min: 0, max: 180, step: 5, fmt: (v) => `${v} min` },
+    { id: 'siren', type: 'slider', label: b('Imagined travel time (minutes)', 'काल्पनिक यात्रा समय (मिनट)'), min: 0, max: 180, step: 5, fmt: (v) => `${v} min` },
   ],
   view(S) {
-    const kmh = O.tsunamiKmh(S.depth), w = O.warning({ distKm: S.dist, depthM: S.depth, sirenMinutes: S.siren }), ok = w.timeToEvacuate > 0 || S.siren === 0, wave = O.windWaveSpeed(100) * 3.6;
+    const kmh = O.tsunamiKmh(S.depth), w = O.warning({ distKm: S.dist, depthM: S.depth }), wave = O.windWaveSpeed(100) * 3.6;
     const items = [[P('Tsunami (this depth)', 'सुनामी (इस गहराई पर)'), kmh, 'bar-bad'], [P('Tsunami near shore (10 m)', 'सुनामी तट के पास (10 मी)'), O.tsunamiKmh(10), 'bar-w'], [P('Wind wave (100 m wavelength)', 'पवन-तरंग (100 मी तरंगदैर्घ्य)'), wave, 'bar-n'], [P('Car on a highway', 'राजमार्ग पर कार'), 100, 'bar-s'], [P('Jet aircraft', 'जेट विमान'), 800, 'bar-s']];
     const max = 900; let g = '', y = 20;
     for (const [lab, v, cls] of items) { const wdt = (Math.min(v, max) / max) * 380; g += `<text class="txt sm" x="10" y="${y + 14}">${esc(lab)}</text><rect class="${cls}" x="230" y="${y}" width="${wdt.toFixed(0)}" height="22"/><text class="txt sm b" x="${236 + wdt}" y="${y + 16}">${fmt(v, 0)} km/h</text>`; y += 34; }
     const lines = [
       { en: `In ${fmt(S.depth, 0)} m of water a tsunami moves at about ${fmt(kmh, 0)} km/h (${fmt(O.tsunamiSpeed(S.depth), 0)} m/s).`, hi: `${fmt(S.depth, 0)} मी गहरे जल में सुनामी लगभग ${fmt(kmh, 0)} किमी/घं (${fmt(O.tsunamiSpeed(S.depth), 0)} मी/से) से चलती है।` },
-      { en: `It reaches a coast ${fmt(S.dist, 0)} km away in about ${fmt(w.minutes, 0)} minutes (${fmt(w.hours, 1)} h) if the depth stayed constant.`, hi: `यदि गहराई स्थिर रहे तो यह ${fmt(S.dist, 0)} किमी दूर तट तक लगभग ${fmt(w.minutes, 0)} मिनट (${fmt(w.hours, 1)} घं) में पहुँचती है।` },
-      ok ? { en: `If people need ${S.siren} minutes to reach high ground, ${fmt(w.timeToEvacuate, 0)} minutes of margin remain.`, hi: `यदि लोगों को ऊँचे स्थान तक पहुँचने में ${S.siren} मिनट लगते हैं, तो ${fmt(w.timeToEvacuate, 0)} मिनट का अंतर बचता है।`, cls: 'balanced' }
-        : { en: 'The wave arrives before people can reach high ground: warning must come earlier or the route must be shorter.', hi: 'लोगों के ऊँचे स्थान तक पहुँचने से पहले लहर आ जाती है: चेतावनी पहले मिलनी चाहिए या मार्ग छोटा होना चाहिए।', cls: 'warn' },
-      { en: 'Near the shore the wave slows (shallow water) but its height grows; the water can keep rushing in for many minutes.', hi: 'तट के पास लहर धीमी हो जाती है (उथला जल) पर उसकी ऊँचाई बढ़ती है; जल कई मिनटों तक भीतर बहता रह सकता है।', cls: 'note' },
+      { en: `In the imaginary constant-depth model, travelling ${fmt(S.dist, 0)} km takes about ${fmt(w.minutes, 0)} minutes (${fmt(w.hours, 1)} h).`, hi: `काल्पनिक समान-गहराई मॉडल में ${fmt(S.dist, 0)} किमी चलने में लगभग ${fmt(w.minutes, 0)} मिनट (${fmt(w.hours, 1)} घं) लगते हैं।` },
+      { en: `Arithmetic only: ${fmt(w.minutes, 0)} model minutes minus ${S.siren} imagined travel minutes is ${fmt(w.minutes - S.siren, 0)} minutes. It assumes departure at once, constant depth and no delays; it cannot tell anyone whether a route is safe.`, hi: `केवल गणना: मॉडल के ${fmt(w.minutes, 0)} मिनट में से काल्पनिक ${S.siren} मिनट की यात्रा घटाने पर ${fmt(w.minutes - S.siren, 0)} मिनट मिलते हैं। इसमें तुरंत निकलना, समान गहराई और कोई देरी न होना माना है; इससे मार्ग की सुरक्षा तय नहीं होती।`, cls: 'warn' },
+      { en: 'Never wait for this calculation. At the coast, after strong or long shaking stops, move immediately inland to higher ground; follow local warnings and wait for the official all-clear before returning.', hi: 'इस गणना के लिए कभी न रुकें। तट पर लंबे या तेज़ झटके रुकते ही तुरंत भीतर ऊँचे स्थान जाएँ; स्थानीय चेतावनी मानें और सुरक्षित घोषणा के बाद ही लौटें।', cls: 'warn' },
+      { en: 'Near shore waves slow and can grow in height. Several waves and dangerous currents may follow; local shape and depth affect the result.', hi: 'तट के पास लहर धीमी होकर ऊँची हो सकती है। कई लहरें और खतरनाक धाराएँ आ सकती हैं; स्थानीय आकार और गहराई से परिणाम बदलता है।', cls: 'note' },
     ];
     return {
       plate: {
@@ -82,24 +82,24 @@ export const tsunami = {
         en: 'Offshore tsunami sensor buoy and elevated coastal emergency shelter — tap pins to compare deep-ocean speed vs near-shore shoaling.',
         hi: 'समुद्री सुनामी चेतावनी बोया और ऊँचा आपातकालीन आश्रय — गहरे समुद्र व उथले तट की गति परखने हेतु पिन पर टैप करें।',
         spots: [
-          { x: 24, y: 54, en: 'DART Deep-Ocean Sensor (4,000 m)', hi: 'गहरा समुद्री सेंसर (4,000 मी)', detail: b('In 4,000 m water a tsunami races at jet speed (~713 km/h) yet stays under 1 m tall.', '4,000 मी गहरे पानी में सुनामी ~713 किमी/घं की जेट गति से चलती है पर ऊँचाई कम होती है।'), set: { depth: 4000, dist: 1000, siren: 25 } },
-          { x: 56, y: 66, en: 'Shallow Near-Shore Shoaling (20 m)', hi: 'तट के पास उथला जल (20 मी)', detail: b('As depth shrinks to 20 m, speed brakes sharply while kinetic energy piles the wave steeply upward!', '20 मी गहराई पर गति अचानक घटती है और ऊर्जा लहर को ऊँची दीवार बना देती है!'), set: { depth: 20, dist: 50, siren: 25 } },
-          { x: 82, y: 38, en: 'Elevated Coastal Shelter', hi: 'ऊँचा तटीय आश्रय', detail: b('Pre-planned evacuation paths clear low beaches well before distant warnings arrive.', 'पहले से तय निकासी मार्ग चेतावनी के बाद समय रहते लोगों को सुरक्षित ऊँचाई तक पहुँचाते हैं।'), set: { depth: 4000, dist: 1200, siren: 20 } },
+          { x: 24, y: 54, en: 'DART Deep-Ocean Sensor (4,000 m)', hi: 'गहरा समुद्री सेंसर (4,000 मी)', detail: b('At a uniform 4,000 m depth this model gives about 713 km/h. Offshore waves can be difficult to notice.', 'एकसमान 4,000 मी गहराई पर मॉडल में लगभग 713 किमी/घं मिलता है। खुले समुद्र में लहरें पहचानना कठिन हो सकता है।'), set: { depth: 4000, dist: 1000, siren: 25 } },
+          { x: 56, y: 66, en: 'Shallow Near-Shore Shoaling (20 m)', hi: 'तट के पास उथला जल (20 मी)', detail: b('At 20 m this speed model is slower. Shoaling can increase wave height; this graph does not predict it.', '20 मी पर इस मॉडल की गति कम है। उथला जल लहर ऊँची कर सकता है; यह ग्राफ़ ऊँचाई नहीं बताता।'), set: { depth: 20, dist: 50, siren: 25 } },
+          { x: 82, y: 38, en: 'Elevated Coastal Shelter', hi: 'ऊँचा तटीय आश्रय', detail: b('Know local evacuation routes in advance. Time and accessibility vary; follow local authorities and never wait for this model.', 'स्थानीय निकासी मार्ग पहले जानें। समय व पहुँच अलग हैं; स्थानीय निर्देश मानें और इस मॉडल की प्रतीक्षा न करें।'), set: { depth: 4000, dist: 1200, siren: 20 } },
         ],
       },
       svg: `<svg viewBox="0 0 640 ${y + 10}" class="chart" role="img" xmlns="http://www.w3.org/2000/svg">${g}</svg>`,
-      aria: `Tsunami speed ${fmt(kmh, 0)} km/h; arrival ${fmt(w.minutes, 0)} minutes.`,
+      aria: P(`Imaginary model speed ${fmt(kmh, 0)} km/h; calculated travel time ${fmt(w.minutes, 0)} minutes, not a warning.`, `काल्पनिक मॉडल गति ${fmt(kmh, 0)} किमी/घं; गणितीय समय ${fmt(w.minutes, 0)} मिनट, चेतावनी नहीं।`),
       lines,
     };
   },
-  discover: [b('Drag the depth from 4000 m down to 10 m. What happens to the speed? Why does the wave pile up near the shore?', 'गहराई 4000 मी से घटाकर 10 मी तक लाएँ। गति का क्या होता है? लहर तट के पास क्यों ऊँची हो जाती है?'), b('Set the distance to 300 km. Can people who need 60 minutes reach safety?', 'दूरी 300 किमी करें। क्या 60 मिनट चाहने वाले लोग सुरक्षित स्थान तक पहुँच सकते हैं?')],
-  predictions: [{ id: 'p1', stem: b('A tsunami crossing the deep ocean (4000 m) travels…', 'गहरे महासागर (4000 मी) को पार करती सुनामी चलती है…'), options: [opt('slow', 'About as fast as a car (100 km/h)', 'लगभग कार जितनी तेज़ (100 किमी/घं)'), opt('jet', 'About as fast as a jet aircraft (700+ km/h)', 'लगभग जेट विमान जितनी तेज़ (700+ किमी/घं)'), opt('light', 'Much faster than any aircraft (3000 km/h)', 'किसी भी विमान से कहीं तेज़ (3000 किमी/घं)')],
+  discover: [b('Drag the depth from 4000 m down to 10 m. What happens to the speed? Why does the wave pile up near the shore?', 'गहराई 4000 मी से घटाकर 10 मी तक लाएँ। गति का क्या होता है? लहर तट के पास क्यों ऊँची हो जाती है?'), b('Set the distance to 300 km. How does the arithmetic change when imagined travel time changes? Why is this not a real evacuation clock?', 'दूरी 300 किमी करें। काल्पनिक यात्रा समय बदलने से गणना कैसे बदलती है? यह वास्तविक निकासी घड़ी क्यों नहीं है?')],
+  predictions: [{ id: 'p1', revision: 't10-step10', stem: b('A tsunami crossing the deep ocean (4000 m) travels…', 'गहरे महासागर (4000 मी) को पार करती सुनामी चलती है…'), options: [opt('slow', 'About as fast as a car (100 km/h)', 'लगभग कार जितनी तेज़ (100 किमी/घं)'), opt('jet', 'About as fast as a jet aircraft (700+ km/h)', 'लगभग जेट विमान जितनी तेज़ (700+ किमी/घं)'), opt('light', 'Much faster than any aircraft (3000 km/h)', 'किसी भी विमान से कहीं तेज़ (3000 किमी/घं)')],
     run: (S) => { S.depth = 4000; const v = O.tsunamiKmh(4000); return v < 300 ? 'slow' : v < 1500 ? 'jet' : 'light'; },
-    explain: () => ({ en: `√(9.81 × 4000) ≈ ${fmt(O.tsunamiSpeed(4000), 0)} m/s ≈ ${fmt(O.tsunamiKmh(4000), 0)} km/h: as fast as a jet, but the wave is only about a metre high in open water.`, hi: `√(9.81 × 4000) ≈ ${fmt(O.tsunamiSpeed(4000), 0)} मी/से ≈ ${fmt(O.tsunamiKmh(4000), 0)} किमी/घं: जेट जितनी तेज़, पर खुले जल में लहर केवल लगभग एक मीटर ऊँची होती है।` }) }],
-  exit: [{ id: 'e1', stem: b('A tsunami warning is issued when the wave is 1000 km offshore in deep water. Roughly how long until it arrives?', 'जब लहर गहरे जल में तट से 1000 किमी दूर है तब सुनामी चेतावनी जारी होती है। लगभग कितने समय में यह पहुँचेगी?'), correct: 'h', options: [
+    explain: () => ({ en: `√(9.81 × 4000) ≈ ${fmt(O.tsunamiSpeed(4000), 0)} m/s ≈ ${fmt(O.tsunamiKmh(4000), 0)} km/h: comparable to a jet. Offshore wave height varies and can be difficult to notice.`, hi: `√(9.81 × 4000) ≈ ${fmt(O.tsunamiSpeed(4000), 0)} मी/से ≈ ${fmt(O.tsunamiKmh(4000), 0)} किमी/घं: जेट जैसी गति। खुले जल में ऊँचाई बदलती है और लहर पहचानना कठिन हो सकता है।` }) }],
+  exit: [{ id: 'e1', stem: b('In the idealised model, a wave travels 1000 km at the speed for a uniform 4000 m depth. Roughly how long does the calculation give?', 'आदर्श मॉडल में लहर 4000 मी एकसमान गहराई की गति से 1000 किमी चलती है। गणना में लगभग कितना समय आता है?'), correct: 'h', options: [
     { id: 'h', ...b('About 1½ hours', 'लगभग डेढ़ घंटे') }, { id: 'm', ...b('About 5 minutes', 'लगभग 5 मिनट'), why: b('That would need a speed of 12,000 km/h. Use speed ≈ 700 km/h.', 'इसके लिए 12,000 किमी/घं की गति चाहिए। गति ≈ 700 किमी/घं लें।') }, { id: 'd', ...b('About 2 days', 'लगभग 2 दिन'), why: b('Too slow: at 700 km/h, 1000 km takes about 1.4 hours.', 'बहुत धीमा: 700 किमी/घं पर 1000 किमी में लगभग 1.4 घंटे लगते हैं।') }],
-    explain: b('Time = distance ÷ speed = 1000 ÷ ~700 ≈ 1.4 hours. This is why warning systems and evacuation drills save lives.', 'समय = दूरी ÷ गति = 1000 ÷ ~700 ≈ 1.4 घंटे। इसी कारण चेतावनी प्रणाली और निकासी-अभ्यास जीवन बचाते हैं।'), hint: b('Use the distance and speed in the readout.', 'आँकड़े में दिए दूरी और गति का प्रयोग करें।') }],
-  reflect: b('Write two things a coastal school could do so students can reach high ground within the time you calculated.', 'दो काम लिखें जो तटीय विद्यालय कर सके ताकि विद्यार्थी आपकी गणना के समय में ऊँचे स्थान पर पहुँच सकें।'),
+    explain: b('Model time = distance ÷ speed = 1000 ÷ ~700 ≈ 1.4 hours. This is not a real arrival or available evacuation time; never wait for a calculation.', 'मॉडल समय = दूरी ÷ गति = 1000 ÷ ~700 ≈ 1.4 घंटे। यह वास्तविक आगमन या निकासी के लिए उपलब्ध समय नहीं है; गणना की प्रतीक्षा कभी न करें।'), hint: b('Use the distance and speed in the readout.', 'आँकड़े में दिए दूरी और गति का प्रयोग करें।') }],
+  reflect: b('What could a coastal school do in advance to make evacuation routes accessible and practise them? Why must people not rely on a model countdown?', 'तटीय विद्यालय निकासी मार्ग सुलभ बनाने और अभ्यास के लिए पहले क्या कर सकता है? मॉडल की गिनती पर भरोसा क्यों न करें?'),
 };
 
 // ================================================================ T10.L1 Ocean-floor cutaway
@@ -170,48 +170,47 @@ export const oceanRelief = {
 export const fisheries = {
   id: 'T10.L3',
   objective: b('Balance fishing fleet size, net mesh rules, closed spawning seasons and mangrove nurseries to sustain coastal livelihoods.', 'तटीय आजीविका टिकाए रखने के लिए नावों की संख्या, जाल के आकार, प्रजनन-काल बंद और मैंग्रोव संरक्षण का संतुलन समझें।'),
-  note: { kind: 'schematic', en: '25-year coastal fish-stock simulation combining logistic growth and mangrove nursery capacity.', hi: 'लॉजिस्टिक वृद्धि व मैंग्रोव नर्सरी क्षमता पर आधारित 25-वर्षीय तटीय मत्स्य मॉडल।' },
+  note: { kind: 'fictional', en: 'Invented 25-year stock and catch indices with assumed growth, mesh and mangrove effects. Not measured stocks, income, policy evaluation or a forecast.', hi: 'मान ली गई वृद्धि, जाल और मैंग्रोव प्रभाव वाले काल्पनिक 25-वर्षीय भंडार व पकड़ सूचक। ये माप, आय, नीति मूल्यांकन या पूर्वानुमान नहीं हैं।' },
   init: () => ({ boats: 45, mesh: 45, closed: 2, mangrove: 60 }),
   controls: [
     { id: 'boats', type: 'slider', label: b('Fishing boats', 'मछली पकड़ने की नावें'), min: 15, max: 120, step: 5 },
     { id: 'mesh', type: 'slider', label: b('Net mesh size (mm)', 'जाल का छेद (मिमी)'), min: 20, max: 70, step: 5, hint: b('Small mesh catches juvenile fish before they breed.', 'छोटे छेद युवा मछलियाँ भी पकड़ लेते हैं।') },
-    { id: 'closed', type: 'slider', label: b('Monsoon closed months', 'मानसून प्रजनन-बंद (महीने)'), min: 0, max: 4, step: 1 },
+    { id: 'closed', type: 'slider', label: b('Imagined closed months', 'काल्पनिक बंद अवधि (महीने)'), min: 0, max: 4, step: 1 },
     { id: 'mangrove', type: 'slider', label: b('Coastal mangrove cover', 'तटीय मैंग्रोव आवरण'), min: 10, max: 100, step: 10, fmt: (v) => `${v}%` },
   ],
   view(S) {
     const r = O.fisheryRun({ boats: S.boats, meshMm: S.mesh, closedMonths: S.closed, mangrovePct: S.mangrove, years: 25 });
-    const ch = new Chart({ xMax: 25, yMax: 1100, xLabel: P('Years', 'वर्ष'), yLabel: P('Fish stock', 'मत्स्य भंडार'), xTicks: 5, yTicks: 5 });
+    const ch = new Chart({ xMax: 25, yMax: 1100, xLabel: P('Years', 'वर्ष'), yLabel: P('Invented stock index', 'काल्पनिक भंडार सूचक'), xTicks: 5, yTicks: 5 });
     ch.axes();
     ch.hline(r.K * 0.3, 'guide', 0, 25);
     ch.line(r.series.map((v, y) => [y, v]), r.sustainable ? 'curve g' : 'curve d');
     return {
       plate: {
         src: 'assets/images/plates/t10-fisheries.jpg',
-        en: 'Coastal fishing boats beside Kerala mangrove nurseries — tap pins to test co-managed nets vs trawling collapse.',
-        hi: 'केरल में मैंग्रोव जड़ों के पास मछुआरा नावें — टिकाऊ जाल व अति-मत्स्यन की तुलना हेतु पिन पर टैप करें।',
+        en: 'Illustrated coastal fishing boats and mangroves — use the pins for fictional model settings, not local observations.',
+        hi: 'तटीय नावों और मैंग्रोव का चित्र — पिन काल्पनिक मॉडल सेटिंग हैं, स्थानीय प्रेक्षण नहीं।',
         spots: [
-          { x: 24, y: 44, en: 'Mangrove Fish Nursery (90%)', hi: 'मैंग्रोव मत्स्य नर्सरी (90%)', detail: b('Tangled submerged roots shield young fry from predators & cyclones.', 'जटिल मैंग्रोव जड़ें छोटी मछलियों को सुरक्षित प्रजनन-स्थल देती हैं।'), set: { mangrove: 90, closed: 3 } },
-          { x: 54, y: 66, en: 'Selective 55 mm Nets', hi: 'बड़े 55 मिमी जाल', detail: b('45 boats + 55 mm mesh spare juvenile fish so yields hold steady for 25 yrs.', '45 नावें व बड़े छेद का जाल युवा मछलियाँ बचाकर 25 वर्षों तक आय सुरक्षित रखते हैं।'), set: { boats: 45, mesh: 55, closed: 2 } },
-          { x: 80, y: 58, en: 'Overfishing + Fine Mesh Crisis', hi: 'अति-मत्स्यन संकट', detail: b('110 boats + 20 mm fine mesh + 0 closed months collapses fish stocks!', '110 नावें व छोटे 20 मिमी जाल बिना बंद ऋतु के पूरा मत्स्य भंडार समाप्त कर देते हैं!'), set: { boats: 110, mesh: 20, closed: 0, mangrove: 20 } },
+          { x: 24, y: 44, en: 'Mangrove Fish Nursery (90%)', hi: 'मैंग्रोव मत्स्य नर्सरी (90%)', detail: b('Mangroves can provide nursery habitat; the 90% setting is invented, not a measurement.', 'मैंग्रोव मछलियों को शिशु-आवास दे सकते हैं; 90% सेटिंग काल्पनिक है, माप नहीं।'), set: { mangrove: 90, closed: 3 } },
+          { x: 54, y: 66, en: 'Selective 55 mm Nets', hi: 'बड़े 55 मिमी जाल', detail: b('The model assumes larger mesh reduces juvenile catch. It does not predict steady income or prescribe a real mesh size.', 'मॉडल में बड़े छेद से छोटी मछलियों की पकड़ कम मानी है। यह आय या वास्तविक जाल आकार नहीं बताता।'), set: { boats: 45, mesh: 55, closed: 2 } },
+          { x: 80, y: 58, en: 'Overfishing + Fine Mesh Crisis', hi: 'अति-मत्स्यन संकट', detail: b('These invented settings produce a low model stock index, not a measured local collapse.', 'इन काल्पनिक सेटिंग से मॉडल सूचक कम होता है; यह स्थानीय भंडार का मापा पतन नहीं है।'), set: { boats: 110, mesh: 20, closed: 0, mangrove: 20 } },
         ],
       },
       svg: ch.html({ label: P('25-year coastal fish stock', '25 वर्षों में तटीय मत्स्य भंडार') }),
-      aria: `Final fish stock ${fmt(r.finalStock, 0)}, total catch ${fmt(r.totalCatch, 0)}`,
+      aria: P(`Invented final stock index ${fmt(r.finalStock, 0)}, cumulative catch index ${fmt(r.totalCatch, 0)}`, `काल्पनिक अंतिम भंडार सूचक ${fmt(r.finalStock, 0)}, कुल पकड़ सूचक ${fmt(r.totalCatch, 0)}`),
       lines: [
-        r.sustainable
-          ? { en: `Sustainable fishery: after 25 years stock stays healthy at ${fmt(r.finalStock, 0)}, yielding ${fmt(r.totalCatch, 0)} total catch.`, hi: `टिकाऊ मत्स्यन: 25 वर्षों बाद भंडार ${fmt(r.finalStock, 0)} पर सुरक्षित, कुल उपज ${fmt(r.totalCatch, 0)}।`, cls: 'balanced' }
-          : { en: `Depleted stock (${fmt(r.finalStock, 0)} remaining): overfishing + fine nets or mangrove loss reduce future fisher incomes!`, hi: `क्षीण भंडार (केवल ${fmt(r.finalStock, 0)} शेष): अति-मत्स्यन व महीन जाल भविष्य की आजीविका घटाते हैं!`, cls: 'warn' },
+        { en: `Invented model after 25 years: stock index ${fmt(r.finalStock, 0)}; cumulative catch index ${fmt(r.totalCatch, 0)}. Stock is ${r.sustainable ? 'at or above' : 'below'} the model’s arbitrary ${fmt(r.K * 0.3, 0)} threshold.`, hi: `25 वर्ष बाद काल्पनिक मॉडल: भंडार सूचक ${fmt(r.finalStock, 0)}; कुल पकड़ सूचक ${fmt(r.totalCatch, 0)}। भंडार मॉडल की मान ली गई ${fmt(r.K * 0.3, 0)} सीमा से ${r.sustainable ? 'बराबर या ऊपर' : 'नीचे'} है।`, cls: r.sustainable ? 'balanced' : 'warn' },
+        { en: 'The indices and threshold are teaching assumptions. They do not certify sustainability or predict fishers’ incomes.', hi: 'सूचक और सीमा शिक्षण की मान्यताएँ हैं। ये टिकाऊपन प्रमाणित या मछुआरों की आय का अनुमान नहीं करते।', cls: 'note' },
       ],
     };
   },
-  discover: [b('Compare 20 mm fine nets with 55 mm nets at 80 boats. Why do fisher cooperatives enforce minimum mesh sizes?', '80 नावों पर 20 मिमी महीन जाल और 55 मिमी जाल की तुलना करें। मछुआरा समितियाँ न्यूनतम जाल आकार क्यों लागू करती हैं?')],
+  discover: [b('Compare 20 mm and 55 mm nets at 80 boats in this model. Why might communities and authorities discuss mesh rules, and whose livelihoods would be affected?', 'इस मॉडल में 80 नावों पर 20 और 55 मिमी जाल की तुलना करें। समुदाय और अधिकारी जाल नियमों पर चर्चा क्यों कर सकते हैं और किसकी आजीविका प्रभावित होगी?')],
   predictions: [
     {
-      id: 'p1',
-      stem: b('When coastal mangroves are cleared (down to 10%) and 100 boats fish year-round with tiny 20 mm nets, fish stocks…', 'जब तटीय मैंग्रोव कट जाएँ (10%) और 100 नावें साल भर 20 मिमी के छोटे जाल से मछली पकड़ें, तो भंडार…'),
-      options: [opt('crash', 'Collapse sharply, hurting future fisher livelihoods', 'तेज़ी से गिरता है जिससे भविष्य की आजीविका संकट में पड़ती है'), opt('boom', 'Grow faster forever', 'हमेशा बढ़ता रहता है')],
+      id: 'p1', revision: 't10-step10',
+      stem: b('In this invented model, set mangroves to 10%, 100 boats, 20 mm nets and zero closed months. After 25 years the stock index is…', 'इस काल्पनिक मॉडल में मैंग्रोव 10%, 100 नावें, 20 मिमी जाल और शून्य बंद महीने रखें। 25 वर्षों बाद भंडार सूचक…'),
+      options: [opt('crash', 'Below the model threshold', 'मॉडल की सीमा से नीचे'), opt('boom', 'At or above the model threshold', 'मॉडल की सीमा पर या ऊपर')],
       run: (S) => { S.mangrove = 10; S.boats = 100; S.mesh = 20; S.closed = 0; return O.fisheryRun({ boats: 100, meshMm: 20, closedMonths: 0, mangrovePct: 10 }).sustainable ? 'boom' : 'crash'; },
-      explain: () => b('Destroying nurseries and catching juveniles breaks reproduction, collapsing the catch.', 'नर्सरी नष्ट होने और छोटी मछलियों के पकड़े जाने से प्रजनन चक्र टूट जाता है।'),
+      explain: () => b('Under these assumptions the index falls below the chosen threshold. Real fish stocks, species and livelihoods require evidence and local assessment.', 'इन मान्यताओं में सूचक चुनी सीमा से नीचे गिरता है। वास्तविक भंडार, प्रजाति और आजीविका समझने के लिए साक्ष्य व स्थानीय मूल्यांकन चाहिए।'),
     },
   ],
   exit: [
@@ -220,11 +219,11 @@ export const fisheries = {
       stem: b('Why do coastal states enforce a seasonal fishing ban during monsoon breeding months?', 'तटीय राज्य मानसून प्रजनन महीनों में मछली पकड़ने पर अस्थायी रोक क्यों लगाते हैं?'),
       correct: 'breed',
       options: [
-        { id: 'breed', ...b('To let adult fish spawn and young fish grow so catches remain steady all year.', 'ताकि बड़ी मछलियाँ अंडे दे सकें और छोटी बढ़ सकें, जिससे वर्ष भर उपज बनी रहे।') },
+        { id: 'breed', ...b('To help protect breeding fish and allow populations to recover, depending on local rules.', 'स्थानीय नियमों के अनुसार प्रजनन मछलियों और आबादी की पुनर्बहाली में मदद के लिए।') },
         { id: 'salt', ...b('Because seawater loses its salt in monsoon.', 'क्योंकि मानसून में समुद्र का नमक गायब हो जाता है।'), why: b('Closed seasons protect spawning stock and rough-weather safety.', 'बंद ऋतु प्रजनन भंडार और नाविक सुरक्षा के लिए होती है।') },
       ],
-      explain: b('Resting the sea during spawning safeguards long-term livelihoods.', 'प्रजनन काल में विराम दीर्घकालिक आजीविका की रक्षा करता है।'),
-      hint: b('Move the Monsoon closed months slider from 0 to 3.', 'मानसून बंद महीने स्लाइडर को 0 से 3 पर ले जाएँ।'),
+      explain: b('Closures can protect breeding stocks, but impacts on fishers and results vary; no steady catch or income is guaranteed.', 'रोक प्रजनन भंडार बचा सकती है, पर मछुआरों पर प्रभाव व परिणाम अलग होते हैं; स्थिर पकड़ या आय की गारंटी नहीं।'),
+      hint: b('Compare the imagined closed-month settings, remembering that real rules vary.', 'काल्पनिक बंद महीने की सेटिंग तुलना करें और याद रखें कि वास्तविक नियम अलग हैं।'),
     },
   ],
   reflect: b('Give one reason why restoring mangroves helps coastal fishing villages both ecologically and economically.', 'मैंग्रोव पुनर्बहाली तटीय मछुआरा गाँवों की पारिस्थितिक और आर्थिक दोनों तरह से मदद कैसे करती है?'),
@@ -257,7 +256,7 @@ export const maritimeCoop = {
     const desc = {
       ocean: b('No single country owns the high seas; fish stocks, plastic waste, and currents cross every border.', 'खुले महासागर का स्वामी कोई एक देश नहीं; मछलियाँ, धाराएँ और प्रदूषण सभी सीमाएँ पार करते हैं।'),
       trade: b('Over 80% of global goods by volume travel by ship through shared straits like Malacca, Hormuz, and Indian Ocean lanes.', 'विश्व का 80% से अधिक माल साझा समुद्री जलडमरूमध्यों से जहाजों द्वारा जाता है।'),
-      rescue: b('Indian Ocean tsunami warning buoys share real-time seismic data across coastal countries within minutes.', 'हिंद महासागर सुनामी चेतावनी केंद्र मिनटों में सभी तटीय देशों को साझा संकेत भेजते हैं।'),
+      rescue: b('Seismic stations and sea-level instruments help warning centres assess events and share alerts. Local warnings and evacuation still take time and may not precede a nearby tsunami.', 'भूकंपीय केंद्र और समुद्र-स्तर उपकरण चेतावनी केंद्रों को घटना समझने व सूचना साझा करने में मदद करते हैं। स्थानीय चेतावनी और निकासी में समय लगता है और पास की सुनामी पहले आ सकती है।'),
       law: b('UNCLOS defines 12-nautical-mile Territorial Sea, 200-nm Exclusive Economic Zone (EEZ), and freedom of high-seas navigation.', 'UNCLOS 12 नॉटिकल मील प्रादेशिक सागर और 200 नॉटिकल मील अनन्य आर्थिक क्षेत्र (EEZ) तय करता है।'),
       blue: b('Sustainable fisheries, coral restoration, and marine protected areas guard ocean food security.', 'टिकाऊ मत्स्यन और समुद्री संरक्षित क्षेत्र महासागरीय खाद्य सुरक्षा बचाते हैं।'),
     };
@@ -268,7 +267,7 @@ export const maritimeCoop = {
         hi: 'हिंद महासागर बंदरगाह, समुद्री मार्ग व तटीय मैंग्रोव राडार — समुद्री कानून, सुनामी चेतावनी व नीली अर्थव्यवस्था देखें।',
         spots: [
           { x: 58, y: 46, en: 'UNCLOS 200-nm Sea Lanes', hi: 'UNCLOS 200 नॉटिकल मील मार्ग', detail: b('Defines peaceful coastal resource rights alongside open high-seas navigation.', 'तटीय संसाधन अधिकार व खुले समुद्र की शांतिपूर्ण नौवहन स्वतंत्रता तय करता है।'), set: { focus: 'law' } },
-          { x: 92, y: 38, en: 'Coastal Cyclone & Tsunami Radar', hi: 'चक्रवात व सुनामी चेतावनी केंद्र', detail: b('Cross-border warning buoys & radar broadcast seismic sea alerts across Indian Ocean coasts.', 'सीमा-पार सेंसर बोया पूरे हिंद महासागर तटों को समय पर चेतावनी भेजते हैं।'), set: { focus: 'rescue' } },
+          { x: 92, y: 38, en: 'Coastal Cyclone & Tsunami Radar', hi: 'चक्रवात व सुनामी चेतावनी केंद्र', detail: b('Warning centres combine earthquake and sea-level observations and share advisories; a nearby wave can arrive before an alert.', 'चेतावनी केंद्र भूकंप और समुद्र-स्तर आँकड़े मिलाकर सूचना साझा करते हैं; पास की लहर चेतावनी से पहले आ सकती है।'), set: { focus: 'rescue' } },
           { x: 24, y: 66, en: 'Fisher Harbour & Blue Economy', hi: 'मछुआरा बंदरगाह व नीली अर्थव्यवस्था', detail: b('Sustainable coastal ports and mangrove nurseries keep fisheries thriving.', 'टिकाऊ बंदरगाह व मैंग्रोव नर्सरी मत्स्य जीवन की रक्षा करते हैं।'), set: { focus: 'blue' } },
         ],
       },
@@ -291,10 +290,10 @@ export const maritimeCoop = {
       stem: b('Why must tsunami warning networks in the Indian Ocean be international rather than single-country?', 'हिंद महासागर में सुनामी चेतावनी नेटवर्क किसी एक देश के बजाय अंतर्राष्ट्रीय क्यों होना चाहिए?'),
       correct: 'cross',
       options: [
-        { id: 'cross', ...b('An undersea earthquake off one coast sends waves across the whole basin at 700+ km/h.', 'एक तट पर आया भूकंप 700+ किमी/घं से पूरे महासागर में लहरें भेजता है।') },
+        { id: 'cross', ...b('A tsunami can cross national boundaries and threaten more than one coast.', 'सुनामी राष्ट्रीय सीमाएँ पार कर कई तटों को खतरे में डाल सकती है।') },
         { id: 'stop', ...b('Tsunamis stop at maritime borders.', 'सुनामी समुद्री सीमाओं पर रुक जाती हैं।'), why: b('Ocean waves ignore political borders.', 'महासागरीय लहरें राजनीतिक सीमाएँ नहीं मानतीं।') },
       ],
-      explain: b('Deep-ocean sensors near Sumatra or Makran give coastal neighbours across the Indian Ocean crucial warning minutes.', 'सुमात्रा या मकरान के गहरे समुद्री सेंसर पूरे हिंद महासागर के पड़ोसियों को बचाव का समय देते हैं।'),
+      explain: b('Sharing earthquake and sea-level observations can help warning centres alert other coasts. A nearby tsunami can arrive before an official alert.', 'भूकंप और समुद्र-स्तर आँकड़े साझा करने से केंद्र अन्य तटों को चेतावनी दे सकते हैं। पास की सुनामी आधिकारिक चेतावनी से पहले आ सकती है।'),
       hint: b('Click Cyclone & Tsunami Alerts on the network.', 'नेटवर्क पर चक्रवात-सुनामी चेतावनी चुनें।'),
     },
   ],
