@@ -53,7 +53,7 @@
 | **Step 9 — T09 Price Puzzle** | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week | Done |
 | **Step 10 — T10 Oceans** | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar | Done |
 | **Step 11 — T11 Life on Earth** | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you | Done |
-| Step 12 — T12 Resistance | Multiple perspectives (ruler, farmer, trader, woman) | History with many voices |
+| Step 12 — T12 Resistance | Multiple perspectives (ruler, farmer, trader, woman) | History with many voices | In progress |
 | Step 13 — T13 India & World-I | Silk Road + maritime map lab, Patliputra trade | India connected to world |
 | Step 14 — T14 Authority | School rules → Constitution, grievance timeline | Why rules are fair (or not) |
 | Step 15 — T15 Startups | Local entrepreneur stories, balance-sheet builder (fix D9) | Idea → business |
@@ -293,7 +293,21 @@
 
 ---
 
+## Step 12 — T12: Resistance and Resilience (in progress)
+
+### Work completed
+- **Multiple perspectives (L1):** a bilingual, revisitable inquiry asks learners to examine the same *fictional* fort-settlement decision from the perspectives of a ruler/official, cultivator, trader and woman craftsperson. Learners compare what court records, revenue records and physical remains can and cannot establish. The people, event and concerns are invented, not quotations or a claim about a named fort. Roles overlap: women also farmed, traded and ruled, and no one voice speaks for an entire group. The links provide background rather than evidence for the invented people.
+- **Map framing (L1):** removed whole-state historical shading, clarified that modern boundaries and approximate markers are not historical borders, moved Vikramashila's marker to the Bhagalpur area of Bihar, replaced a misleading 1680 Chittor marker with Udaipur, and dated the Saraighat battle as 1671 rather than 1680. The alliance switch now poses an imagined comparison, not an automatic historical outcome. A changed prediction retains the earlier answer under a revision marker. Existing exit IDs, reflections, stars and other progress remain intact.
+- Added links to [NCERT on court accounts and Raziyya](https://ncert.nic.in/textbook/pdf/gess103.pdf), [UNESCO on Rajasthan's hill forts](https://whc.unesco.org/en/list/247/), [NCERT on devotional traditions](https://ncert.nic.in/textbook/pdf/gess106.pdf), [Bihar Tourism on Vikramshila](https://tourism.bihar.gov.in/en/destinations/bhagalpur/ruins-of-vikramshila) and [Assam's Saraighat memorial](https://gmda.assam.gov.in/portlet-sub-innerpage/saraighat-war-memorial-park-agyathuri). Links require internet; the inquiry works offline after service-worker installation.
+- The inquiry choices persist locally, can be reset, and report blocked storage; the theme now destroys all lab timers/stages on exit. New Hindi remains **draft pending subject-teacher review**.
+
+### Verification and remaining review
+- `npm run catalog && npm run sw && npm run verify`: 78/78 LOs, 79 simulations, 147 precached files and 85/85 tests. `npm run test:t12` exercised the four perspectives, source limits, revised prediction/legacy progress, EN/HI/both, keyboard, 360 px, blocked storage and first-open offline after installation. Targeted accessibility and desktop/mobile smoke passed without reported errors or horizontal overflow.
+- **Do not mark Step 12 complete yet:** review and qualify the inherited fort score and siege claims, Bhakti map's implied linear route and universal participation claims, and continuity timeline's dated labels. Recheck the T12 teacher/CBQ material and run the full chapter verification after those corrections. Steps 13–17 remain planned.
+
+---
+
 ## How to Continue
-1. Continue with **Step 12 — T12**, then follow the roadmap in order, one chapter at a time.
+1. Finish the remaining **Step 12 — T12** review above, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.
