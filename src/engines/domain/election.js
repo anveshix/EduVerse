@@ -49,12 +49,30 @@ export function run(system, swing) {
   const consts = applySwing(BASE, swing);
   const res = system === 'fptp' ? fptp(consts) : system === 'runoff' ? runoff(consts) : proportional(consts);
   const sh = voteShare(consts), seats = res.seats;
-  const most = (o) => top(o)[0][0], topVotes = most(sh), maxSeats = Math.max(...Object.values(seats));
-  const topSeats = seats[topVotes] === maxSeats ? topVotes : most(seats); // a tie for most seats is not a mismatch
-  return { consts, system, swing, seats, voteShare: sh, rounds: res.rounds, topVotes, topSeats, mismatch: seats[topVotes] < maxSeats };
+  const maxVotes = Math.max(...Object.values(sh)), maxSeats = Math.max(...Object.values(seats));
+  // Preserve ties rather than presenting the alphabetically first party as the sole leader.
+  const voteLeaders = PARTIES.filter((p) => Math.abs(sh[p] - maxVotes) < 1e-9);
+  const seatLeaders = PARTIES.filter((p) => seats[p] === maxSeats);
+  const topVotes = voteLeaders[0], topSeats = seatLeaders[0]; // compatibility for callers needing one representative
+  const mismatch = !voteLeaders.some((p) => seatLeaders.includes(p));
+  return { consts, system, swing, seats, voteShare: sh, rounds: res.rounds, topVotes, topSeats, voteLeaders, seatLeaders, mismatch };
 }
 
-/** Smallest-by-membership sets of parties whose seats exceed half the house and in which no member is surplus (minimal winning coalitions). */
+/** Evaluate a proposed set of parties in a fictional seat-count exercise. */
+export function coalitionStatus(seats, selection) {
+  if (!seats || typeof seats !== 'object' || Array.isArray(seats) || !Array.isArray(selection) ||
+      Object.values(seats).some((n) => !Number.isInteger(n) || n < 0) ||
+      new Set(selection).size !== selection.length || selection.some((p) => !Object.hasOwn(seats, p) || seats[p] === 0)) return { valid: false };
+  const total = Object.values(seats).reduce((sum, n) => sum + n, 0);
+  if (!total) return { valid: false };
+  const need = Math.floor(total / 2) + 1;
+  const support = selection.reduce((sum, p) => sum + seats[p], 0);
+  const majority = support >= need;
+  const surplus = majority ? selection.filter((p) => support - seats[p] >= need) : [];
+  return { valid: true, total, need, support, majority, minimal: majority && surplus.length === 0, surplus };
+}
+
+/** Sets exceeding half the house in which removing any member loses that majority (minimal winning coalitions). */
 export function minimalWinningCoalitions(seats) {
   const parties = Object.keys(seats).filter((p) => seats[p] > 0), total = Object.values(seats).reduce((a, b) => a + b, 0), need = Math.floor(total / 2) + 1, out = [];
   for (let mask = 1; mask < 1 << parties.length; mask++) {

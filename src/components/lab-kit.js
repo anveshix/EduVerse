@@ -170,11 +170,12 @@ export function createLab(spec, themeId, { onDraw, onSpot, skipAuto3d = false } 
       let dir = 1;
       demoTimer = setInterval(() => {
         if (primary.type === 'slider') {
-          const step = (primary.max - primary.min) / 14;
+          // Never round a coarse, short-range slider back to the same value forever.
+          const step = Math.max(primary.step ?? 0, (primary.max - primary.min) / 14);
           let nv = S[primary.id] + step * dir;
           if (nv >= primary.max) { nv = primary.max; dir = -1; }
           else if (nv <= primary.min) { nv = primary.min; dir = 1; }
-          const snap = primary.step ? Math.round(nv / primary.step) * primary.step : nv;
+          const snap = primary.step ? primary.min + Math.round((nv - primary.min) / primary.step) * primary.step : nv;
           S[primary.id] = Math.max(primary.min, Math.min(primary.max, snap));
         } else if (primary.type === 'chips') {
           const idx = primary.options.findIndex((o) => o.id === S[primary.id]);

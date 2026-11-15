@@ -223,9 +223,9 @@ export const THEME_NEP = {
       summary: b('FPTP vs Proportional Representation, party systems, and coalition dynamics in T07 feed directly into Class X’s Political Parties and Coalition Federalism.', 'निर्वाचन प्रणालियाँ, दलीय व्यवस्था और गठबंधन वार्ता सीधे कक्षा X के राजनीतिक दल अध्याय से जुड़ते हैं।'),
     },
     tours: [
-      { az: 0.55, pol: 1.05, r: 16, en: 'Step 1 · Constituency Hex Grid: Each tower represents one geographic parliamentary seat.', hi: 'चरण 1 · निर्वाचन क्षेत्र ग्रिड: हर षट्कोणीय स्तंभ एक भौगोलिक सीट दर्शाता है।' },
-      { az: -0.75, pol: 0.95, r: 15, en: 'Step 2 · Seat Height & Winner Effect: Small vote swings can flip close FPTP seats dramatically.', hi: 'चरण 2 · स्विंग प्रभाव: छोटे मत-अंतर से FPTP में कई सीटें बदल सकती हैं।' },
-      { az: 0.0, pol: 0.3, r: 18, en: 'Step 3 · Top-Down Delimitation View: Compare balanced seats vs skewed boundaries.', hi: 'चरण 3 · शीर्ष परिसीमन दृश्य: संतुलित और असंतुलित क्षेत्रों की तुलना करें।' },
+      { az: 0.55, pol: 1.05, r: 16, en: 'Step 1 · Illustrative ten-seat grid: this is not a real map or a live result.', hi: 'चरण 1 · चित्रात्मक दस-सीट ग्रिड: यह असली नक्शा या ताज़ा परिणाम नहीं है।' },
+      { az: -0.75, pol: 0.95, r: 15, en: 'Step 2 · Equal towers: compare actual toy seat counts in the 2D result instead.', hi: 'चरण 2 · समान स्तंभ: काल्पनिक सीट गिनती की तुलना 2D परिणाम में करें।' },
+      { az: 0.0, pol: 0.3, r: 18, en: 'Step 3 · Top view: use the separate 2D nine-block map to test boundaries.', hi: 'चरण 3 · शीर्ष दृश्य: सीमाएँ परखने के लिए अलग 2D नौ-ब्लॉक मानचित्र देखें।' },
     ],
     ar: {
       id: 'cbq-t07-ar',
@@ -243,7 +243,7 @@ export const THEME_NEP = {
         { id: 'ad', ...b('Party A + Party D (38 + 10 = 48 seats)', 'दल A + दल D (38 + 10 = 48 सीटें)'), why: b('48 is still short of the 51-seat majority mark.', '48 सीटें 51 के बहुमत से कम हैं।') },
       ],
       correct: 'ac',
-      explain: b('38 + 18 = 56 seats passes the 51-seat halfway threshold cleanly with two partners (Anti-Defection Tenth Schedule also binds whips).', '38 + 18 = 56 सीटें स्पष्ट बहुमत देती हैं; दलबदल-रोधी 10वीं अनुसूची स्थिरता सुनिश्चित करती है।'),
+      explain: b('38 + 18 = 56 seats exceeds 51; neither partner alone has a majority. This arithmetic does not guarantee an agreement or stability.', '38 + 18 = 56 सीटें 51 से अधिक हैं; अकेले किसी साझेदार का बहुमत नहीं है। यह गणना समझौते या स्थिरता की गारंटी नहीं देती।'),
     },
   },
 

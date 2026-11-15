@@ -64,9 +64,11 @@ export const TEACHER = {
   },
   T07: {
     flow: [
-      b('ECI Workflow & Vote-to-Seat Sandbox (15 min): see how Model Code works and compare FPTP vs Runoff vs PR on one fictional vote set.', 'निर्वाचन प्रक्रिया व प्रयोगशाला (15 मिनट): आचार संहिता व FPTP बनाम आनुपातिक प्रणाली परखें।'),
-      b('Delimitation, Voter Roll & Coalitions (15 min): test gerrymandering vs parity and form minimal winning coalitions.', 'परिसीमन व गठबंधन (15 मिनट): सीमा-निर्धारण और न्यूनतम बहुमत गठबंधन जाँचें।'),
+      b('Voter journey and vote-to-seat (15 min): check the fictional roll, private choice and VVPAT steps, then compare FPTP with fictional runoff and list PR.', 'मतदाता यात्रा और मत-से-सीट (15 मिनट): काल्पनिक सूची, गोपनीय चुनाव व वीवीपैट के चरण देखें, फिर FPTP की काल्पनिक पुनर्मतदान और सूची PR से तुलना करें।'),
+      b('Boundaries and coalitions (15 min): compare connected equal-population maps, then choose parties and test whether every partner is needed for a 10-seat majority.', 'सीमाएँ और गठबंधन (15 मिनट): जुड़े हुए समान जनसंख्या मानचित्र तुलना करें, फिर दल चुनकर जाँचें कि 10 सीटों के बहुमत में हर साझेदार आवश्यक है या नहीं।'),
     ],
+    prompts: [b('Does a majority of seats always mean a majority of votes? Can equal-population maps still produce different seat results?', 'क्या सीटों के बहुमत का अर्थ हमेशा मतों का बहुमत है? क्या समान जनसंख्या मानचित्र अलग सीट परिणाम दे सकते हैं?')],
+    misconceptions: [b('Turning 18 does not automatically register a voter; equal district population alone cannot rule out biased boundary design. A numerical coalition is not an actual political agreement.', '18 वर्ष होने से मतदाता स्वतः पंजीकृत नहीं होता; समान क्षेत्रीय जनसंख्या अकेले पक्षपातपूर्ण सीमा की संभावना नहीं मिटाती। संख्यात्मक गठबंधन वास्तविक राजनीतिक समझौता नहीं है।')],
   },
   T08: {
     flow: [

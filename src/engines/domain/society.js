@@ -33,7 +33,8 @@ export function delimitationOutcome(scheme = 'rows') {
   const maps = {
     rows: [[0, 1, 2], [3, 4, 5], [6, 7, 8]],       // A wins 2-1
     cols: [[0, 3, 6], [1, 4, 7], [2, 5, 8]],       // A wins [0,3,6], [1,4,7] 2-1
-    packedA: [[0, 1, 6], [2, 3, 4], [5, 7, 8]],    // Packing A into dist 0 lets B win 2-1 despite fewer votes!
+    // All three areas are contiguous: A is concentrated in the left column.
+    packedA: [[0, 3, 6], [1, 2, 4], [5, 7, 8]],    // A 205–95, 145–155, 110–190; B wins 2–1.
     unequal: [[0, 1, 3, 4, 6], [2, 5], [7, 8]],    // Malapportionment: unequal populations (500 vs 200 vs 200) -> B wins 2-1!
   };
   const groups = maps[scheme] || maps.rows;

@@ -48,7 +48,7 @@
 | **Step 4 — T04** Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist | Done |
 | **Step 5 — T05 State & Society** | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines | Done |
 | **Step 6 — T06 Democracy** | Panchayati Raj + classroom vote simulation | Democracy you practise daily | Done |
-| Step 7 — T07 Elections | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government |
+| **Step 7 — T07 Elections** | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government | Done |
 | Step 8 — T08 Economics Basics | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket |
 | Step 9 — T09 Price Puzzle | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week |
 | Step 10 — T10 Oceans | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar |
@@ -193,7 +193,27 @@
 
 ---
 
+## Step 7 — T07: Elections
+
+### Audit and improvements
+- **Mock voter journey (L1):** five revisitable bilingual stages distinguish applying/checking an electoral roll, comparing choices, booth checks, a pretend choice, and VVPAT/counting. The example choice is stored locally, can be changed or cleared and is explicitly **not a secure or real ballot**. A separate fixed 8–7–5 candidate-vote example illustrates a plurality, not a majority; the pretend choice does not change that count. The voter sees the VVPAT slip briefly; it falls into a sealed box rather than being taken home. The workflow no longer suggests registration is automatic at 18 or that delimitation precedes every election. Legal and procedural details are simplified and can change.
+- **Boundary visual (L3):** all four nine-block arrangements are contiguous and preserve the same 460–440 votes. The formerly disconnected packed district was corrected: A wins D1 205–95, B wins D2 155–145 and D3 190–110, despite all three having 300 people. This fictional voter-as-population model demonstrates that equal population by itself does not prevent a partisan design; real delimitation uses population, geography and law. A keyboard-focusable internal scroller keeps the map legible on narrow screens and the counts are also text. The roll checker is only three simplified checks, not a registration decision.
+- **Coalition builder (L4):** choose parties using the *current* system and swing seat counts, identify whole-house majorities, minimal winning groups and individually surplus partners. A party with no seats is removed from the selection when controls change. Arithmetic does not predict an agreement, stability, outside support or actual government formation; real confidence votes follow applicable rules. The positive swing label now correctly says B→R. The Tenth Schedule explanation no longer claims automatic disqualification or guaranteed stability.
+- **Vote-to-seat and lifecycle fixes:** tied vote and seat leaders are listed rather than collapsed to one party; FPTP, fictional runoff assumptions and largest-remainder list PR are distinguished from India's Lok Sabha/Assembly rules, with toy tie rules disclosed. T07's formerly inactive 3D tab lifecycle now enables and disposes only the visible stage; its old arbitrary party-coloured towers were replaced with a clearly labelled generic illustration, not a fabricated result. The shared autoplay now advances short/coarse sliders instead of repeatedly rounding to the same value. Revised L1, L3 and L4 predictions retain previous answers under revision markers; tab, LO, exit and progress IDs are unchanged.
+- Both companions are part of the existing LOs and do not add catalog simulations. Storage can be cleared or blocked; first-open offline needs the installed service worker, and images or 3D may be unavailable. New Hindi remains **draft pending subject-teacher review**; automated tests do not replace a human accessibility audit.
+
+### Teaching references
+- Election Commission of India: [electoral rolls and process](https://old.eci.gov.in/about/about-eci/), [voter registration](https://old.eci.gov.in/voter/voter-registration/) and [EVM/VVPAT guidance](https://old.eci.gov.in/faqs/evm/general-qa/electronic-voting-machine-r17/). Consult the ECI for current procedures and sample-verification rules.
+- Legislative Department: [Constitution, including the Tenth Schedule](https://www.legislative.gov.in/static/uploads/2025/07/288b285129a41d9fbe4c7c9c517e1629.pdf). Conditions, exceptions and decisions by the presiding officer matter; the arithmetic model does not apply the law to any person.
+
+### Verification
+- `npm run catalog && npm run sw`: **78/78 LOs, 79 simulations and 132 precached files**. `npm run verify` passed architecture checks and **65/65 tests**.
+- `npm run test:t07` covered the five-stage journey, practice-choice privacy notice, connected boundaries, vote/seat ties, changing coalition controls, reset, EN/HI/both, keyboard and 360 px touch, internal map scrolling, local persistence, old-prediction migration, malformed saved choices, denied storage, first-open offline, 4/4 LO progress, dark contrast and 3D lifecycle with no network writes or JavaScript errors. Tests `test:t02`–`test:t06` passed after the shared autoplay fix.
+- Targeted T07 automated accessibility and desktop/360 px smoke passed without reported errors or page overflow.
+
+---
+
 ## How to Continue
-1. Continue with **Step 7 — T07**, then follow the roadmap in order, one chapter at a time.
+1. Continue with **Step 8 — T08**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

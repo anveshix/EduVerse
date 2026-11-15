@@ -310,3 +310,8 @@ ol.try{padding-left:1.3rem}ol.try li{margin:.35rem 0}.ctl-label{margin-top:.6rem
 @media(max-width:720px){.civic-roles{grid-template-columns:repeat(2,minmax(0,1fr))}.civic-vote-rows{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:380px){.civic-roles{grid-template-columns:minmax(0,1fr)}}
 .civic-inclusion{margin:.7rem 0;border:1px solid var(--line);border-radius:9px;padding:.4rem .7rem}.civic-inclusion summary{cursor:pointer;min-height:44px;padding:.45rem 0;font-weight:700;color:var(--pri)}
+/* T07 voter journey and connected fictional boundary map */
+.election-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45rem;margin:.8rem 0}.election-steps .civic-role{font-size:.9em}.election-journey [hidden]{display:none}.election-coalition .civic-choices{margin:.8rem 0}.t07-boundaries .txt,.t07-boundaries .txt.mut,.chart.t07-timeline .txt.static-on-light{fill:#17212b}
+@media(max-width:850px){.election-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:380px){.election-steps{grid-template-columns:minmax(0,1fr)}}
+#lab-T07-L3 .lab-grid,#lab-T07-L3 .lab-main{min-width:0}.t07-boundary-hint{font-size:.85em;color:var(--mut);padding:.3rem}.t07-boundary-scroll{min-width:0;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.t07-boundary-scroll .chart{min-width:640px}

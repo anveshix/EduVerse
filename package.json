@@ -13,6 +13,7 @@
     "test:t04": "node tests/t04-step4.cjs",
     "test:t05": "node tests/t05-step5.cjs",
     "test:t06": "node tests/t06-step6.cjs",
+    "test:t07": "node tests/t07-step7.cjs",
     "smoke": "node tests/lab-smoke.cjs T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12 T13 T14 T15 T16",
     "smoke:mobile": "W=360 MOBILE=1 node tests/lab-smoke.cjs T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12 T13 T14 T15 T16",
     "a11y": "node tests/a11y-smoke.cjs T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12 T13 T14 T15 T16",

@@ -53,19 +53,19 @@ export const UI_T07 = {
     "hi": "सबसे अधिक मत: {votes}। सबसे अधिक सीटें: {seats}।"
   },
   "el.ro.mismatch": {
-    "en": "The party with the most votes does NOT have the most seats.",
-    "hi": "सबसे अधिक मत वाले दल के पास सबसे अधिक सीटें नहीं हैं।"
+    "en": "No vote leader is among the seat leaders.",
+    "hi": "मतों में अग्रणी कोई दल सीटों में अग्रणी नहीं है।"
   },
   "el.ro.match": {
-    "en": "The party with the most votes also has the most seats.",
-    "hi": "सबसे अधिक मत वाले दल के पास सबसे अधिक सीटें भी हैं।"
+    "en": "At least one vote leader is also a seat leader; ties are possible.",
+    "hi": "मतों में अग्रणी कम-से-कम एक दल सीटों में भी अग्रणी है; बराबरी संभव है।"
   },
   "el.assump": {
-    "en": "Runoff assumption (fictional): most Green voters prefer Blue (70/30) and Yellow voters split 50/50.",
-    "hi": "पुनर्मतदान की मान्यता (काल्पनिक): अधिकांश हरे मतदाता नीले को पसंद करते हैं (70/30) और पीले मतदाता 50/50 बँटते हैं।"
+    "en": "Fictional runoff: all eliminated Green votes transfer 70/30 to Blue/Red and Yellow votes split 50/50; there is no turnout change. A real second poll can differ.",
+    "hi": "काल्पनिक पुनर्मतदान: हटे हरे मत नीले/लाल में 70/30 और पीले मत 50/50 बँटते हैं; मतदान संख्या नहीं बदलती। वास्तविक दूसरे मतदान में अंतर हो सकता है।"
   },
   "el.fictional": {
-    "en": "Fictional parties and votes, for teaching only.",
-    "hi": "काल्पनिक दल और मत, केवल शिक्षण के लिए।"
+    "en": "Fictional teaching data. Lok Sabha and state Assembly seats use FPTP; runoff and this single-list PR are comparisons, not their actual rules. PR uses largest remainders. The toy breaks tied first-round and PR rankings alphabetically; a tied runoff goes to the round-one leader. Real tie rules can differ.",
+    "hi": "काल्पनिक शिक्षण आँकड़े। लोकसभा व राज्य विधानसभा में FPTP है; पुनर्मतदान और यह एक-सूची PR केवल तुलना हैं, उनके नियम नहीं। PR में सबसे बड़े शेष हैं। मॉडल पहले चरण और PR की बराबरी वर्णानुक्रम से और पुनर्मतदान की बराबरी पहले चरण के अग्रणी के पक्ष में तय करता है। वास्तविक नियम भिन्न हो सकते हैं।"
   }
 };

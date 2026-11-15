@@ -1460,10 +1460,10 @@
    "implementation": "src/modules/politics/t07-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Trace the Indian election workflow led by the Election Commission of India (ECI) under Article 324 and the Representation of the People Acts (1950, 1951).",
-    "hi": "अनुच्छेद 324 और जनप्रतिनिधित्व अधिनियम (1950, 1951) के अंतर्गत भारत निर्वाचन आयोग (ECI) की चुनाव प्रक्रिया का चरणबद्ध अध्ययन करें।"
+    "en": "Trace a simplified Lok Sabha or state Assembly election workflow led by the Election Commission of India (ECI) under Article 324 and the Representation of the People Acts (1950, 1951).",
+    "hi": "अनुच्छेद 324 और जनप्रतिनिधित्व अधिनियम (1950, 1951) के अंतर्गत भारत निर्वाचन आयोग की लोकसभा या राज्य विधानसभा चुनाव प्रक्रिया का सरलीकृत अध्ययन करें।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "stage",
@@ -1477,8 +1477,8 @@
      "id": "independentEci",
      "type": "toggle",
      "label": {
-      "en": "Independent ECI & Model Code enforced",
-      "hi": "स्वतंत्र ECI व आचार संहिता लागू"
+      "en": "Imagine independent supervision",
+      "hi": "स्वतंत्र निगरानी की कल्पना करें"
      }
     }
    ],
@@ -1585,8 +1585,8 @@
    "implementation": "src/modules/politics/t07-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Find which parties can form a government when no party wins a majority of seats, and examine how the Anti-Defection Law promotes stability.",
-    "hi": "पता करें कि जब किसी दल को सीटों का बहुमत नहीं मिलता तो कौन-से दल मिलकर सरकार बना सकते हैं, और दलबदल-रोधी कानून स्थिरता कैसे लाता है।"
+    "en": "Explore seat combinations when no party wins a majority, and consider the purpose and limits of India’s anti-defection provisions.",
+    "hi": "जब किसी दल को सीटों का बहुमत नहीं मिलता तो सीटों के समूह जाँचें और भारत के दलबदल-रोधी प्रावधानों के उद्देश्य व सीमाओं पर विचार करें।"
    },
    "provenance": "fictional",
    "controls": [
@@ -1602,8 +1602,8 @@
      "id": "swing",
      "type": "slider",
      "label": {
-      "en": "Vote swing from R to B (points)",
-      "hi": "R से B की ओर मत-झुकाव (अंक)"
+      "en": "Swing: positive moves B votes to R (points)",
+      "hi": "झुकाव: धनात्मक पर B के मत R की ओर (अंक)"
      }
     }
    ],
