@@ -50,7 +50,7 @@
 | **Step 6 — T06 Democracy** | Panchayati Raj + classroom vote simulation | Democracy you practise daily | Done |
 | **Step 7 — T07 Elections** | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government | Done |
 | **Step 8 — T08 Economics Basics** | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket | Done |
-| Step 9 — T09 Price Puzzle | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week |
+| **Step 9 — T09 Price Puzzle** | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week | Done |
 | Step 10 — T10 Oceans | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar |
 | Step 11 — T11 Life on Earth | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you |
 | Step 12 — T12 Resistance | Multiple perspectives (ruler, farmer, trader, woman) | History with many voices |
@@ -232,7 +232,26 @@
 
 ---
 
+## Step 9 — T09: The Price Puzzle
+
+### Audit and improvements
+- **Market evidence (L1–L3):** four revisitable, sourced examples distinguish a reported 3 July 2024 Patna wholesale tomato quote (₹60–70/kg) and Antaghat retail quote (about ₹100/kg), the 16 July 2023 ₹80/kg concessional tomato sale at selected points including Patna, a November 2023 ₹25/kg subsidised onion intervention at selected outlets in India, and 2024–25 common-paddy MSP of ₹2,300/quintal (₹23/kg). Dates, location, source and type of price are explicit: none is a current quote; the onion source does not establish a Patna mandi price. Different quotes do not establish seller profits. An MSP announcement does not guarantee every farmer's sale or access to procurement; MSP here is for paddy, not a tomato/onion quote.
+- **Evidence versus model:** students test an interpretation of each source, retry an answer, and send a fictional 20-unit supply fall to the existing perishable-goods graph. The graph's invented price and quantities are not a reconstruction, measurement or forecast, and a real price spike may have multiple causes. Buttons work by keyboard and persist locally; a reset and blocked-storage notice are provided. The activity is inside the existing market tab and adds no new LO or catalog simulation.
+- **Progress and prediction repair:** added exit questions for L2, L3, L4 and L6 while retaining the existing x1–x3 mappings, enabling 6/6 progress without discarding previous answers. The first three market predictions now start from the described baseline rather than arbitrary previous slider positions; revision markers preserve earlier answers and avoid misrepresenting them as responses to the corrected experiment. The public-good explanation no longer promises every real tax arrangement will solve the problem.
+- New Hindi is **draft pending subject-teacher review**. Source links require internet; the dated text, questions and model work after the service worker is installed. Automated accessibility checks do not replace a human screen-reader review.
+
+### Teaching references
+- [Prabhat Khabar, 3 July 2024](https://www.prabhatkhabar.com/video/patna-vegetable-market-rate-tomato-price-jumped-from-rs-60-to-rs-100-in-two-days): reported Patna wholesale and Antaghat market tomato prices; the two quotes do not measure a single seller's costs.
+- PIB: [16 July 2023 tomato intervention](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1939908); [4 November 2023 onion buffer intervention](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1974673); [6 December 2024 paddy MSP](https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2081586).
+- [Agmarknet FAQ](https://agmarknet.gov.in/OtherPages/FAQ.aspx): wholesale prices and arrivals vary by market and commodity. Consult current official sources for present-day data.
+
+### Verification
+- `npm run catalog && npm run sw`: 78/78 LOs, 79 simulations and 142 precached files. `npm run verify` passed architecture checks and 72/72 tests.
+- `npm run test:t09` checked evidence scope, conversion, supply-shift link, prediction baseline, 6/6 exit progress, old-answer retention, EN/HI/both, 360 px keyboard/touch, state repair, blocked storage and offline first-open after installation. `test:t08` and `test:home` regressions passed. Targeted accessibility and desktop/360 px smoke passed without page errors or horizontal overflow.
+
+---
+
 ## How to Continue
-1. Continue with **Step 9 — T09**, then follow the roadmap in order, one chapter at a time.
+1. Continue with **Step 10 — T10**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.
