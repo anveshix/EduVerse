@@ -50,7 +50,7 @@ export function fortDesign({ bastions = 4, bentGate = true, cisterns = 3, granar
   return { defence, siegeEndurance: Math.round(siegeEndurance), overall };
 }
 
-/** T05.L3 Kautilya Saptanga & State-vs-Society governance simulation (up to 1000 CE). */
+/** T05.L3 fictional tax-and-works scenario; not the Saptanga theory or a historical measurement. */
 export function saptangaEmpireSim({ taxRate = 17, roadsInvest = 50, irrigationInvest = 50, governanceMode = 'maurya' } = {}) {
   const modeBonus = {
     gana: { leg: 14, treas: -8, breakaway: 10, village: 16 },
@@ -68,14 +68,18 @@ export function saptangaEmpireSim({ taxRate = 17, roadsInvest = 50, irrigationIn
   const treasury = Math.max(5, Math.min(100, Math.round(28 + modeBonus.treas + taxRate * 2.1 * (legitimacy / 100) - (roadsInvest + irrigationInvest) * 0.14)));
   const breakawayRisk = Math.max(4, Math.min(98, Math.round(modeBonus.breakaway + Math.max(0, taxRate - 22) * 1.3 - roadsInvest * 0.22 - (governanceMode === 'chola' ? 8 : 0))));
 
-  const limbs = [
-    { id: 'svamin', en: 'Svamin (Rule/Assembly)', hi: 'स्वामी (शासन)', val: legitimacy },
-    { id: 'janapada', en: 'Janapada (People/Land)', hi: 'जनपद (प्रजा व कृषि)', val: villageResilience },
-    { id: 'kosha', en: 'Kosha (Treasury)', hi: 'कोश (राजकोष)', val: treasury },
-    { id: 'durga', en: 'Durga & Roads', hi: 'दुर्ग व मार्ग', val: Math.round((roadsInvest + irrigationInvest) / 2) },
-    { id: 'mitra', en: 'Stability (Low Revolt)', hi: 'स्थिरता (कम विद्रोह)', val: 100 - breakawayRisk },
+  // These are arbitrary scenario indicators, not the seven constituents of Saptanga.
+  // The deprecated `limbs` array keeps legacy IDs for existing consumers only.
+  const indicators = [
+    { id: 'support', en: 'Support (toy points)', hi: 'समर्थन (काल्पनिक अंक)', val: legitimacy },
+    { id: 'food', en: 'Food resilience (toy)', hi: 'भोजन स्थिरता (काल्पनिक)', val: villageResilience },
+    { id: 'treasury', en: 'Treasury (toy)', hi: 'कोष (काल्पनिक)', val: treasury },
+    { id: 'works', en: 'Works setting (toy)', hi: 'निर्माण स्तर (काल्पनिक)', val: Math.round((roadsInvest + irrigationInvest) / 2) },
+    { id: 'stability', en: 'Stability (toy)', hi: 'स्थिरता (काल्पनिक)', val: 100 - breakawayRisk },
   ];
-  return { legitimacy, villageResilience, treasury, breakawayRisk, limbs };
+  const legacyIds = ['svamin', 'janapada', 'kosha', 'durga', 'mitra'];
+  const limbs = indicators.map((indicator, i) => ({ ...indicator, id: legacyIds[i] }));
+  return { legitimacy, villageResilience, treasury, breakawayRisk, indicators, limbs };
 }
 
 /** T05.L5 Ancient Indian caravan & maritime guild (shreni / Ayyavole / Manigramam) model. */

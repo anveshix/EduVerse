@@ -157,16 +157,16 @@ export const THEME_NEP = {
       summary: b('From Ashokan edicts and palm-leaf manuscripts to Takshashila, Nalanda, and trade guilds, T05 builds the cultural-institutional root for Class X Print Culture and Nationhood.', 'अशोक के शिलालेखों व ताड़पत्रों से नालंदा और व्यापार श्रेणियों तक, T05 कक्षा X की मुद्रण संस्कृति व राष्ट्र-निर्माण की नींव रखता है।'),
     },
     tours: [
-      { az: -0.75, pol: 1.05, r: 15, en: 'Step 1 · Stupa / Sabha / Chola Temple: Switch periods (L1) to watch Vedic Sabha evolve into Mauryan & Chola local governance.', hi: 'चरण 1 · स्तूप / सभा / चोल मंदिर: कालखंड (L1) बदलकर वैदिक सभा से मौर्य व चोल ग्राम स्वशासन देखें।' },
-      { az: 0.35, pol: 1.08, r: 14, en: 'Step 2 · Edict & Metallurgy Pillar: Inspect Ashokan Prakrit stone edicts alongside Gupta rustless iron engineering.', hi: 'चरण 2 · अभिलेख व धातु स्तंभ: अशोक शिलालेख और गुप्तकालीन जंग-रहित लौह स्तंभ देखें।' },
+      { az: -0.75, pol: 1.05, r: 15, en: 'Step 1 · Stupa / Sabha / Chola Temple: Compare schematic examples from different periods; they are not one continuous institution.', hi: 'चरण 1 · स्तूप / सभा / चोल मंदिर: अलग कालों के योजनाबद्ध उदाहरणों की तुलना करें; वे एक निरंतर संस्था नहीं हैं।' },
+      { az: 0.35, pol: 1.08, r: 14, en: 'Step 2 · Edict & Metallurgy Pillar: Compare a schematic Ashokan inscription with a corrosion-resistant iron pillar.', hi: 'चरण 2 · अभिलेख व धातु स्तंभ: अशोक के योजनाबद्ध अभिलेख और जंग-प्रतिरोधी लौह स्तंभ की तुलना करें।' },
       { az: 1.1, pol: 1.05, r: 15, en: 'Step 3 · Evidence & Shreni Precint: Verify manuscripts, Kudavolai ballot pots, and guild trade along the Uttarapatha.', hi: 'चरण 3 · प्रमाण मेज़ व श्रेणी मार्ग: पांडुलिपि सत्यापन, कुदावोलई चुनाव घड़ा और श्रेणी व्यापार देखें।' },
     ],
     ar: {
       id: 'cbq-t05-ar',
-      assertion: b('Ashoka engraved his Dhamma edicts on pillars and rocks in Prakrit using regional scripts like Brahmi and Kharoshthi.', 'अशोक ने अपने धम्म अभिलेख क्षेत्रीय लिपियों (ब्राह्मी, खरोष्ठी) और प्राकृत भाषा में शिलाओं व स्तंभों पर खुदवाए।'),
-      reason: b('He wanted ordinary people across diverse regions of his empire to read and understand royal ethical policies directly.', 'वे चाहते थे कि साम्राज्य के विविध क्षेत्रों के सामान्य नागरिक राज्य के नैतिक संदेश स्वयं पढ़ और समझ सकें।'),
+      assertion: b('Many Ashokan inscriptions use Prakrit with Brahmi or Kharoshthi; others use Greek or Aramaic.', 'अशोक के कई अभिलेख ब्राह्मी या खरोष्ठी में प्राकृत हैं; अन्य यूनानी या अरामी में हैं।'),
+      reason: b('Using languages familiar in different regions could help communicate royal messages to varied audiences.', 'अलग क्षेत्रों की परिचित भाषाएँ शाही संदेश अलग लोगों तक पहुँचाने में मदद कर सकती थीं।'),
       correct: 'A',
-      explain: b('Both A and R are true and R explains A: everyday spoken Prakrit rather than elite language maximised public reach.', 'A और R दोनों सत्य हैं तथा R, A की सही व्याख्या है: जनसामान्य की भाषा का उपयोग व्यापक संवाद के लिए था।'),
+      explain: b('Regional languages and scripts could aid communication, although not everyone could read and inscriptions alone do not show how every message was received.', 'क्षेत्रीय भाषाएँ और लिपियाँ संवाद में मदद कर सकती थीं, पर सभी पढ़ नहीं सकते थे और अभिलेख अकेले हर संदेश की प्रतिक्रिया नहीं बताते।'),
     },
     caseQ: {
       id: 'cbq-t05-case',
@@ -203,14 +203,14 @@ export const THEME_NEP = {
     },
     caseQ: {
       id: 'cbq-t06-case',
-      passage: b('Source Case: The 920 CE Uttaramerur stone inscription in Tamil Nadu describes village sabha committee selection using kudavolai (palm-leaf lots inside a mud pot) alongside strict eligibility and corruption disqualification rules.', 'स्रोत प्रसंग: तमिलनाडु के 920 ई. के उत्तरमेरूर अभिलेख में कुडावोलई (मिट्टी के घड़े से ताड़पत्र पर्ची द्वारा चुनाव) तथा ईमानदारी व योग्यता के कड़े नियमों का वर्णन है।'),
-      stem: b('What democratic principle does the Uttaramerur inscription demonstrate in early India?', 'उत्तरमेरूर अभिलेख प्राचीन भारत में किस लोकतांत्रिक सिद्धांत को दर्शाता है?'),
+      passage: b('Source Case: The tenth-century Uttaramerur inscriptions describe selection of eligible village committee members by drawing palm-leaf lots, and list qualifications and disqualifications. Eligibility was restricted.', 'स्रोत प्रसंग: दसवीं सदी के उत्तरमेरूर अभिलेख पात्र ग्राम समिति सदस्यों के ताड़पत्र पर्ची से चयन और योग्यता-अयोग्यता के नियम बताते हैं। पात्रता सीमित थी।'),
+      stem: b('What can we learn from these rules, and what do they not establish?', 'इन नियमों से क्या पता चलता है और वे क्या सिद्ध नहीं करते?'),
       options: [
-        { id: 'rules', ...b('Written accountability, fair selection & anti-corruption checks in local self-governance', 'स्थानीय स्वशासन में लिखित नियम, निष्पक्ष चयन और भ्रष्टाचार-रोधी जवाबदेही') },
-        { id: 'dyn', ...b('Hereditary lifetime monarchy inside villages', 'गाँवों में वंशानुगत आजीवन राजतंत्र'), why: b('Eligibility rules, rotation, and disqualifications prevented monopoly.', 'नियम और चक्रानुक्रम किसी एक के एकाधिकार को रोकते थे।') },
+        { id: 'rules', ...b('There were written selection and accountability rules for eligible candidates, but not universal adult suffrage.', 'पात्र उम्मीदवारों के चयन और जवाबदेही के लिखित नियम थे, पर सार्वभौमिक वयस्क मताधिकार नहीं।') },
+        { id: 'dyn', ...b('Every adult villager could vote on equal terms.', 'हर वयस्क ग्रामीण समान रूप से मतदान कर सकता था।'), why: b('The inscriptions set qualifications that restricted participation; they do not establish universal suffrage.', 'अभिलेखों की योग्यता शर्तें भागीदारी सीमित करती थीं; वे सार्वभौमिक मताधिकार सिद्ध नहीं करतीं।') },
       ],
       correct: 'rules',
-      explain: b('Early Indian sabhas, ganas, and sanghas practised rule-bound deliberation long before modern constitutions.', 'प्राचीन भारतीय सभाओं, गणों और संघों में नियमबद्ध लोकतांत्रिक निर्णय की गहरी परंपरा थी।'),
+      explain: b('The rules provide evidence of local selection and accountability in one place and time; they should not be equated with modern universal voting rights.', 'नियम एक स्थान और समय में स्थानीय चयन और जवाबदेही का प्रमाण हैं; इन्हें आधुनिक सार्वभौमिक मताधिकार के समान नहीं मानना चाहिए।'),
     },
   },
 
@@ -223,9 +223,9 @@ export const THEME_NEP = {
       summary: b('FPTP vs Proportional Representation, party systems, and coalition dynamics in T07 feed directly into Class X’s Political Parties and Coalition Federalism.', 'निर्वाचन प्रणालियाँ, दलीय व्यवस्था और गठबंधन वार्ता सीधे कक्षा X के राजनीतिक दल अध्याय से जुड़ते हैं।'),
     },
     tours: [
-      { az: 0.55, pol: 1.05, r: 16, en: 'Step 1 · Constituency Hex Grid: Each tower represents one geographic parliamentary seat.', hi: 'चरण 1 · निर्वाचन क्षेत्र ग्रिड: हर षट्कोणीय स्तंभ एक भौगोलिक सीट दर्शाता है।' },
-      { az: -0.75, pol: 0.95, r: 15, en: 'Step 2 · Seat Height & Winner Effect: Small vote swings can flip close FPTP seats dramatically.', hi: 'चरण 2 · स्विंग प्रभाव: छोटे मत-अंतर से FPTP में कई सीटें बदल सकती हैं।' },
-      { az: 0.0, pol: 0.3, r: 18, en: 'Step 3 · Top-Down Delimitation View: Compare balanced seats vs skewed boundaries.', hi: 'चरण 3 · शीर्ष परिसीमन दृश्य: संतुलित और असंतुलित क्षेत्रों की तुलना करें।' },
+      { az: 0.55, pol: 1.05, r: 16, en: 'Step 1 · Illustrative ten-seat grid: this is not a real map or a live result.', hi: 'चरण 1 · चित्रात्मक दस-सीट ग्रिड: यह असली नक्शा या ताज़ा परिणाम नहीं है।' },
+      { az: -0.75, pol: 0.95, r: 15, en: 'Step 2 · Equal towers: compare actual toy seat counts in the 2D result instead.', hi: 'चरण 2 · समान स्तंभ: काल्पनिक सीट गिनती की तुलना 2D परिणाम में करें।' },
+      { az: 0.0, pol: 0.3, r: 18, en: 'Step 3 · Top view: use the separate 2D nine-block map to test boundaries.', hi: 'चरण 3 · शीर्ष दृश्य: सीमाएँ परखने के लिए अलग 2D नौ-ब्लॉक मानचित्र देखें।' },
     ],
     ar: {
       id: 'cbq-t07-ar',
@@ -243,7 +243,7 @@ export const THEME_NEP = {
         { id: 'ad', ...b('Party A + Party D (38 + 10 = 48 seats)', 'दल A + दल D (38 + 10 = 48 सीटें)'), why: b('48 is still short of the 51-seat majority mark.', '48 सीटें 51 के बहुमत से कम हैं।') },
       ],
       correct: 'ac',
-      explain: b('38 + 18 = 56 seats passes the 51-seat halfway threshold cleanly with two partners (Anti-Defection Tenth Schedule also binds whips).', '38 + 18 = 56 सीटें स्पष्ट बहुमत देती हैं; दलबदल-रोधी 10वीं अनुसूची स्थिरता सुनिश्चित करती है।'),
+      explain: b('38 + 18 = 56 seats exceeds 51; neither partner alone has a majority. This arithmetic does not guarantee an agreement or stability.', '38 + 18 = 56 सीटें 51 से अधिक हैं; अकेले किसी साझेदार का बहुमत नहीं है। यह गणना समझौते या स्थिरता की गारंटी नहीं देती।'),
     },
   },
 
@@ -257,26 +257,26 @@ export const THEME_NEP = {
     },
     tours: [
       { az: -0.6, pol: 1.05, r: 16, en: 'Step 1 · Grain vs Vegetable Plots: Resources shifted to one crop reduce the other (PPF trade-off).', hi: 'चरण 1 · अनाज बनाम सब्ज़ी: एक फसल बढ़ाने पर दूसरी घटती है (अवसर लागत)।' },
-      { az: 0.7, pol: 1.0, r: 15, en: 'Step 2 · Solar Tech House: Better technology pushes the entire production frontier outward.', hi: 'चरण 2 · सौर तकनीक घर: नई तकनीक से कुल उत्पादन क्षमता बाहर की ओर बढ़ती है।' },
+      { az: 0.7, pol: 1.0, r: 15, en: 'Step 2 · Solar Tech House: In this toy, technology raises both crop maxima; real changes may differ.', hi: 'चरण 2 · सौर तकनीक घर: मॉडल में तकनीक से दोनों अधिकतम बढ़ते हैं; वास्तविक बदलाव अलग हो सकते हैं।' },
       { az: 0.1, pol: 0.4, r: 18, en: 'Step 3 · Island Frontier View: Spot idle capacity inside vs efficient points along the edge.', hi: 'चरण 3 · सीमांत दृश्य: अप्रयुक्त क्षमता बनाम पूर्ण दक्षता बिंदु देखें।' },
     ],
     ar: {
       id: 'cbq-t08-ar',
       assertion: b('Even a wealthy household or national government faces the economic problem of scarcity.', 'धनी परिवार हो या राष्ट्रीय सरकार, सभी को दुर्लभता की आर्थिक समस्या का सामना करना पड़ता है।'),
-      reason: b('Human wants and public goals are limitless relative to the finite time, land, labour, and budgets available at any moment.', 'किसी भी समय उपलब्ध भूमि, श्रम, समय और बजट सीमित होते हैं, जबकि मानवीय आवश्यकताएँ और लक्ष्य असीमित हैं।'),
+      reason: b('Time, land, labour and budgets are limited while households and governments have competing possible uses for them.', 'भूमि, श्रम, समय और बजट सीमित हैं जबकि परिवार और सरकार उनके कई संभावित उपयोगों के बीच चुनते हैं।'),
       correct: 'A',
       explain: b('Both A and R are true and R explains A — scarcity applies whenever resources are finite against competing uses.', 'A और R दोनों सत्य हैं तथा R, A की सही व्याख्या है — सीमित संसाधनों के कारण चयन सदैव अनिवार्य है।'),
     },
     caseQ: {
       id: 'cbq-t08-case',
-      passage: b('Source Case: A farm family earns ₹14,000/month. A sudden hospital bill of ₹15,000 hits during a crop pest attack. With public health insurance + subsidised ration (PDS), 70% of the shock is absorbed.', 'स्रोत प्रसंग: एक किसान परिवार की मासिक आय ₹14,000 है। फसल नुकसान के बीच ₹15,000 का अचानक अस्पताल खर्च आता है, जिसमें सरकारी स्वास्थ्य बीमा व राशन प्रणाली (PDS) 70% बोझ संभालती है।'),
-      stem: b('How does a social safety net prevent long-term poverty in this mixed-economy example?', 'इस मिश्रित अर्थव्यवस्था के उदाहरण में सामाजिक सुरक्षा-जाल दीर्घकालिक गरीबी कैसे रोकता है?'),
+      passage: b('Fictional case: A farm family faces a ₹15,000 hospital bill. Assume a hypothetical support scheme pays 70% of this bill; other expenses and eligibility are not modelled.', 'काल्पनिक प्रसंग: किसान परिवार के सामने ₹15,000 का अस्पताल बिल है। मानें कि काल्पनिक सहायता उसका 70% चुकाती है; अन्य खर्च और पात्रता मॉडल में नहीं हैं।'),
+      stem: b('How can the assumed safety net help in this example, and what remains uncertain?', 'इस उदाहरण में मानी गई सुरक्षा सहायता कैसे मदद कर सकती है और क्या अनिश्चित रहता है?'),
       options: [
-        { id: 'debt', ...b('It prevents high-interest distress borrowing and sale of farm tools/land after a temporary shock', 'यह अस्थायी संकट के बाद उच्च ब्याज वाले कर्ज़-जाल और खेत/औज़ार बिकने से बचाता है') },
-        { id: 'ban', ...b('It bans private markets completely', 'यह निजी बाज़ारों को पूरी तरह बंद कर देता है'), why: b('Mixed-economy safety nets protect vulnerable families alongside markets.', 'सुरक्षा-जाल बाज़ारों के साथ कमज़ोर परिवारों की रक्षा करता है।') },
+        { id: 'debt', ...b('₹4,500 remains; support can reduce the burden but does not guarantee the family avoids debt', '₹4,500 बाकी है; सहायता बोझ घटा सकती है पर ऋण से बचने की गारंटी नहीं देती') },
+        { id: 'ban', ...b('₹0 remains and every family is guaranteed to avoid poverty', '₹0 बाकी है और हर परिवार की गरीबी से बचने की गारंटी है'), why: b('70% of ₹15,000 is ₹10,500, so ₹4,500 remains. The family may have other expenses and resources.', '₹15,000 का 70% ₹10,500 है, इसलिए ₹4,500 बाकी है। परिवार के अन्य खर्च और संसाधन भी हो सकते हैं।') },
       ],
       correct: 'debt',
-      explain: b('Targeted social protection preserves household assets and human capital during health or climate shocks.', 'लक्षित सामाजिक सुरक्षा संकट के समय परिवार की संपत्ति और स्वास्थ्य दोनों बचाती है।'),
+      explain: b('₹15,000 − ₹10,500 = ₹4,500. Support may reduce hardship; this example cannot predict debt, asset sales or poverty.', '₹15,000 − ₹10,500 = ₹4,500। सहायता कठिनाई घटा सकती है; यह उदाहरण ऋण, संपत्ति बिक्री या गरीबी का पूर्वानुमान नहीं देता।'),
     },
   },
 

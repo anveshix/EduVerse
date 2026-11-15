@@ -46,10 +46,10 @@
 | **Step 2 — T02** Earth's Surface | India landform atlas (Himalaya/Deccan/Plains/Coast/Islands), Everest fossil story front-and-centre | India-first geography | Done |
 | **Step 3 — T03** Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather in your own locality; Patna is an optional example | Done |
 | **Step 4 — T04** Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist | Done |
-| Step 5 — T05 State & Society | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines |
-| Step 6 — T06 Democracy | Panchayati Raj + classroom vote simulation | Democracy you practise daily |
-| Step 7 — T07 Elections | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government |
-| Step 8 — T08 Economics Basics | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket |
+| **Step 5 — T05 State & Society** | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines | Done |
+| **Step 6 — T06 Democracy** | Panchayati Raj + classroom vote simulation | Democracy you practise daily | Done |
+| **Step 7 — T07 Elections** | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government | Done |
+| **Step 8 — T08 Economics Basics** | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket | Done |
 | Step 9 — T09 Price Puzzle | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week |
 | Step 10 — T10 Oceans | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar |
 | Step 11 — T11 Life on Earth | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you |
@@ -157,7 +157,82 @@
 
 ---
 
+## Step 5 — T05: State and Society
+
+### Audit and improvements
+- **Timeline (L1):** three bilingual windows compare Mauryan, Gupta and later Chola examples with an evidence item, a limit and a further question. Selecting a window updates the existing map; the map controls, picture pins, reset and prediction update the timeline. Dates are approximate, the windows are not equally spaced, and they do not imply one unbroken all-India succession. The map's modern state colours and dashed routes are orientation aids, not historical boundaries or period-specific routes. Its wider 320–650 CE map window separates seventh-century Harsha from the approximately 320–550 CE Gupta period. The 1000 CE cutoff does not imply the later Cholas ended then.
+- **Seven-part builder (L3):** students match ruler, officials, people and territory, fort, treasury, defence/law-and-order forces and allies to the seven Sanskrit terms. Answers can be checked, revised, reloaded or reset independently of the existing sandbox. This teaches an attributed textual theory, not a claim that every dynasty followed it. The separate five numerical tax-and-works indicators are explicitly invented and are no longer labelled as the historical seven parts. Legacy engine array IDs remain available for compatibility.
+- **Evidence and limits:** the source-comparison switch now asks students to plan corroboration instead of showing invented confidence percentages. The trade sandbox and AI audit identify their figures and clues as fictional or scripted, not real historical risk, automatic fact-checking or certainty. Knowledge-system comparisons and corrosion-resistance language were qualified. Uttaramerur's eligibility restrictions are explicit in T05 and the linked T06 case: its rules are not universal adult suffrage. The opening, teacher notes and 3D labels were adjusted accordingly.
+- Existing tab, control, exit and saved-progress identifiers are preserved; substantially revised L1, L3 and L5 predictions use a revision marker so earlier answers are retained without being presented as responses to different wording. The sixth AI lab remains supplementary to the five curriculum LOs. Local choices disappear with browser data; blocked storage gives a warning. Illustrations and Three.js can be absent on a first offline visit. New Hindi remains **draft pending subject-teacher review**; automated accessibility does not replace a human screen-reader review.
+
+### Teaching reference
+- [NCERT Class IX, State and Society up to 1000 CE](https://ncert.nic.in/textbook/pdf/iest105.pdf): Saptanga, evidence, chronology and the tenth-century Uttaramerur selection rules. Interpretations and restrictions require discussion rather than assuming an inscription is a complete record of practice.
+
+### Verification
+- `npm run catalog` and `npm run sw`: **78/78 LOs, 79 simulations and 128 precached files**. `npm run verify`: architecture checks and **57/57 tests** passed.
+- `npm run test:t05`: timeline synchronization, all seven builder roles, keyboard and 360 px touch controls, EN/HI/both, local persistence, denied storage, old prediction migration, first-open offline, 3D, dark-mode selected-label contrast, all five LO exits and supplementary-lab exclusion passed without network writes or JavaScript errors. The earlier `test:t02`, `test:t03` and `test:t04` browser regressions also passed.
+- Targeted T05 automated accessibility and desktop/360 px smoke passed with no horizontal page overflow or reported errors. They are not a manual accessibility audit.
+
+---
+
+## Step 6 — T06: Democracy
+
+### Audit and improvements
+- **Classroom decision (L1):** a bilingual, revisable tally models three project choices for 12 imagined eligible students. It handles zero votes, ties without inventing a winner, a plurality that is not necessarily a majority, a majority of votes counted versus of all eligible students, and counts not recorded without assuming why. It invites discussion of equal participation, abstention, confidentiality and rights. The tally stores only invented totals, not names; it cannot verify voters, stop repeat votes or guarantee secrecy and must not be used as an actual ballot.
+- **Panchayati Raj (L2):** an explorer distinguishes the registered electors of a Gram Sabha from elected village, intermediate/block and district Panchayats. It describes state-dependent powers, funds and procedures, the optional intermediate tier in qualifying small states, constitutional exceptions and a separate urban framework. An expandable explanation introduces reserved seats and State Election Commissions; a revisable check tests the Sabha/Panchayat distinction. Ancient assemblies are not equated with modern universal franchise or assumed to be a continuous institution.
+- **Existing lab repairs:** changing a case preset now updates its switches, and a manual switch changes the case to custom; image pins, autoplay, reset and older saved presets agree with the displayed score. Four checks are labelled as an incomplete fictional model, not proof that a real country is democratic. The parliamentary example is an explicitly simplified **confidence motion** in which all 100 vote, avoiding the former 50–50 no-confidence error; the US president is described as chosen by the Electoral College, and country descriptions now have Hindi translations. Changed L1 and L3 predictions use revision markers while retaining earlier answers and progress. The shared lab kit gained optional state-repair and coupled-control callbacks; unrelated controls retain their existing behavior.
+- The two companions do not add new LOs or catalog simulations. Local data can be cleared or may be temporary if storage is blocked. Illustrations and Three.js may be missing on the first offline visit. New Hindi remains **draft pending subject-teacher review**; automated checks do not replace human accessibility review.
+
+### Teaching reference
+- [Constitution of India, Part IX](https://mahasec.maharashtra.gov.in/Upload/PDF/Constitutional%20Provisions%20IX%20-%20Panchayats%20(Rural).pdf): Articles 243, 243A–D, 243G, 243K and 243M (definitions, tiers, representation, state powers, elections and exceptions). The app links to the [Legislative Department's Constitution](https://www.legislative.gov.in/static/uploads/2025/07/ca7ce5c746fa7480804bbdeb6cb704f0.pdf); state laws and applicable exceptions need checking for local practice.
+
+### Verification
+- `npm run catalog` and `npm run sw` regenerated **78/78 LOs, 79 simulations and 130 precached files**. `npm run verify` passed architecture checks and **61/61 tests**.
+- `npm run test:t06` passed vote arithmetic and tie behavior, four roles, keyboard and 360 px touch controls, EN/HI/both, local persistence and malformed-state repair, denied storage, first-open offline, case preset/switch/pin/autoplay synchronization, older prediction migration, confidence thresholds, 4/4 LO progress, dark contrast and WebGL lifecycle, with no network writes or JavaScript errors. Previous `test:t02`–`test:t05` regressions passed after the shared-control change.
+- Targeted T06 automated accessibility and desktop/360 px smoke passed without reported errors or page overflow.
+
+---
+
+## Step 7 — T07: Elections
+
+### Audit and improvements
+- **Mock voter journey (L1):** five revisitable bilingual stages distinguish applying/checking an electoral roll, comparing choices, booth checks, a pretend choice, and VVPAT/counting. The example choice is stored locally, can be changed or cleared and is explicitly **not a secure or real ballot**. A separate fixed 8–7–5 candidate-vote example illustrates a plurality, not a majority; the pretend choice does not change that count. The voter sees the VVPAT slip briefly; it falls into a sealed box rather than being taken home. The workflow no longer suggests registration is automatic at 18 or that delimitation precedes every election. Legal and procedural details are simplified and can change.
+- **Boundary visual (L3):** all four nine-block arrangements are contiguous and preserve the same 460–440 votes. The formerly disconnected packed district was corrected: A wins D1 205–95, B wins D2 155–145 and D3 190–110, despite all three having 300 people. This fictional voter-as-population model demonstrates that equal population by itself does not prevent a partisan design; real delimitation uses population, geography and law. A keyboard-focusable internal scroller keeps the map legible on narrow screens and the counts are also text. The roll checker is only three simplified checks, not a registration decision.
+- **Coalition builder (L4):** choose parties using the *current* system and swing seat counts, identify whole-house majorities, minimal winning groups and individually surplus partners. A party with no seats is removed from the selection when controls change. Arithmetic does not predict an agreement, stability, outside support or actual government formation; real confidence votes follow applicable rules. The positive swing label now correctly says B→R. The Tenth Schedule explanation no longer claims automatic disqualification or guaranteed stability.
+- **Vote-to-seat and lifecycle fixes:** tied vote and seat leaders are listed rather than collapsed to one party; FPTP, fictional runoff assumptions and largest-remainder list PR are distinguished from India's Lok Sabha/Assembly rules, with toy tie rules disclosed. T07's formerly inactive 3D tab lifecycle now enables and disposes only the visible stage; its old arbitrary party-coloured towers were replaced with a clearly labelled generic illustration, not a fabricated result. The shared autoplay now advances short/coarse sliders instead of repeatedly rounding to the same value. Revised L1, L3 and L4 predictions retain previous answers under revision markers; tab, LO, exit and progress IDs are unchanged.
+- Both companions are part of the existing LOs and do not add catalog simulations. Storage can be cleared or blocked; first-open offline needs the installed service worker, and images or 3D may be unavailable. New Hindi remains **draft pending subject-teacher review**; automated tests do not replace a human accessibility audit.
+
+### Teaching references
+- Election Commission of India: [electoral rolls and process](https://old.eci.gov.in/about/about-eci/), [voter registration](https://old.eci.gov.in/voter/voter-registration/) and [EVM/VVPAT guidance](https://old.eci.gov.in/faqs/evm/general-qa/electronic-voting-machine-r17/). Consult the ECI for current procedures and sample-verification rules.
+- Legislative Department: [Constitution, including the Tenth Schedule](https://www.legislative.gov.in/static/uploads/2025/07/288b285129a41d9fbe4c7c9c517e1629.pdf). Conditions, exceptions and decisions by the presiding officer matter; the arithmetic model does not apply the law to any person.
+
+### Verification
+- `npm run catalog && npm run sw`: **78/78 LOs, 79 simulations and 132 precached files**. `npm run verify` passed architecture checks and **65/65 tests**.
+- `npm run test:t07` covered the five-stage journey, practice-choice privacy notice, connected boundaries, vote/seat ties, changing coalition controls, reset, EN/HI/both, keyboard and 360 px touch, internal map scrolling, local persistence, old-prediction migration, malformed saved choices, denied storage, first-open offline, 4/4 LO progress, dark contrast and 3D lifecycle with no network writes or JavaScript errors. Tests `test:t02`–`test:t06` passed after the shared autoplay fix.
+- Targeted T07 automated accessibility and desktop/360 px smoke passed without reported errors or page overflow.
+
+---
+
+## Step 8 — T08: Economics Basics
+
+### Audit and improvements
+- **Household budget (L1):** a fictional ₹1,000 available for selected weekly expenses builds on the existing ₹100 student allocation. Five keyboard-operable sliders move in ₹50 steps; an optional ₹100 surprise creates an under-, exactly- or over-allocated plan. The readout separates unallocated money from a shortfall and does not call a gap a loan. It asks students not to enter real family finances and explains that needs, prices and ability to save vary; it is neither a complete household budget nor advice.
+- **Everyday PPF (L2):** divide two imagined hours into four half-hour project/play-or-rest slots; the activity distinguishes its straight-line time trade-off from the assumed curved farm frontier and affirms the importance of rest. The farm readout now calls the opportunity-cost calculation a *frontier reference*, not a move from an interior selected point, and avoids describing a next move beyond maximum wheat. The technology shift and curve are assumptions, not predictions.
+- **Teaching claims (L3–L5 and CBQ):** the jobs and capacity numbers are labelled invented indices, not measured outcomes or forecasts. The economic-systems comparison no longer presents arbitrary numerical scores as facts; numbered prompts compare ownership, possible strengths and risks. The shock and revised case distinguish the remaining bill, assumed savings and shortfall from automatic borrowing, a poverty trap or a recovery forecast. Its coverage percentage is hypothetical, not a stated benefit of PDS or a particular health programme. Savings and shock bars now use the same scale. Revised L3/L5 predictions retain old answers under revision markers; LO and progress identifiers remain unchanged.
+- Both companions belong to existing LOs and add no catalog simulations. They save example choices locally, offer reset and warn if storage is blocked. A first offline visit requires the installed service worker. New Hindi remains **draft pending subject-teacher review**; automated checks do not replace human screen-reader review.
+
+### Teaching references
+- [NCERT Class IX, Building Blocks in Economics](https://ncert.nic.in/textbook/pdf/iest108.pdf): scarcity, choices, forgone alternatives and production possibilities for households, firms and government.
+- RBI financial education: [Financial Awareness Messages](https://www.rbi.org.in/commonman/images/FAME202426022024.pdf) and [school financial-literacy material](https://www.rbi.org.in/FinancialEducation/content/01SCHOOL20042018.pdf) discuss budgeting, needs, wants and savings. The classroom figures and coverage assumptions here are invented.
+
+### Verification
+- `npm run catalog && npm run sw`: **78/78 LOs, 79 simulations and 134 precached files**. `npm run verify` passed architecture checks and **69/69 tests**.
+- `npm run test:t08` covered allocation arithmetic, surprise cost, PPF interior and endpoints, time allocation, keyboard, 360 px layout, EN/HI/both, reset, persistence and malformed-state repair, old prediction retention, denied storage, first-open offline and 5/5 LO progress, with no network writes or JavaScript errors. Tests `test:t02`–`test:t07` also passed.
+- Targeted T08 automated accessibility and desktop/360 px smoke passed with no reported errors or page overflow; companion layouts and the systems view were visually inspected.
+
+---
+
 ## How to Continue
-1. On the user's request, audit and upgrade **Step 5 — T05** only.
+1. Continue with **Step 9 — T09**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

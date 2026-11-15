@@ -17,7 +17,7 @@ const pname = (p) => i18n.pair(PN[p][0], PN[p][1]);
 const o = (id, en, hi, why) => ({ id, en, hi, ...(why ? { why } : {}) });
 const PARTY_OPTS = M.PARTIES.map((p) => o(p, PN[p][0], PN[p][1]));
 const EXIT = [
-  { id: 'x1', stem: { en: 'Which system gives each party a share of seats closest to its share of votes?', hi: 'कौन-सी प्रणाली हर दल को उसके मत-प्रतिशत के सबसे निकट सीटें देती है?' }, correct: 'pr',
+  { id: 'x1', stem: { en: 'Which model allocates seats from the overall party vote shares, rather than one winner in each constituency?', hi: 'कौन-सा मॉडल हर क्षेत्र में एक विजेता के बजाय दलों के कुल मत-अनुपात से सीटें बाँटता है?' }, correct: 'pr',
     options: [o('fptp', 'First-past-the-post', 'सर्वाधिक मत से जीत (FPTP)', { en: 'FPTP rewards the party that wins the most constituencies, however narrowly, so seats can differ a lot from votes.', hi: 'FPTP उस दल को पुरस्कृत करता है जो सबसे अधिक क्षेत्र जीतता है, भले ही कम अंतर से, इसलिए सीटें और मत काफ़ी अलग हो सकते हैं।' }), o('runoff', 'Two-round (runoff) system', 'दो-चरण (पुनर्मतदान) प्रणाली', { en: 'Each seat still goes to one winner, so small parties can still get nothing.', hi: 'हर सीट अब भी एक विजेता को मिलती है, इसलिए छोटे दलों को अब भी कुछ नहीं मिल सकता।' }), o('pr', 'Proportional representation', 'समानुपातिक प्रतिनिधित्व')],
     explain: { en: 'Proportional representation allocates seats in proportion to votes, so a party with about 13% of votes gets about 1 of 10 seats.', hi: 'समानुपातिक प्रतिनिधित्व में सीटें मतों के अनुपात में बँटती हैं, इसलिए लगभग 13% मत वाले दल को 10 में से लगभग 1 सीट मिलती है।' }, hint: { en: 'Compare the vote bar and the seat bar for each party.', hi: 'हर दल की मत-पट्टी और सीट-पट्टी की तुलना करें।' } },
   { id: 'x2', stem: { en: 'In first-past-the-post, a candidate wins a constituency by…', hi: 'FPTP में उम्मीदवार किसी निर्वाचन क्षेत्र में कैसे जीतता है…' }, correct: 'most',
@@ -28,10 +28,12 @@ const REFLECT = { en: 'In one sentence: is it fair that a party can win most sea
 
 export function mount(root) {
   const S = store.simState('T07', { ...M.initialElection(), done: {} }); S.done ??= {};
+  if (!SYS.includes(S.system)) S.system = 'fptp';
+  if (!Number.isFinite(S.swing) || S.swing * 2 !== Math.round(S.swing * 2) || S.swing < -15 || S.swing > 15) S.swing = 0;
   const prog = store.progress('T07'); const persist = () => store.saveSim();
   const box = h('div', { class: 'chart-box' }), read = h('div', { class: 'readout', role: 'status', 'aria-live': 'polite' }), wins = h('div', { class: 'wins', 'aria-label': t('el.wins') });
   const ch = chips({ name: 'sys', value: S.system, options: SYS.map((id) => ({ id, key: `el.sys.${id}` })), onSelect: (id) => { S.system = id; draw(); } });
-  const sw = slider({ id: 'el-swing', labelKey: 'el.ctl.swing', min: -15, max: 15, step: 1, value: S.swing, format: (v) => (v > 0 ? `+${v}` : `${v}`), onInput: (v) => { S.swing = v; draw(); }, hintKey: 'el.ctl.swing.hint' });
+  const sw = slider({ id: 'el-swing', labelKey: 'el.ctl.swing', min: -15, max: 15, step: 0.5, value: S.swing, format: (v) => (v > 0 ? `+${v}` : `${v}`), onInput: (v) => { S.swing = v; draw(); }, hintKey: 'el.ctl.swing.hint' });
   const bReset = button('btn.reset', () => { Object.assign(S, M.initialElection()); ch.select(S.system); sw.set(0); draw(); }, 'btn');
 
   function draw() {
@@ -47,8 +49,13 @@ export function mount(root) {
     const hx = x0 + 0.5 * wMax; s += `<line class="guide" x1="${hx}" x2="${hx}" y1="6" y2="${M.PARTIES.length * rowH + 4}"/><text class="tick" x="${hx}" y="${M.PARTIES.length * rowH + 24}" text-anchor="middle">${esc(t('el.half'))}</text></svg>`;
     box.innerHTML = s;
     const winners = S.system === 'fptp' ? M.fptp(r.consts).winners : S.system === 'runoff' ? M.runoff(r.consts).winners : null;
-    wins.innerHTML = winners ? `<div class="win-h">${esc(t('el.wins'))}</div>` + winners.map((w, i) => `<span class="win" style="background:${COLOR[w]}" title="${esc(PN[w][0])}">${i + 1}<b>${w}</b></span>`).join('') : `<div class="note">${esc(t('el.pr.note'))}</div>`;
-    read.innerHTML = `<div class="ro-line">${esc(t('el.ro.most', { votes: pname(r.topVotes), seats: pname(r.topSeats) }))}</div>` + (r.mismatch ? `<div class="ro-line warn">${esc(t('el.ro.mismatch'))}</div>` : `<div class="ro-line balanced">${esc(t('el.ro.match'))}</div>`) + (S.system === 'runoff' ? `<div class="ro-line note">${esc(t('el.assump'))}</div>` : '');
+    wins.setAttribute('aria-label', t('el.wins'));
+    wins.innerHTML = winners ? `<div class="win-h">${esc(t('el.wins'))}</div>` + winners.map((w, i) => `<span class="win" style="background:${COLOR[w]}" title="${esc(pname(w))}">${i + 1}<b>${w}</b></span>`).join('') : `<div class="note">${esc(t('el.pr.note'))}</div>`;
+    const names = (leaders, langIndex) => leaders.map((p) => PN[p][langIndex]).join(', ');
+    const summary = i18n.pair(
+      `Most votes${r.voteLeaders.length > 1 ? ' (tie)' : ''}: ${names(r.voteLeaders, 0)}. Most seats${r.seatLeaders.length > 1 ? ' (tie)' : ''}: ${names(r.seatLeaders, 0)}.`,
+      `सबसे अधिक मत${r.voteLeaders.length > 1 ? ' (बराबर)' : ''}: ${names(r.voteLeaders, 1)}। सबसे अधिक सीटें${r.seatLeaders.length > 1 ? ' (बराबर)' : ''}: ${names(r.seatLeaders, 1)}।`);
+    read.innerHTML = `<div class="ro-line">${esc(summary)}</div>` + (r.mismatch ? `<div class="ro-line warn">${esc(t('el.ro.mismatch'))}</div>` : `<div class="ro-line balanced">${esc(t('el.ro.match'))}</div>`) + (S.system === 'runoff' ? `<div class="ro-line note">${esc(t('el.assump'))}</div>` : '');
   }
   const p1 = predict({ id: 'q1', stem: { en: 'Here is a fictional election with 10 constituencies. Under first-past-the-post, which party wins the MOST SEATS?', hi: 'यह 10 निर्वाचन क्षेत्रों वाला काल्पनिक चुनाव है। FPTP में कौन-सा दल सबसे अधिक सीटें जीतेगा?' }, options: PARTY_OPTS,
     run: () => { S.system = 'fptp'; S.swing = 0; ch.select('fptp'); sw.set(0); draw(); return M.run('fptp', 0).topSeats; },
@@ -67,8 +74,8 @@ export function mount(root) {
     hi: 'एक ही मत-समूह, मतगणना के तीन नियम — FPTP, दो-चरण और आनुपातिक प्रणाली बदलने हेतु पिन पर टैप करें।',
     spots: [
       { x: 26, y: 54, en: 'First-Past-The-Post (Plurality)', hi: 'सर्वाधिक मत से जीत (FPTP)', detail: { en: 'Most votes in each constituency wins — can create wide gap between vote% and seat%!', hi: 'हर क्षेत्र में सबसे आगे रहने वाला जीतता है — मत% व सीट% में बड़ा अंतर संभव!' }, set: { system: 'fptp', swing: 0 } },
-      { x: 54, y: 46, en: 'Two-Round Runoff (>50% Check)', hi: 'दो-चरणीय चुनाव (>50% बहुमत)', detail: { en: 'Top two candidates face a second round so every constituency winner tops 50%.', hi: 'शीर्ष दो उम्मीदवारों में पुनः मतदान ताकि हर सीट विजेता 50% पार करे।' }, set: { system: 'runoff', swing: 0 } },
-      { x: 80, y: 58, en: 'Proportional Representation', hi: 'समानुपातिक प्रतिनिधित्व', detail: { en: 'Seats match national vote share so smaller parties like Yellow gain fair seats.', hi: 'सीटें राष्ट्रीय मत-हिस्से से मिलती हैं जिससे छोटे दल भी प्रतिनिधित्व पाते हैं।' }, set: { system: 'pr', swing: 0 } },
+      { x: 54, y: 46, en: 'Two-Round Runoff', hi: 'दो-चरणीय चुनाव', detail: { en: 'If no candidate passes half in round one, the model transfers votes to the top two using fictional assumptions. A tied runoff goes to the round-one leader in this toy.', hi: 'पहले चरण में आधे से अधिक न मिलने पर मॉडल काल्पनिक मान्यताओं से मत शीर्ष दो को देता है। बराबरी पर यह मॉडल पहले चरण के अग्रणी को चुनता है।' }, set: { system: 'runoff', swing: 0 } },
+      { x: 80, y: 58, en: 'Proportional Representation', hi: 'समानुपातिक प्रतिनिधित्व', detail: { en: 'This single-list toy divides 10 seats approximately by vote share, using largest remainders; whole seats require rounding.', hi: 'एक सूची वाला यह मॉडल 10 सीटें मत-अनुपात से लगभग बाँटता है; पूरी सीटों के लिए पूर्णांकन आवश्यक है।' }, set: { system: 'pr', swing: 0 } },
     ],
   }), (patch) => { Object.assign(S, patch); ch.select(S.system); sw.set(S.swing); draw(); });
   draw();

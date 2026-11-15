@@ -1,52 +1,65 @@
-// Interactive Home Hero 3D Globe (decoupled from theme dioramas for lean Home boot).
+// Home's illustrative Three.js globe. Coastlines use the bundled Natural Earth
+// texture; the scene is decorative and must not be used as a navigation map.
 import { makeToolkit } from './toolkit.js';
 
-export function createHeroGlobe3d(api) {
+export function createHeroGlobe3d(api, { textureUrl = null, reducedMotion = false } = {}) {
   const tk = makeToolkit(api, null);
-  const { THREE, group, mat, sph, cyl } = tk;
+  const { THREE, group } = tk;
   api.target.set(0, 0, 0);
-
   const globe = new THREE.Group();
   group.add(globe);
-  // Deep ocean core
-  globe.add(sph(4.1, mat(0x1474a6, { rough: 0.35, metal: 0.12 })));
-  // Sculpted continental shelves & green highlands
-  const patches = [
-    [1.1, 0.9, 1.3, 0.35, 0.85, 0x3b9b54, 'India & Plateau', 'भारत व पठार', 'T01'],
-    [1.3, 1.3, 0.8, 0.25, 0.55, 0x8d6e63, 'Himalaya Belt', 'हिमालय शृंखला', 'T02'],
-    [0.6, 0.4, 2.0, 0.7, 1.0, 0x4caf50, 'Afro-Eurasia Trade', 'अफ़्रीका-यूरेशिया व्यापार', 'T13'],
-    [-0.4, 0.6, -2.2, 0.55, 1.1, 0x55a868, 'Americas Systems', 'अमेरिकी प्रणालियाँ', 'T06'],
-    [1.9, -0.4, -0.7, 0.45, 0.75, 0x66bb6a, 'Asia-Pacific Oceans', 'एशिया-प्रशांत सागर', 'T10'],
-  ];
-  for (const [lat, lon, r, sx, sy, col, en, hi, theme] of patches) {
-    const m = sph(r, mat(col, { rough: 0.82 }));
-    m.scale.set(sx, sy, sx);
-    const phi = Math.PI / 2 - lat * 0.48, theta = lon + 0.6;
-    m.position.set(3.85 * Math.sin(phi) * Math.cos(theta), 3.85 * Math.cos(phi), 3.85 * Math.sin(phi) * Math.sin(theta));
-    globe.add(m);
-    tk.pick(m, en, hi, { theme });
+  globe.rotation.y = -2.4;
+
+  const radius = 4.1;
+  const material = new THREE.MeshStandardMaterial({ color: 0x327c91, roughness: 0.78, metalness: 0.08 });
+  const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 64, 40), material);
+  globe.add(sphere);
+  // Let the surface block raycasts to markers on the far side of the globe.
+  api.markPickable?.(sphere, null);
+  let texture = null, disposed = false;
+  if (textureUrl) {
+    try {
+      texture = new THREE.TextureLoader().load(textureUrl, (loaded) => {
+        if (disposed) { loaded.dispose(); return; }
+        loaded.colorSpace = THREE.SRGBColorSpace;
+        material.map = loaded; material.color.setHex(0xffffff); material.needsUpdate = true;
+        api.invalidate();
+      }, undefined, () => { /* The plain sphere remains usable if the texture cannot load. */ });
+    } catch { /* Keep the untextured globe rather than failing the home page. */ }
   }
-  // Atmosphere glow shell
-  globe.add(sph(4.42, new THREE.MeshBasicMaterial({ color: 0x64d2ff, transparent: true, opacity: 0.14, side: THREE.BackSide })));
-  // Orbiting satellite + golden ring
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(5.35, 0.035, 8, 64), new THREE.MeshBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.55 }));
-  ring.rotation.set(1.15, 0.35, 0);
-  group.add(ring);
-  const sat = new THREE.Group();
-  sat.add(tk.box(0.45, 0.28, 0.28, mat(0xf59e0b, { metal: 0.5 })));
-  sat.add(tk.box(1.1, 0.05, 0.34, mat(0x2563eb)));
-  ring.add(sat);
-  tk.pick(sat, 'Orbiting Earth Explorer', 'परिक्रमा करता उपग्रह', { theme: 'T03' });
 
-  tk.animated.push({
-    fn: (t) => {
-      globe.rotation.y = t * 0.25;
-      sat.position.set(Math.cos(t * 0.8) * 5.35, Math.sin(t * 0.8) * 5.35, 0);
-      sat.rotation.z = t * 0.8;
-    },
-  });
-  api.setPlaying(true);
+  // Approximate positions illustrate the subjects; they are not official locations or boundaries.
+  const spots = [
+    { lat: 28, lon: 84, en: 'Himalayan landscapes', hi: 'हिमालयी भू-दृश्य', theme: 'T02' },
+    { lat: 5, lon: 82, en: 'Indian Ocean', hi: 'हिंद महासागर', theme: 'T10' },
+    { lat: 43, lon: 66, en: 'Historic trade routes', hi: 'ऐतिहासिक व्यापार मार्ग', theme: 'T13' },
+  ];
+  for (const spot of spots) {
+    const phi = (spot.lon + 180) * Math.PI / 180, theta = (90 - spot.lat) * Math.PI / 180;
+    const direction = new THREE.Vector3(-Math.cos(phi) * Math.sin(theta), Math.cos(theta), Math.sin(phi) * Math.sin(theta));
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 12), new THREE.MeshStandardMaterial({ color: 0xffd47a, emissive: 0xa5530c, emissiveIntensity: 0.5 }));
+    dot.position.copy(direction).multiplyScalar(radius + 0.06); globe.add(dot);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.27, 0.025, 8, 32), new THREE.MeshBasicMaterial({ color: 0xffe6a2 }));
+    ring.position.copy(direction).multiplyScalar(radius + 0.09);
+    ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), direction);
+    globe.add(ring);
+    tk.pick(dot, spot.en, spot.hi, { theme: spot.theme });
+    tk.pick(ring, spot.en, spot.hi, { theme: spot.theme });
+  }
+  const orbit = new THREE.Mesh(new THREE.TorusGeometry(5.15, 0.025, 8, 96), new THREE.MeshBasicMaterial({ color: 0xf2b95e, transparent: true, opacity: 0.72 }));
+  orbit.rotation.set(1.1, -0.25, 0.32); group.add(orbit);
+  const orbit2 = new THREE.Mesh(new THREE.TorusGeometry(5.55, 0.012, 8, 96), new THREE.MeshBasicMaterial({ color: 0x9dd8d3, transparent: true, opacity: 0.24 }));
+  orbit2.rotation.set(1.3, 0.2, -0.25); group.add(orbit2);
+  const glow = new THREE.Mesh(new THREE.SphereGeometry(4.32, 48, 32), new THREE.MeshBasicMaterial({ color: 0x6bc9c0, transparent: true, opacity: 0.09, side: THREE.BackSide }));
+  group.add(glow);
+
+  let spinning = !reducedMotion;
+  api.setPlaying(spinning);
   api.invalidate();
-  return { update() {}, place() {}, relabel() {}, tick: tk.tick, dispose: tk.dispose };
+  return {
+    update() {}, place() {}, relabel() {},
+    setReducedMotion(value) { spinning = !value; api.setPlaying(spinning); api.invalidate(); },
+    tick(_now, dt) { if (spinning) { globe.rotation.y += dt * 0.06; api.invalidate(); } },
+    dispose() { disposed = true; texture?.dispose(); tk.dispose(); },
+  };
 }
-

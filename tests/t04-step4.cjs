@@ -321,8 +321,10 @@ const frame = (page) => page.evaluate(() => new Promise((resolve) => requestAnim
     await gp.goto(`${base}#/theme/T04`); await gp.waitForSelector('#tab-city'); await gp.click('#tab-city');
     await Promise.race([requested, new Promise((_, reject) => setTimeout(() => reject(new Error('3D module request not observed')), 15000))]);
     await gp.click('#tab-time'); await gp.click('#tab-city');
+    await gp.click('#topbar .settings-menu > summary');
     await gp.click('#topbar [data-pref=lowGraphics]');
     await gp.locator('[data-harappa-stop=wells]').click();
+    await gp.click('#topbar .settings-menu > summary');
     await gp.click('#topbar [data-pref=lowGraphics]');
     release();
     await gp.waitForFunction(() => document.querySelectorAll('#lab-T04-L4 canvas').length === 1 && document.querySelector('#lab-T04-L4 .view3d')?.dataset.tourFocus === 'wells', null, { timeout: 20000 });
@@ -363,10 +365,12 @@ const frame = (page) => page.evaluate(() => new Promise((resolve) => requestAnim
     const spin = glCity.locator('[data-k="pb.btn.spin"]');
     await spin.click();
     assert.equal(await spin.getAttribute('aria-pressed'), 'false', 'reduced motion forbids auto-rotation');
+    await gp.click('#topbar .settings-menu > summary');
     await gp.click('#topbar [data-pref=reducedMotion]');
     await gp.waitForSelector('#lab-T04-L4 canvas', { timeout: 20000 });
     await spin.click();
     assert.equal(await spin.getAttribute('aria-pressed'), 'true', 'motion setting can be changed without leaving the tab');
+    await gp.click('#topbar .settings-menu > summary');
     await gp.click('#topbar [data-pref=reducedMotion]');
     await gp.waitForSelector('#lab-T04-L4 canvas', { timeout: 20000 });
     await spin.click();

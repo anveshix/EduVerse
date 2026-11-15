@@ -954,10 +954,10 @@
    "implementation": "src/modules/history/t05-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Trace how political institutions evolved from Sapta-Sindhu assemblies and Vajji republics to Mauryan highways and 10th-century Chola village self-rule.",
-    "hi": "सप्त-सिंधु सभाओं और वज्जि गणसंघ से मौर्य राजमार्गों और 10वीं सदी के चोल ग्राम स्वशासन तक राजनीतिक संस्थाओं का विकास मानचित्र पर देखें।"
+    "en": "Compare selected places and sources from different periods of early Indian history.",
+    "hi": "प्रारंभिक भारतीय इतिहास के अलग कालों के कुछ स्थानों और स्रोतों की तुलना करें।"
    },
-   "provenance": "reconstruction",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "era",
@@ -971,8 +971,8 @@
      "id": "showTrade",
      "type": "toggle",
      "label": {
-      "en": "Overlay river & maritime trade links",
-      "hi": "नदी व समुद्री व्यापार मार्ग दिखाएँ"
+      "en": "Show illustrative routes (not period-specific)",
+      "hi": "उदाहरण मार्ग दिखाएँ (किसी काल के सटीक मार्ग नहीं)"
      }
     }
    ],
@@ -1007,7 +1007,7 @@
     "en": "Practise historian triangulation: compare inscriptions, texts, material finds and royal prashastis to spot bias and raise confidence.",
     "hi": "इतिहासकार की त्रिकोणीय जाँच सीखें: अभिलेख, ग्रंथ, पुरावशेष और प्रशस्ति की तुलना कर पक्षपात पहचानें।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "src",
@@ -1021,8 +1021,8 @@
      "id": "corroborate",
      "type": "toggle",
      "label": {
-      "en": "Triangulate with other independent sources",
-      "hi": "अन्य स्वतंत्र स्रोतों से मिलान करें"
+      "en": "Show a comparison prompt",
+      "hi": "तुलना का प्रश्न दिखाएँ"
      }
     }
    ],
@@ -1054,41 +1054,41 @@
    "implementation": "src/modules/history/t05-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Test Kautilya’s Saptanga statecraft model up to 1000 CE: balance taxes, highways, irrigation and local assemblies (Gana, Maurya, Samanta, Chola Sabha).",
-    "hi": "1000 ई. तक के सप्तांग राज्य-मॉडल को परखें: कर, राजमार्ग, सिंचाई और स्थानीय सभाओं (गणसंघ, मौर्य, सामंत, चोल सभा) में संतुलन बनाएँ।"
+    "en": "Learn the seven components of a theory of statecraft, then question the assumptions in a separate fictional governance model.",
+    "hi": "राज्य-कौशल के एक सिद्धांत के सात अंग जानें, फिर अलग काल्पनिक शासन मॉडल की धारणाएँ परखें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "govMode",
      "type": "chips",
      "label": {
-      "en": "State architecture",
-      "hi": "शासन प्रणाली"
+      "en": "Toy scenario label",
+      "hi": "काल्पनिक मॉडल का नाम"
      }
     },
     {
      "id": "taxRate",
      "type": "slider",
      "label": {
-      "en": "Agricultural tax (bhaga %)",
-      "hi": "कृषि कर (भाग %)"
+      "en": "Toy tax setting (%)",
+      "hi": "मॉडल में कर स्तर (%)"
      }
     },
     {
      "id": "roadsInvest",
      "type": "slider",
      "label": {
-      "en": "Highways, inns & wells (%)",
-      "hi": "राजमार्ग, सराय व कुएँ (%)"
+      "en": "Toy road effort (points)",
+      "hi": "मॉडल में सड़क प्रयास (अंक)"
      }
     },
     {
      "id": "irrigationInvest",
      "type": "slider",
      "label": {
-      "en": "Canals & village tanks (%)",
-      "hi": "नहरें व ग्राम तालाब (%)"
+      "en": "Toy irrigation effort (points)",
+      "hi": "मॉडल में सिंचाई प्रयास (अंक)"
      }
     }
    ],
@@ -1173,7 +1173,7 @@
     "en": "Simulate overland and maritime commerce along Uttarapatha, Dakshinapatha & Bay of Bengal guild routes up to 1000 CE (Shreni, Manigramam, Ayyavole 500).",
     "hi": "1000 ई. तक उत्तरापथ, दक्षिणापथ व बंगाल की खाड़ी मार्गों पर श्रेणी, मणिग्रामम व अय्यावोले संघों के व्यापार व जोखिम का अनुकरण करें।"
    },
-   "provenance": "reconstruction",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "route",
@@ -1253,16 +1253,16 @@
      "id": "freeVote",
      "type": "toggle",
      "label": {
-      "en": "Universal free & fair vote",
-      "hi": "सार्वभौमिक स्वतंत्र व निष्पक्ष मतदान"
+      "en": "Universal vote with equal weight",
+      "hi": "सार्वभौमिक मत और समान मूल्य"
      }
     },
     {
      "id": "multipleParties",
      "type": "toggle",
      "label": {
-      "en": "Real choice of opposition parties",
-      "hi": "विपक्षी दलों का वास्तविक विकल्प"
+      "en": "Free election with real opposition choice",
+      "hi": "स्वतंत्र चुनाव व विपक्ष का वास्तविक विकल्प"
      }
     },
     {
@@ -1363,7 +1363,7 @@
     "en": "Compare how the executive and the legislature are related in a parliamentary and a presidential system, and what happens when the government loses the legislature’s support.",
     "hi": "संसदीय और अध्यक्षीय प्रणालियों में कार्यपालिका और विधायिका के संबंध की तुलना करें, और सरकार के विधायिका का समर्थन खोने पर क्या होता है।"
    },
-   "provenance": "documented",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "system",
@@ -1385,8 +1385,8 @@
      "id": "vote",
      "type": "toggle",
      "label": {
-      "en": "Hold a vote of no confidence",
-      "hi": "अविश्वास प्रस्ताव पर मतदान कराएँ"
+      "en": "Hold a vote of confidence in the government",
+      "hi": "सरकार में विश्वास पर मतदान कराएँ"
      }
     }
    ],
@@ -1460,10 +1460,10 @@
    "implementation": "src/modules/politics/t07-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Trace the Indian election workflow led by the Election Commission of India (ECI) under Article 324 and the Representation of the People Acts (1950, 1951).",
-    "hi": "अनुच्छेद 324 और जनप्रतिनिधित्व अधिनियम (1950, 1951) के अंतर्गत भारत निर्वाचन आयोग (ECI) की चुनाव प्रक्रिया का चरणबद्ध अध्ययन करें।"
+    "en": "Trace a simplified Lok Sabha or state Assembly election workflow led by the Election Commission of India (ECI) under Article 324 and the Representation of the People Acts (1950, 1951).",
+    "hi": "अनुच्छेद 324 और जनप्रतिनिधित्व अधिनियम (1950, 1951) के अंतर्गत भारत निर्वाचन आयोग की लोकसभा या राज्य विधानसभा चुनाव प्रक्रिया का सरलीकृत अध्ययन करें।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "stage",
@@ -1477,8 +1477,8 @@
      "id": "independentEci",
      "type": "toggle",
      "label": {
-      "en": "Independent ECI & Model Code enforced",
-      "hi": "स्वतंत्र ECI व आचार संहिता लागू"
+      "en": "Imagine independent supervision",
+      "hi": "स्वतंत्र निगरानी की कल्पना करें"
      }
     }
    ],
@@ -1585,8 +1585,8 @@
    "implementation": "src/modules/politics/t07-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Find which parties can form a government when no party wins a majority of seats, and examine how the Anti-Defection Law promotes stability.",
-    "hi": "पता करें कि जब किसी दल को सीटों का बहुमत नहीं मिलता तो कौन-से दल मिलकर सरकार बना सकते हैं, और दलबदल-रोधी कानून स्थिरता कैसे लाता है।"
+    "en": "Explore seat combinations when no party wins a majority, and consider the purpose and limits of India’s anti-defection provisions.",
+    "hi": "जब किसी दल को सीटों का बहुमत नहीं मिलता तो सीटों के समूह जाँचें और भारत के दलबदल-रोधी प्रावधानों के उद्देश्य व सीमाओं पर विचार करें।"
    },
    "provenance": "fictional",
    "controls": [
@@ -1602,8 +1602,8 @@
      "id": "swing",
      "type": "slider",
      "label": {
-      "en": "Vote swing from R to B (points)",
-      "hi": "R से B की ओर मत-झुकाव (अंक)"
+      "en": "Swing: positive moves B votes to R (points)",
+      "hi": "झुकाव: धनात्मक पर B के मत R की ओर (अंक)"
      }
     }
    ],
@@ -1754,7 +1754,7 @@
     "en": "Analyse the three central problems of every economy — What to produce, How to produce (labour vs machines), and For Whom to produce.",
     "hi": "हर अर्थव्यवस्था की तीन केंद्रीय समस्याओं का विश्लेषण करें — क्या उत्पादन करें, कैसे उत्पादन करें (श्रम बनाम मशीनें), और किसके लिए उत्पादन करें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "consumerShare",
@@ -1812,7 +1812,7 @@
     "en": "Compare free-market, centrally planned, and mixed economic systems on ownership, price signals, efficiency, and equity.",
     "hi": "स्वामित्व, मूल्य तंत्र, दक्षता और समता के आधार पर मुक्त बाज़ार, केंद्रीयकृत नियोजित और मिश्रित आर्थिक प्रणालियों की तुलना करें।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "sys",
@@ -1851,8 +1851,8 @@
    "implementation": "src/modules/economics/t08-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Test how a social safety net (health insurance, crop/disaster aid, PDS food security) prevents a sudden household shock from trapping a family in poverty debt.",
-    "hi": "जाँचें कि सामाजिक सुरक्षा-जाल (स्वास्थ्य बीमा, फसल/आपदा सहायता, राशन प्रणाली) किसी अचानक आए संकट को परिवार को कर्ज़ के जाल में फँसाने से कैसे बचाता है।"
+    "en": "Explore how an assumed share of support can reduce a fictional household’s out-of-pocket shock; discuss limits of real safety nets.",
+    "hi": "देखें कि सहायता का माना गया हिस्सा काल्पनिक परिवार का खर्च कैसे घटा सकता है और वास्तविक सुरक्षा-जाल की सीमाओं पर चर्चा करें।"
    },
    "provenance": "fictional",
    "controls": [

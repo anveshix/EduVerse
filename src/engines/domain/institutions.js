@@ -17,7 +17,7 @@ export const RELATIONS = {
 };
 /** Can the legislature end the executive's term by an ordinary majority vote of no confidence? */
 export const removableByConfidenceVote = (system) => system === 'parliamentary';
-/** A no-confidence motion: `total` legislators, `supportExec` still support the executive. */
+/** Simplified confidence motion: all `total` legislators vote, and `supportExec` vote for the executive. */
 export function confidenceVote(system, { total, supportExec }) {
   const majority = Math.floor(total / 2) + 1, lost = supportExec < majority;
   if (system === 'parliamentary') return { majority, lost, outcome: lost ? 'executive-falls' : 'executive-continues', next: lost ? 'alternative-or-election' : 'none' };

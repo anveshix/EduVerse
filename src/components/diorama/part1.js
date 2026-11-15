@@ -170,7 +170,7 @@ export const PART1_BUILDERS = {
     wheel.position.set(2.0, 3.05, -0.1);
     group.add(shaft, cap, wheel);
     animated.push({ fn: (t) => { wheel.rotation.z = t * 0.5; } });
-    pick(shaft, ironMode ? 'Mehrauli Rustless Iron Pillar' : 'Ashokan Edict Pillar', ironMode ? 'जंग-रहित महरौली लौह स्तंभ' : 'अशोक धम्म स्तंभ अभिलेख');
+    pick(shaft, ironMode ? 'Mehrauli corrosion-resistant iron pillar' : 'Ashokan Edict Pillar', ironMode ? 'जंग-प्रतिरोधी महरौली लौह स्तंभ' : 'अशोक धम्म स्तंभ अभिलेख');
     addLabel(new THREE.Vector3(2.0, 3.7, -0.1), ironMode ? 'Gupta Iron Pillar' : 'Ashokan Edict Pillar', ironMode ? 'महरौली लौह स्तंभ' : 'शिलालेख स्तंभ');
 
     // 3. Knowledge / AI Audit Desk & Trade Guild / Saptanga Highway
@@ -179,7 +179,7 @@ export const PART1_BUILDERS = {
     const scroll = box(1.4, 0.12, 0.65, mat(isDebunked ? 0x86efac : S.corroborate ? 0x93c5fd : 0xfff1c9), 5.1, -1.34, 2.1);
     group.add(desk, scroll);
     pick(desk, 'Palm-Leaf & Epigraphy Archive', 'ताड़पत्र व प्रमाण अभिलेखागार');
-    addLabel(new THREE.Vector3(5.1, -0.65, 2.1), S.claimId ? 'Evidence Verification Desk' : 'Nalanda & IKS Archive', S.claimId ? 'प्रमाण सत्यापन मेज़' : 'नालंदा ज्ञान अभिलेख');
+    addLabel(new THREE.Vector3(5.1, -0.65, 2.1), S.claimId ? 'Practice Clue Desk' : 'Nalanda & IKS Archive', S.claimId ? 'अभ्यास संकेत मेज़' : 'नालंदा ज्ञान अभिलेख');
 
     // Highway + Shreni Guild Caravan / Maritime Dock
     const roadW = S.roadsInvest ? 0.8 + (S.roadsInvest / 100) * 1.4 : 1.1;
@@ -227,27 +227,21 @@ export const PART1_BUILDERS = {
     const pod = cyl(1.2, 1.3, 0.6, 16, mat(fell ? 0xdc2626 : 0x0284c7, { emissive: fell ? 0x991b1b : 0x0369a1, emissiveIntensity: 0.3 }), 0, -1.55, -2.0);
     group.add(pod);
     pick(pod, 'Parliamentary Chamber', 'संसद व लोकतांत्रिक सभा');
-    addLabel(new THREE.Vector3(0, 0.2, -2.0), fell ? 'Lost Confidence' : `Majority ${support}%`, fell ? 'विश्वासमत खोया' : `बहुमत ${support}%`);
+    addLabel(new THREE.Vector3(0, 0.2, -2.0), fell ? 'Lost Confidence' : `Support ${support}/100`, fell ? 'विश्वासमत खोया' : `समर्थन ${support}/100`);
     addLabel(new THREE.Vector3(3.4, -0.4, 1.5), 'Elected Seats', 'निर्वाचित प्रतिनिधि');
   },
 
-  // T07: 3D Constituency Hex Grid & Seat Parliament Towers
-  T07(tk, S) {
-    const { THREE, group, mat, box, cyl, addLabel, addPlinth, pick } = tk;
+  // T07: an illustrative grid, not a fabricated live map or seat result.
+  T07(tk) {
+    const { THREE, group, mat, cyl, addLabel, addPlinth, pick } = tk;
     addPlinth(0xdbe4ee, 0x475569, 15.5, 10);
-    const cols = [0xdc2626, 0x2563eb, 0x16a34a, 0xd97706];
-    const names = ['R', 'B', 'G', 'Y'];
-    const swing = S.swing ?? 0;
-    const blueBoost = Math.max(0, Math.round(swing / 4));
     for (let i = 0; i < 10; i++) {
-      const r = Math.floor(i / 5), c = i % 5;
-      const partyIdx = i < (3 + blueBoost) ? 1 : i < 7 ? 0 : i < 9 ? 2 : 3;
-      const h = 1.1 + ((i * 7 + Math.abs(swing)) % 4) * 0.45;
-      const hex = cyl(0.95, 1.0, h, 6, mat(cols[partyIdx]), -4.8 + c * 2.4, -1.9 + h / 2, -1.6 + r * 2.8);
+      const r = Math.floor(i / 5), c = i % 5, height = 1.1;
+      const hex = cyl(0.95, 1.0, height, 6, mat(0x64748b), -4.8 + c * 2.4, -1.9 + height / 2, -1.6 + r * 2.8);
       group.add(hex);
-      pick(hex, `Constituency ${i + 1} (${names[partyIdx]})`, `क्षेत्र ${i + 1} (${names[partyIdx]})`);
+      pick(hex, `Illustrative seat ${i + 1} (not a result)`, `चित्रात्मक सीट ${i + 1} (परिणाम नहीं)`);
     }
-    addLabel(new THREE.Vector3(0, 1.4, -0.2), '10 Constituencies → Seat Towers', '10 निर्वाचन क्षेत्र → सीट स्तंभ');
+    addLabel(new THREE.Vector3(0, 1.4, -0.2), 'Illustration only — see 2D for results', 'केवल चित्र — परिणाम 2D में देखें');
   },
 
   // T08: Terraced Farm & Craft Resource Island (PPF / Scarcity / Safety Net)

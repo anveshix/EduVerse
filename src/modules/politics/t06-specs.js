@@ -15,25 +15,33 @@ const DEMO_CASES = [
   { id: 'oneparty', en: 'Case B: Single-party rule', hi: 'केस B: एक-दलीय शासन', freeVote: true, multipleParties: false, freeMedia: false, equalLaw: false },
   { id: 'pressban', en: 'Case C: Elections held, press silenced', hi: 'केस C: चुनाव पर मीडिया पर रोक', freeVote: true, multipleParties: true, freeMedia: false, equalLaw: true },
 ];
+const DEMOCRACY_FIELDS = ['freeVote', 'multipleParties', 'freeMedia', 'equalLaw'];
+function presetPatch(id) {
+  const preset = DEMO_CASES.find((item) => item.id === id && id !== 'custom');
+  if (!preset) return { preset: 'custom' };
+  return { preset: id, ...Object.fromEntries(DEMOCRACY_FIELDS.map((key) => [key, preset[key]])) };
+}
+const choosePreset = (state, id) => Object.assign(state, presetPatch(id));
+const customiseCase = (state) => { state.preset = 'custom'; };
 export const democracyMap = {
   id: 'T06.L1',
   objective: b('Test whether a fictional polity meets all four core criteria of democracy: free elections, multi-party choice, free media, and equal rule of law.', 'परखें कि कोई काल्पनिक राज्यतंत्र लोकतंत्र के चारों मुख्य मानदंड पूरे करता है या नहीं: स्वतंत्र चुनाव, बहु-दलीय विकल्प, स्वतंत्र मीडिया और कानून के समक्ष समानता।'),
-  note: { kind: 'fictional', en: 'Fictional test cases illustrating the four minimal criteria of modern constitutional democracy.', hi: 'आधुनिक संवैधानिक लोकतंत्र के चार न्यूनतम मानदंडों को दर्शाने वाले काल्पनिक परीक्षण केस।' },
+  note: { kind: 'fictional', en: 'Four simplified checks in invented cases; a score is not a complete test or measurement of any real democracy.', hi: 'काल्पनिक मामलों में चार सरल जाँच; अंक किसी वास्तविक लोकतंत्र का पूरा परीक्षण या माप नहीं है।' },
   init: () => ({ preset: 'full', freeVote: true, multipleParties: true, freeMedia: true, equalLaw: true }),
+  prepareState(S) { if (S.preset !== 'custom') choosePreset(S, S.preset); },
   controls: [
-    { id: 'preset', type: 'chips', label: b('Load case', 'केस चुनें'), options: DEMO_CASES.map((c) => opt(c.id, c.en, c.hi)) },
-    { id: 'freeVote', type: 'toggle', label: b('Universal free & fair vote', 'सार्वभौमिक स्वतंत्र व निष्पक्ष मतदान') },
-    { id: 'multipleParties', type: 'toggle', label: b('Real choice of opposition parties', 'विपक्षी दलों का वास्तविक विकल्प') },
-    { id: 'freeMedia', type: 'toggle', label: b('Independent courts & free media', 'स्वतंत्र न्यायालय व मुक्त मीडिया') },
-    { id: 'equalLaw', type: 'toggle', label: b('Equal rule of law for rulers too', 'शासकों पर भी समान कानून') },
+    { id: 'preset', type: 'chips', label: b('Load case', 'केस चुनें'), options: DEMO_CASES.map((c) => opt(c.id, c.en, c.hi)), afterChange: choosePreset },
+    { id: 'freeVote', type: 'toggle', label: b('Universal vote with equal weight', 'सार्वभौमिक मत और समान मूल्य'), afterChange: customiseCase },
+    { id: 'multipleParties', type: 'toggle', label: b('Free election with real opposition choice', 'स्वतंत्र चुनाव व विपक्ष का वास्तविक विकल्प'), afterChange: customiseCase },
+    { id: 'freeMedia', type: 'toggle', label: b('Independent courts & free media', 'स्वतंत्र न्यायालय व मुक्त मीडिया'), afterChange: customiseCase },
+    { id: 'equalLaw', type: 'toggle', label: b('Equal rule of law for rulers too', 'शासकों पर भी समान कानून'), afterChange: customiseCase },
   ],
   view(S) {
-    const p = DEMO_CASES.find((c) => c.id === S.preset);
-    const st = S.preset !== 'custom' && p ? { freeVote: p.freeVote, multipleParties: p.multipleParties, freeMedia: p.freeMedia, equalLaw: p.equalLaw } : S;
+    const st = S;
     const res = S_.assessDemocracyCase(st);
     const nodes = [
       { id: 'dem', fx: 320, fy: 130, rw: 120, fill: res.score === 4 ? '#dcfce7' : res.score >= 2 ? '#fef3c7' : '#fee2e2', stroke: res.score === 4 ? '#15803d' : res.score >= 2 ? '#b45309' : '#b91c1c', label: P(`Score ${res.score}/4`, `अंक ${res.score}/4`) },
-      { id: 'v', fx: 130, fy: 60, rw: 128, fill: st.freeVote ? '#dbeafe' : '#f1f5f9', stroke: st.freeVote ? '#0369a1' : '#94a3b8', label: P('Free Vote', 'स्वतंत्र मत') },
+      { id: 'v', fx: 130, fy: 60, rw: 128, fill: st.freeVote ? '#dbeafe' : '#f1f5f9', stroke: st.freeVote ? '#0369a1' : '#94a3b8', label: P('Equal Vote', 'समान मत') },
       { id: 'm', fx: 510, fy: 60, rw: 128, fill: st.multipleParties ? '#dbeafe' : '#f1f5f9', stroke: st.multipleParties ? '#0369a1' : '#94a3b8', label: P('Multi-Party', 'बहु-दल') },
       { id: 'p', fx: 130, fy: 200, rw: 128, fill: st.freeMedia ? '#dbeafe' : '#f1f5f9', stroke: st.freeMedia ? '#0369a1' : '#94a3b8', label: P('Free Media', 'मुक्त मीडिया') },
       { id: 'l', fx: 510, fy: 200, rw: 128, fill: st.equalLaw ? '#dbeafe' : '#f1f5f9', stroke: st.equalLaw ? '#0369a1' : '#94a3b8', label: P('Rule of Law', 'विधि-शासन') },
@@ -52,15 +60,15 @@ export const democracyMap = {
         en: 'Constitutional democracy in action — tap polling queue, court scales of justice or free press desk to stress-test all 4 pillars.',
         hi: 'संवैधानिक लोकतंत्र के स्तंभ — मतदान कतार, न्याय तराजू व स्वतंत्र प्रेस मेज़ पर टैप कर चारों मानदंड परखें।',
         spots: [
-          { x: 18, y: 60, en: 'Full Democracy (4/4 Pillars)', hi: 'पूर्ण लोकतंत्र (4/4 स्तंभ)', detail: b('Free vote + multi-party competition + free press + equal law keep rulers accountable.', 'निष्पक्ष चुनाव, बहु-दलीय विकल्प, स्वतंत्र मीडिया व समान कानून जवाबदेही रखते हैं।'), set: { preset: 'full' } },
-          { x: 50, y: 64, en: 'Single-Party Ballot Trap', hi: 'एक-दलीय चुनाव जाल', detail: b('Notice voting alone without opposition or independent courts scores only 1/4!', 'विपक्ष और स्वतंत्र न्यायपालिका बिना केवल मतदान 4 में से 1 ही अंक देता है!'), set: { preset: 'oneparty' } },
-          { x: 84, y: 68, en: 'Media Censorship Failure', hi: 'मीडिया सेंसरशिप विफलता', detail: b('Silencing journalists blinds citizens between elections even with rival parties.', 'पत्रकारों को चुप कराना चुनावों के बीच नागरिकों की निगरानी छीन लेता है।'), set: { preset: 'pressban' } },
+          { x: 18, y: 60, en: 'All four checks in this example', hi: 'इस उदाहरण में चारों जाँच', detail: b('This imagined case includes all four checks, but they do not measure every aspect of democracy.', 'इस काल्पनिक केस में चारों जाँच हैं, पर वे लोकतंत्र के हर पहलू को नहीं मापतीं।'), set: presetPatch('full') },
+          { x: 50, y: 64, en: 'One-party example', hi: 'एक-दलीय उदाहरण', detail: b('The case assumes voting but no genuine party choice, independent media or equal law.', 'इस केस में मतदान माना गया है, पर वास्तविक दलीय विकल्प, मुक्त मीडिया और समान कानून नहीं।'), set: presetPatch('oneparty') },
+          { x: 84, y: 68, en: 'Media censorship example', hi: 'मीडिया सेंसरशिप उदाहरण', detail: b('Silencing journalists limits scrutiny between elections even with rival parties.', 'पत्रकारों को चुप कराने से चुनावों के बीच जाँच-परख सीमित होती है, भले ही प्रतिद्वंद्वी दल हों।'), set: presetPatch('pressban') },
         ],
       },
       svg,
-      aria: `Democracy score ${res.score} of 4: ${res.verdict}`,
+      aria: P(`Fictional case: ${res.score} of four checks`, `काल्पनिक केस: चार में से ${res.score} जाँच`),
       lines: [
-        { en: `Pillars satisfied: ${res.score} of 4 (${res.verdict === 'democratic' ? 'Full Constitutional Democracy' : res.verdict === 'flawed' ? 'Electoral / Flawed System — missing safeguards' : 'Non-Democratic Regime'}).`, hi: `पूर्ण स्तंभ: 4 में से ${res.score} (${res.verdict === 'democratic' ? 'पूर्ण संवैधानिक लोकतंत्र' : res.verdict === 'flawed' ? 'त्रुटिपूर्ण प्रणाली — सुरक्षा-कवच अधूरे' : 'अलोकतांत्रिक शासन'})।`, cls },
+        { en: `Checks present in this invented case: ${res.score} of 4. These checks alone cannot fully judge a real democracy.`, hi: `इस काल्पनिक केस में 4 में से ${res.score} जाँच पूरी हैं। ये जाँच अकेले किसी वास्तविक लोकतंत्र का पूरा निर्णय नहीं कर सकतीं।`, cls },
         { en: 'Even if voting takes place, silencing journalists or banning opposition parties breaks democratic accountability.', hi: 'भले ही मतदान हो, पर पत्रकारों को चुप कराना या विपक्षी दलों पर रोक लगाना लोकतांत्रिक जवाबदेही तोड़ देता है।', cls: 'note' },
       ],
     };
@@ -70,8 +78,8 @@ export const democracyMap = {
     b('Compare Case B and Case C to see how missing one pillar alters accountability.', 'एक स्तंभ कम होने से जवाबदेही कैसे बदलती है, यह देखने के लिए केस B और C की तुलना करें।'),
   ],
   predictions: [{
-    id: 'p1',
-    stem: b('If a government holds elections every 5 years, bans opposition criticism in newspapers, and puts leaders above the law, how many of the 4 criteria are met?', 'यदि सरकार हर 5 वर्ष चुनाव कराए, पर अखबारों में विपक्ष की आलोचना रोके और नेताओं को कानून से ऊपर रखे, तो 4 में से कितने मानदंड पूरे होंगे?'),
+    id: 'p1', revision: 't06-step6',
+    stem: b('In this invented case, assume universal voting with equal weight but no real opposition party choice, no free media or independent courts, and leaders above the law. How many checks are met?', 'इस काल्पनिक केस में समान मूल्य वाला सार्वभौमिक मतदान मानें, पर वास्तविक विपक्षी दल विकल्प, मुक्त मीडिया या स्वतंत्र न्यायालय नहीं हैं और नेता कानून से ऊपर हैं। कितनी जाँच पूरी होंगी?'),
     options: [opt('four', 'All 4 — elections alone are enough', 'सभी 4 — केवल चुनाव काफी हैं'), opt('one', 'Only 1 — flawed / non-democratic', 'केवल 1 — त्रुटिपूर्ण / अलोकतांत्रिक')],
     run: (S) => { S.preset = 'custom'; S.freeVote = true; S.multipleParties = false; S.freeMedia = false; S.equalLaw = false; return S_.assessDemocracyCase(S).score === 1 ? 'one' : 'four'; },
     explain: () => b('Only 1 of 4 criteria holds: without opposition choice, free press, and equal rule of law, voters cannot hold rulers accountable.', '4 में से केवल 1 मानदंड पूरा है: विपक्ष, स्वतंत्र मीडिया और समान कानून के बिना मतदाता शासकों को जवाबदेह नहीं ठहरा सकते।'),
@@ -92,8 +100,8 @@ export const democracyMap = {
 
 // ------------------------------------------------------------------ T06.L2 Early Indian Democratic Traditions Gallery
 const TRADITIONS = [
-  { id: 'sabha', year: '~1200–600 BCE', en: 'Vedic Sabha & Samiti', hi: 'वैदिक सभा और समिति', place: 'Indus-Ganga Plains', src: 'Rigveda & Atharvaveda references', descEn: 'Elders and general assemblies deliberated on public affairs, law, and selecting or advising the rajan.', descHi: 'जन-मामलों, न्याय और राजा के चयन व परामर्श पर वरिष्ठों की सभा और जन-समिति विचार-विमर्श करती थी।' },
-  { id: 'vajji', year: '~6th Century BCE', en: 'Vajji Sangha / Gana (Vaishali)', hi: 'वज्जि संघ / गण (वैशाली)', place: 'Vaishali (Bihar)', src: 'Buddhist Mahaparinibbana Sutta', descEn: 'A confederacy governed by an assembly of thousands of rajas who met in the Santhagara hall to decide by discussion and consensus or vote.', descHi: 'संथागार में एकत्र हजारों राजाओं की सभा द्वारा चर्चा, सहमति या मत से निर्णय लेने वाला प्राचीन गणसंघ।' },
+  { id: 'sabha', year: '~1200–600 BCE', en: 'Vedic Sabha & Samiti', hi: 'वैदिक सभा और समिति', place: 'Indus-Ganga Plains', src: 'Rigveda & Atharvaveda references', descEn: 'Vedic texts refer to sabha and samiti; their membership and roles are interpreted from limited sources.', descHi: 'वैदिक ग्रंथ सभा और समिति का उल्लेख करते हैं; सीमित स्रोतों से उनकी सदस्यता और भूमिकाओं की व्याख्या की जाती है।' },
+  { id: 'vajji', year: '~6th Century BCE', en: 'Vajji Sangha / Gana (Vaishali)', hi: 'वज्जि संघ / गण (वैशाली)', place: 'Vaishali (Bihar)', src: 'Buddhist Mahaparinibbana Sutta', descEn: 'Texts describe Vajji as a gana-sangha with collective deliberation by a group of rajas, not universal adult suffrage.', descHi: 'ग्रंथ वज्जि गणसंघ में राजाओं के समूह द्वारा सामूहिक विचार का वर्णन करते हैं; यह सार्वभौमिक वयस्क मताधिकार नहीं था।' },
   { id: 'uttara', year: 'c. 920 CE', en: 'Uttaramerur Kudavolai Inscription', hi: 'उत्तरमेरूर कुडवोलाई शिलालेख', place: 'Kanchipuram (Tamil Nadu)', src: 'Vaikuntha Perumal Temple Stone Inscriptions (Chola period)', descEn: 'Carved rules for choosing village sabha committees via palm-leaf lots drawn from a pot, with age, property, and audit qualifications.', descHi: 'ग्राम-सभा समितियों के चुनाव हेतु घड़े से ताड़पत्र की पर्ची (कुडवोलाई) निकालने, योग्यता और लेखा-परीक्षा के शिलालेखित नियम।' },
 ];
 export const earlyTraditions = {
@@ -110,8 +118,8 @@ export const earlyTraditions = {
     const boxes = S.trad === 'uttara'
       ? [P('1. Eligibility & Audit Check', '1. योग्यता व हिसाब जांच'), P('2. Kudavolai Pot Draw', '2. कुडवोलाई घड़े से पर्ची'), P('3. 1-Year Rotating Term', '3. 1-वर्षीय क्रमिक कार्यकाल')]
       : S.trad === 'vajji'
-      ? [P('1. Santhagara Assembly', '1. संथागार सभा में बैठक'), P('2. Debate & Consensus', '2. खुला विमर्श व सहमति'), P('3. Shalaka Ballot Sticks', '3. शलाका (मत-दंड) से मतदान')]
-      : [P('1. Samiti (General Folk)', '1. समिति (जन-सभा)'), P('2. Sabha (Council of Elders)', '2. सभा (वरिष्ठ परिषद)'), P('3. Advisory Rajadharma', '3. परामर्श व राजधर्म')];
+      ? [P('1. Gana-sangha', '1. गणसंघ'), P('2. Collective deliberation', '2. सामूहिक विचार'), P('3. Membership was limited', '3. सदस्यता सीमित थी')]
+      : [P('1. Samiti in texts', '1. ग्रंथों में समिति'), P('2. Sabha in texts', '2. ग्रंथों में सभा'), P('3. Interpret the evidence', '3. प्रमाण की व्याख्या')];
     const g = boxes.map((txt, i) => {
       const act = i + 1 <= S.step;
       const x = 24 + i * 204;
@@ -133,16 +141,16 @@ export const earlyTraditions = {
           ? 'चोल मंडप शिलालेख व उत्तरमेरूर कुडवोलाई घड़ा — वैदिक, वज्जि व चोल सभाएँ देखने हेतु पिन पर टैप करें।'
           : 'प्राचीन भारतीय सभा-मंडप — सभा-समिति, वज्जि व उत्तरमेरूर की तुलना हेतु पिन पर टैप करें।',
         spots: [
-          { x: 22, y: 46, en: 'Vedic Sabha & Samiti', hi: 'वैदिक सभा व समिति', detail: b('Council of elders & general folk assembly advising the rajan.', 'वरिष्ठों की सभा और जन-समिति द्वारा सार्वजनिक मामलों पर विमर्श।'), set: { trad: 'sabha', step: 3 } },
+          { x: 22, y: 46, en: 'Vedic Sabha & Samiti', hi: 'वैदिक सभा व समिति', detail: b('Texts mention these assemblies; their precise membership and roles are interpreted from sources.', 'ग्रंथ इन सभाओं का उल्लेख करते हैं; उनकी सटीक सदस्यता और भूमिकाओं की व्याख्या स्रोतों से होती है।'), set: { trad: 'sabha', step: 3 } },
           { x: 52, y: 68, en: 'Uttaramerur Kudavolai (c. 920 CE)', hi: 'उत्तरमेरूर कुडवोलाई (ल. 920 ई.)', detail: b('Palm-leaf lotteries from a pot with public audit disqualifications.', 'घड़े से ताड़पत्र पर्ची व पिछले खातों की सख्त लेखा-परीक्षा के नियम।'), set: { trad: 'uttara', step: 3 } },
-          { x: 80, y: 54, en: 'Vajji Santhagara Republic', hi: 'वज्जि संथागार गणसंघ', detail: b('Assemblies in Vaishali deciding collective policy through open debate & ballot sticks.', 'वैशाली की संथागार सभा में खुले विमर्श व शलाका मत-दंड से निर्णय।'), set: { trad: 'vajji', step: 3 } },
+          { x: 80, y: 54, en: 'Vajji Santhagara Republic', hi: 'वज्जि संथागार गणसंघ', detail: b('Texts describe collective deliberation among rajas; membership was not universal.', 'ग्रंथ राजाओं के बीच सामूहिक विचार बताते हैं; सदस्यता सबके लिए नहीं थी।'), set: { trad: 'vajji', step: 3 } },
         ],
       },
       svg,
       aria: `${tr.en} (${tr.year}) at ${tr.place}`,
       lines: [
         { en: `${tr.en} (${tr.year}, ${tr.place}): ${tr.descEn}`, hi: `${tr.hi} (${tr.year}): ${tr.descHi}` },
-        { en: `Important distinction: unlike modern universal adult franchise, ancient assemblies excluded enslaved persons, non-citizens, or (at Uttaramerur) non-landholders — showing both early roots and historical limits.`, hi: `महत्वपूर्ण भेद: आधुनिक सार्वभौमिक वयस्क मताधिकार के विपरीत, प्राचीन सभाओं में सभी वर्ग शामिल नहीं थे — यह प्राचीन जड़ों के साथ-साथ उनकी ऐतिहासिक सीमाएँ भी दिखाता है।`, cls: 'note' },
+        { en: 'These sources describe different places and centuries. Membership was limited; Uttaramerur’s qualifications included property. Do not equate these institutions with modern universal adult suffrage or assume a direct institutional continuity.', hi: 'ये स्रोत अलग स्थानों और शताब्दियों के हैं। सदस्यता सीमित थी; उत्तरमेरूर की शर्तों में संपत्ति भी थी। इन्हें आधुनिक सार्वभौमिक वयस्क मताधिकार के बराबर न मानें या सीधा संस्थागत उत्तराधिकार न मानें।', cls: 'note' },
       ],
     };
   },
@@ -162,7 +170,7 @@ export const earlyTraditions = {
     stem: b('How do ancient Indian ganasanghas differ from modern Indian constitutional democracy?', 'प्राचीन भारतीय गणसंघ आधुनिक भारतीय संवैधानिक लोकतंत्र से किस प्रकार भिन्न थे?'),
     correct: 'univ',
     options: [
-      opt('univ', 'Modern democracy grants equal universal adult franchise (18+) regardless of property, caste, or gender.', 'आधुनिक लोकतंत्र संपत्ति, जाति या लिंग से परे सभी वयस्कों (18+) को समान मताधिकार देता है।'),
+      opt('univ', 'In India eligible citizens aged 18 or older can register to vote regardless of property, caste or gender; ancient memberships were restricted.', 'भारत में 18 वर्ष या उससे अधिक आयु के पात्र नागरिक संपत्ति, जाति या लिंग से परे मतदाता पंजीकरण करा सकते हैं; प्राचीन सदस्यता सीमित थी।'),
       opt('none', 'Ancient republics had no rules or assemblies at all.', 'प्राचीन गणराज्यों में कोई नियम या सभा नहीं थी।', b('Texts and inscriptions clearly show rules and assemblies in Vaishali and Uttaramerur.', 'ग्रंथों व शिलालेखों में वैशाली व उत्तरमेरूर की सभाओं के स्पष्ट नियम मिलते हैं।')),
     ],
     explain: b('Ancient Indian assemblies pioneered collective deliberation, while universal equal citizenship is a modern constitutional achievement.', 'प्राचीन भारतीय सभाओं ने सामूहिक विमर्श का मार्ग प्रशस्त किया, जबकि सार्वभौमिक समान नागरिकता आधुनिक संवैधानिक उपलब्धि है।'),
@@ -173,11 +181,11 @@ export const earlyTraditions = {
 
 // ------------------------------------------------------------------ T06.L4 Country Comparison
 const COUNTRIES = [
-  { id: 'in', en: 'India', hi: 'भारत', iso: '356', lon: 79, lat: 22, sys: 'Parliamentary Republic', sysHi: 'संसदीय गणतंत्र', hos: 'President (indirect)', hog: 'Prime Minister (majority in Lok Sabha)', fed: 'Federal (Union + States)' },
-  { id: 'us', en: 'USA', hi: 'अमेरिका (USA)', iso: '840', lon: -98, lat: 39, sys: 'Presidential Republic', sysHi: 'अध्यक्षीय गणतंत्र', hos: 'President (direct/Electoral College)', hog: 'President (same person, fixed 4-yr term)', fed: 'Federal (50 States)' },
-  { id: 'fr', en: 'France', hi: 'फ़्रांस', iso: '250', lon: 2, lat: 47, sys: 'Semi-Presidential Republic', sysHi: 'अर्ध-अध्यक्षीय गणतंत्र', hos: 'President (direct 5-yr vote)', hog: 'Prime Minister (needs Assembly confidence)', fed: 'Unitary with regions' },
-  { id: 'ca', en: 'Canada', hi: 'कनाडा', iso: '124', lon: -106, lat: 56, sys: 'Parliamentary Constitutional Monarchy', sysHi: 'संसदीय संवैधानिक राजतंत्र', hos: 'Monarch / Governor-General', hog: 'Prime Minister (Commons majority)', fed: 'Federal (Provinces)' },
-  { id: 'ru', en: 'Russia', hi: 'रूस', iso: '643', lon: 95, lat: 60, sys: 'Semi-Presidential (concentrated executive)', sysHi: 'अर्ध-अध्यक्षीय (केंद्रित कार्यपालिका)', hos: 'President (dominant executive role)', hog: 'Prime Minister (appointed with Duma)', fed: 'Federal (asymmetric)' },
+  { id: 'in', en: 'India', hi: 'भारत', iso: '356', lon: 79, lat: 22, sys: 'Parliamentary Republic', sysHi: 'संसदीय गणतंत्र', hos: 'President (indirect election)', hosHi: 'राष्ट्रपति (अप्रत्यक्ष चुनाव)', hog: 'Prime Minister (Lok Sabha confidence)', hogHi: 'प्रधानमंत्री (लोकसभा का विश्वास)', fed: 'Federal: Union and States', fedHi: 'संघीय: संघ और राज्य' },
+  { id: 'us', en: 'USA', hi: 'अमेरिका', iso: '840', lon: -98, lat: 39, sys: 'Presidential Republic', sysHi: 'अध्यक्षीय गणतंत्र', hos: 'President (Electoral College)', hosHi: 'राष्ट्रपति (निर्वाचक मंडल)', hog: 'President (fixed four-year term, subject to exceptions)', hogHi: 'राष्ट्रपति (चार वर्ष, अपवाद संभव)', fed: 'Federal: states', fedHi: 'संघीय: राज्य' },
+  { id: 'fr', en: 'France', hi: 'फ़्रांस', iso: '250', lon: 2, lat: 47, sys: 'Semi-Presidential Republic', sysHi: 'अर्ध-अध्यक्षीय गणतंत्र', hos: 'President (direct election)', hosHi: 'राष्ट्रपति (प्रत्यक्ष चुनाव)', hog: 'Prime Minister (government accountable to National Assembly)', hogHi: 'प्रधानमंत्री (सरकार राष्ट्रीय सभा के प्रति उत्तरदायी)', fed: 'Unitary with regions', fedHi: 'क्षेत्रों वाला एकात्मक राज्य' },
+  { id: 'ca', en: 'Canada', hi: 'कनाडा', iso: '124', lon: -106, lat: 56, sys: 'Parliamentary Constitutional Monarchy', sysHi: 'संसदीय संवैधानिक राजतंत्र', hos: 'Monarch, represented federally by Governor General', hosHi: 'सम्राट, संघ में गवर्नर जनरल प्रतिनिधि', hog: 'Prime Minister (House of Commons confidence)', hogHi: 'प्रधानमंत्री (हाउस ऑफ कॉमन्स का विश्वास)', fed: 'Federal: provinces and territories', fedHi: 'संघीय: प्रांत और क्षेत्र' },
+  { id: 'ru', en: 'Russia', hi: 'रूस', iso: '643', lon: 95, lat: 60, sys: 'Semi-Presidential (concentrated executive)', sysHi: 'अर्ध-अध्यक्षीय (केंद्रित कार्यपालिका)', hos: 'President (dominant executive role)', hosHi: 'राष्ट्रपति (प्रमुख कार्यकारी भूमिका)', hog: 'Prime Minister (appointed with Duma approval)', hogHi: 'प्रधानमंत्री (ड्यूमा की स्वीकृति से नियुक्त)', fed: 'Federal: constituent regions', fedHi: 'संघीय: घटक क्षेत्र' },
 ];
 export const countryCompare = {
   id: 'T06.L4',
@@ -209,10 +217,10 @@ export const countryCompare = {
         ],
       },
       svg,
-      aria: `${c.en}: ${c.sys}. Head of state: ${c.hos}; Head of government: ${c.hog}`,
+      aria: P(`${c.en}: ${c.sys}. Head of state: ${c.hos}; Head of government: ${c.hog}`, `${c.hi}: ${c.sysHi}। राष्ट्राध्यक्ष: ${c.hosHi}; शासनाध्यक्ष: ${c.hogHi}`),
       lines: [
-        { en: `${c.en} — ${c.sys} (${c.fed}).`, hi: `${c.hi} — ${c.sysHi}।`, cls: 'balanced' },
-        { en: `Head of State: ${c.hos} | Head of Government: ${c.hog}.`, hi: `राष्ट्राध्यक्ष: ${c.hos} | शासनाध्यक्ष: ${c.hog}।`, cls: 'note' },
+        { en: `${c.en} — ${c.sys} (${c.fed}).`, hi: `${c.hi} — ${c.sysHi} (${c.fedHi})।`, cls: 'balanced' },
+        { en: `Head of State: ${c.hos} | Head of Government: ${c.hog}.`, hi: `राष्ट्राध्यक्ष: ${c.hosHi} | शासनाध्यक्ष: ${c.hogHi}।`, cls: 'note' },
       ],
     };
   },
@@ -250,12 +258,12 @@ const SYS = { parliamentary: b('Parliamentary (e.g. India’s Union government)'
 export const institutions = {
   id: 'T06.L3',
   objective: b('Compare how the executive and the legislature are related in a parliamentary and a presidential system, and what happens when the government loses the legislature’s support.', 'संसदीय और अध्यक्षीय प्रणालियों में कार्यपालिका और विधायिका के संबंध की तुलना करें, और सरकार के विधायिका का समर्थन खोने पर क्या होता है।'),
-  note: { kind: 'documented', en: 'Simplified textbook models. Real constitutions have many more rules; the seat numbers here are fictional.', hi: 'सरलीकृत पाठ्यपुस्तकीय मॉडल। वास्तविक संविधानों में कहीं अधिक नियम होते हैं; यहाँ सीटों की संख्या काल्पनिक है।' },
+  note: { kind: 'fictional', en: 'In this toy confidence vote all 100 legislators vote for or against; 51 votes are needed for confidence. Real procedures, abstentions and constitutions are more complex.', hi: 'इस काल्पनिक विश्वासमत में सभी 100 विधायक पक्ष या विपक्ष में मत देते हैं; विश्वास के लिए 51 मत चाहिए। वास्तविक प्रक्रिया, अनुपस्थिति और संविधान अधिक जटिल हैं।' },
   init: () => ({ system: 'parliamentary', support: 62, vote: false }),
   controls: [
     { id: 'system', type: 'chips', label: b('System', 'प्रणाली'), options: I.SYSTEMS.map((id) => ({ id, ...SYS[id] })) },
     { id: 'support', type: 'slider', label: b('Legislators (out of 100) who support the government', 'सरकार का समर्थन करने वाले विधायक (100 में से)'), min: 0, max: 100, step: 1 },
-    { id: 'vote', type: 'toggle', label: b('Hold a vote of no confidence', 'अविश्वास प्रस्ताव पर मतदान कराएँ') },
+    { id: 'vote', type: 'toggle', label: b('Hold a vote of confidence in the government', 'सरकार में विश्वास पर मतदान कराएँ') },
   ],
   view(S) {
     const sys = S.system, pos = POS[sys], total = 100, cv = I.confidenceVote(sys, { total, supportExec: S.support }), lp = I.lawPassage(sys, { total, supportExec: S.support });
@@ -272,30 +280,30 @@ export const institutions = {
     const bar = `<rect class="bar-s" x="20" y="322" width="${(S.support / 100) * 600}" height="14"/><rect class="bar-bad" x="${20 + (S.support / 100) * 600}" y="322" width="${((100 - S.support) / 100) * 600}" height="14" opacity=".55"/><line x1="320" x2="320" y1="314" y2="344" stroke="var(--ink)" stroke-width="2"/><text class="txt sm" x="20" y="358">${esc(P('Supporters', 'समर्थक'))} ${S.support}</text><text class="txt sm" x="620" y="358" text-anchor="end">${esc(P('Others', 'अन्य'))} ${100 - S.support}</text><text class="txt sm b" x="320" y="312" text-anchor="middle">${esc(P('majority = 51', 'बहुमत = 51'))}</text>`;
     const lines = [];
     if (S.vote) lines.push(sys === 'parliamentary'
-      ? (cv.lost ? { en: `The government has only ${S.support} of 100: it LOSES the confidence vote, so it must resign. The head of state invites an alternative government or calls a fresh election.`, hi: `सरकार के पास 100 में से केवल ${S.support} हैं: वह विश्वासमत हार जाती है, इसलिए उसे त्यागपत्र देना होगा। राष्ट्राध्यक्ष वैकल्पिक सरकार को आमंत्रित करता है या नया चुनाव कराता है।`, cls: 'warn' }
+      ? (cv.lost ? { en: `In this toy vote all 100 vote: ${S.support} support the government, so it loses the confidence motion. In a parliamentary system it would normally resign; what follows depends on constitutional procedure.`, hi: `इस मॉडल में सभी 100 मत देते हैं: ${S.support} सरकार के पक्ष में हैं, इसलिए विश्वास प्रस्ताव हारता है। संसदीय प्रणाली में सामान्यतः सरकार इस्तीफ़ा देती है; आगे की प्रक्रिया संविधान पर निर्भर है।`, cls: 'warn' }
         : { en: `With ${S.support} of 100 supporters the government WINS the vote and continues.`, hi: `100 में से ${S.support} समर्थकों के साथ सरकार मतदान जीतती है और जारी रहती है।`, cls: 'balanced' })
-      : { en: 'In a presidential system the legislature cannot remove the president by an ordinary no-confidence vote: the president serves a fixed term and can be removed only by impeachment for grave offences, which needs a very large majority.', hi: 'अध्यक्षीय प्रणाली में विधायिका सामान्य अविश्वास मत से राष्ट्रपति को नहीं हटा सकती: राष्ट्रपति निश्चित कार्यकाल पूरा करता है और केवल गंभीर अपराधों पर महाभियोग से हटाया जा सकता है, जिसके लिए बहुत बड़ा बहुमत चाहिए।', cls: 'balanced' });
+      : { en: 'In this simplified presidential model a legislative confidence vote does not remove the president. Fixed terms can still end early through constitutional processes, resignation, death or incapacity.', hi: 'इस सरल अध्यक्षीय मॉडल में विधायिका का विश्वासमत राष्ट्रपति को नहीं हटाता। संवैधानिक प्रक्रिया, त्यागपत्र, मृत्यु या अक्षमता से निश्चित कार्यकाल पहले भी समाप्त हो सकता है।', cls: 'balanced' });
     lines.push(sys === 'parliamentary'
       ? (lp.passes ? { en: 'The government commands a majority, so its bills can pass: executive and legislature work together.', hi: 'सरकार के पास बहुमत है, इसलिए उसके विधेयक पारित हो सकते हैं: कार्यपालिका और विधायिका साथ काम करती हैं।' } : { en: 'Without a majority the government cannot be sure of passing laws and can be voted out at any time.', hi: 'बहुमत के बिना सरकार कानून पारित होने का भरोसा नहीं कर सकती और कभी भी हटाई जा सकती है।', cls: 'warn' })
-      : (lp.passes ? { en: 'The president’s party has a majority, so laws pass easily.', hi: 'राष्ट्रपति की पार्टी के पास बहुमत है, इसलिए कानून आसानी से पारित होते हैं।' } : { en: 'The legislature is controlled by others (divided government): laws may stall (gridlock), but the president stays in office.', hi: 'विधायिका पर अन्य का नियंत्रण है (विभाजित सरकार): कानून अटक सकते हैं (गतिरोध), पर राष्ट्रपति पद पर बना रहता है।', cls: 'warn' }));
+      : (lp.passes ? { en: 'In this toy one-chamber model a majority supports the executive; real lawmaking also depends on other procedures and institutions.', hi: 'इस एक-सदन मॉडल में बहुमत कार्यपालिका का समर्थन करता है; वास्तविक कानून प्रक्रिया अन्य नियमों और संस्थाओं पर भी निर्भर है।' } : { en: 'The legislature is controlled by others (divided government): laws may stall (gridlock), but the president stays in office.', hi: 'विधायिका पर अन्य का नियंत्रण है (विभाजित सरकार): कानून अटक सकते हैं (गतिरोध), पर राष्ट्रपति पद पर बना रहता है।', cls: 'warn' }));
     return {
       plate: {
         src: 'assets/images/plates/t06-parliament.jpg',
         en: 'India’s circular sandstone Parliament colonnade — tap pins to contrast parliamentary confidence vs presidential fixed terms.',
         hi: 'भारत का संसद भवन मंडप — संसदीय विश्वासमत बनाम अध्यक्षीय निश्चित कार्यकाल की तुलना हेतु पिन पर टैप करें।',
         spots: [
-          { x: 26, y: 50, en: 'Parliamentary Majority (62/100)', hi: 'संसदीय बहुमत (62/100)', detail: b('Cabinet holds Lok Sabha majority — bills pass & government stays secure.', 'लोकसभा बहुमत रहने तक मंत्रिपरिषद विधेयक पारित करती व कार्यरत रहती है।'), set: { system: 'parliamentary', support: 62, vote: false } },
-          { x: 54, y: 42, en: 'No-Confidence Resignation (42/100)', hi: 'अविश्वास मत इस्तीफ़ा (42/100)', detail: b('In a parliamentary system losing majority confidence forces immediate resignation.', 'संसदीय प्रणाली में बहुमत खोते ही सरकार को त्यागपत्र देना पड़ता है।'), set: { system: 'parliamentary', support: 42, vote: true } },
-          { x: 78, y: 56, en: 'Presidential Gridlock (42/100)', hi: 'अध्यक्षीय गतिरोध (42/100)', detail: b('A President stays for the fixed term even when opposition controls Congress.', 'विधायिका में बहुमत न होने पर भी राष्ट्रपति निश्चित कार्यकाल पूरा करता है।'), set: { system: 'presidential', support: 42, vote: true } },
+          { x: 26, y: 50, en: 'Parliamentary Majority (62/100)', hi: 'संसदीय बहुमत (62/100)', detail: b('In this toy, 62 supporting votes pass the 51-vote threshold; real bills and confidence procedures have further rules.', 'इस मॉडल में 62 समर्थक मत 51 की सीमा पार करते हैं; वास्तविक विधेयकों और विश्वास प्रक्रिया के और नियम हैं।'), set: { system: 'parliamentary', support: 62, vote: false } },
+          { x: 54, y: 42, en: 'Lost confidence motion (42/100)', hi: 'विश्वास प्रस्ताव हारा (42/100)', detail: b('In this toy vote the government loses a confidence motion and would normally resign.', 'इस मॉडल में सरकार विश्वास प्रस्ताव हारती है और सामान्यतः इस्तीफ़ा देती है।'), set: { system: 'parliamentary', support: 42, vote: true } },
+          { x: 78, y: 56, en: 'Presidential Gridlock (42/100)', hi: 'अध्यक्षीय गतिरोध (42/100)', detail: b('In the toy presidential system an ordinary confidence vote does not remove the president.', 'काल्पनिक अध्यक्षीय प्रणाली में साधारण विश्वासमत से राष्ट्रपति नहीं हटता।'), set: { system: 'presidential', support: 42, vote: true } },
         ],
       },
       svg: `<svg viewBox="0 0 640 368" class="chart" role="img" xmlns="http://www.w3.org/2000/svg">${g}${bar}</svg>`, aria: `${sys} system with ${S.support} of 100 supporters. ${S.vote ? cv.outcome : 'No vote.'}`, lines };
   },
-  discover: [b('In the parliamentary system set support to 40 and hold a no-confidence vote. Then switch to the presidential system with the same numbers.', 'संसदीय प्रणाली में समर्थन 40 करें और अविश्वास मत कराएँ। फिर वही संख्याएँ रखकर अध्यक्षीय प्रणाली चुनें।'), b('Which system can end up with a government that cannot pass its laws but stays in office?', 'किस प्रणाली में ऐसी सरकार हो सकती है जो कानून पारित न करा पाए पर पद पर बनी रहे?')],
-  predictions: [{ id: 'p1', stem: b('In a PARLIAMENTARY system, the government has 45 of 100 legislators and faces a no-confidence vote. What happens?', 'संसदीय प्रणाली में सरकार के 100 में से 45 विधायक हैं और उसके विरुद्ध अविश्वास मत आता है। क्या होता है?'), options: [opt('falls', 'The government must resign', 'सरकार को त्यागपत्र देना होगा'), opt('stays', 'The government continues until the next election', 'सरकार अगले चुनाव तक चलती है')],
+  discover: [b('In the parliamentary model set support to 40 and hold a confidence vote. Then switch to the presidential model with the same numbers.', 'संसदीय मॉडल में समर्थन 40 करें और विश्वासमत कराएँ। फिर वही संख्याएँ रखकर अध्यक्षीय मॉडल चुनें।'), b('Which system can end up with a government that cannot pass its laws but stays in office?', 'किस प्रणाली में ऐसी सरकार हो सकती है जो कानून पारित न करा पाए पर पद पर बनी रहे?')],
+  predictions: [{ id: 'p1', revision: 't06-step6', stem: b('In this PARLIAMENTARY model all 100 legislators vote on a confidence motion; 45 support the government. What happens?', 'इस संसदीय मॉडल में सभी 100 विधायक विश्वास प्रस्ताव पर मत देते हैं; 45 सरकार का समर्थन करते हैं। क्या होता है?'), options: [opt('falls', 'The government must resign', 'सरकार को त्यागपत्र देना होगा'), opt('stays', 'The government continues until the next election', 'सरकार अगले चुनाव तक चलती है')],
     run: (S) => { S.system = 'parliamentary'; S.support = 45; S.vote = true; return I.confidenceVote('parliamentary', { total: 100, supportExec: 45 }).lost ? 'falls' : 'stays'; }, explain: () => ({ en: 'In a parliamentary system the government exists only while it has the confidence of a majority of the legislature (51 of 100).', hi: 'संसदीय प्रणाली में सरकार तभी तक रहती है जब तक उसे विधायिका के बहुमत (100 में से 51) का विश्वास प्राप्त है।' }) }],
   exit: [{ id: 'e1', stem: b('Which statement about a presidential system is correct?', 'अध्यक्षीय प्रणाली के बारे में कौन-सा कथन सही है?'), correct: 'fixed', options: [
-    { id: 'fixed', ...b('The president is elected separately and serves a fixed term, even without a majority in the legislature.', 'राष्ट्रपति अलग से चुना जाता है और विधायिका में बहुमत न होने पर भी निश्चित कार्यकाल पूरा करता है।') },
+    { id: 'fixed', ...b('The president is chosen separately and is not removed by an ordinary confidence vote.', 'राष्ट्रपति अलग से चुना जाता है और साधारण विश्वासमत से हटाया नहीं जाता।') },
     { id: 'confidence', ...b('The president must resign whenever the legislature passes a no-confidence motion.', 'विधायिका के अविश्वास प्रस्ताव पारित करते ही राष्ट्रपति को त्यागपत्र देना पड़ता है।'), why: b('That describes a parliamentary system. Try the no-confidence vote in the presidential diagram.', 'यह संसदीय प्रणाली का वर्णन है। अध्यक्षीय आरेख में अविश्वास मत आज़माएँ।') }],
     explain: b('The president and the legislature are elected separately; each has its own source of power.', 'राष्ट्रपति और विधायिका अलग-अलग चुने जाते हैं; दोनों की सत्ता का अपना स्रोत है।'), hint: b('Look at the “elect” arrows into the executive.', 'कार्यपालिका की ओर जाने वाले “चुनते हैं” तीरों को देखें।') }],
   reflect: b('Which system makes the government more answerable to the legislature, and what is one cost of that?', 'कौन-सी प्रणाली सरकार को विधायिका के प्रति अधिक जवाबदेह बनाती है, और उसकी एक कीमत क्या है?'),

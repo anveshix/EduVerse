@@ -6,6 +6,8 @@ import { tabs as mkTabs } from '../../components/widgets.js';
 import { createLab } from '../../components/lab-kit.js';
 import * as elections from './elections.js';
 import { electionTimeline, delimitationLab, coalition } from './t07-specs.js';
+import { createVoterJourney } from './voter-journey.js';
+import { createCoalitionBuilder } from './coalition-builder.js';
 
 export function mount(root, ctx) {
   const lab1 = createLab(electionTimeline, 'T07');
@@ -13,6 +15,11 @@ export function mount(root, ctx) {
   const base = elections.mount(el2, ctx);
   const lab3 = createLab(delimitationLab, 'T07');
   const lab4 = createLab(coalition, 'T07');
+  const journey = createVoterJourney();
+  const builder = createCoalitionBuilder(lab4.state);
+  const stopBuilder = lab4.onDraw((state) => builder.update(state));
+  lab1.el.querySelector('.lab-grid').before(journey.el);
+  lab4.el.querySelector('.lab-grid').before(builder.el);
 
   i18n.register({
     'T07.tab.L1': { en: 'ECI workflow (L1)', hi: 'निर्वाचन प्रक्रिया (L1)' },
@@ -22,9 +29,16 @@ export function mount(root, ctx) {
   });
 
   const ui = store.simState('T07.ui', { tab: 'L1' });
+  if (!['L1', 'L2', 'L3', 'L4'].includes(ui.tab)) ui.tab = 'L1';
+  let mounted = false;
+  const sync3d = (id) => {
+    [['L1', lab1], ['L3', lab3], ['L4', lab4]].forEach(([key, lab]) => {
+      if (key === id) lab.enable3d?.(); else lab.disable3d?.();
+    });
+  };
   const tb = mkTabs({
     active: ui.tab,
-    onChange: (id) => { ui.tab = id; store.saveSim(); },
+    onChange: (id) => { ui.tab = id; store.saveSim(); if (mounted) sync3d(id); },
     tabs: [
       { id: 'L1', key: 'T07.tab.L1', el: lab1.el },
       { id: 'L2', key: 'T07.tab.L2', el: el2 },
@@ -33,11 +47,12 @@ export function mount(root, ctx) {
     ],
   });
   root.append(tb.root);
+  mounted = true; sync3d(ui.tab);
   i18n.apply(root);
 
   return {
-    relabel() { lab1.relabel(); base.relabel?.(); lab3.relabel(); lab4.relabel(); i18n.apply(root); },
-    destroy() { base.destroy?.(); },
+    relabel() { lab1.relabel(); base.relabel?.(); lab3.relabel(); lab4.relabel(); journey.relabel(); builder.relabel(); i18n.apply(root); },
+    destroy() { mounted = false; stopBuilder(); journey.destroy(); builder.destroy(); [lab1, lab3, lab4].forEach((lab) => lab.destroy()); base.destroy?.(); },
     debug: () => ({ L1: lab1.debug(), L2: base.debug?.(), L3: lab3.debug(), L4: lab4.debug() }),
   };
 }
