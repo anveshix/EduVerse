@@ -30,7 +30,7 @@ export function localWind({ hour, mean = 28, landAmp = DIURNAL.land, seaAmp = DI
   return { land, sea, dT, speed, kind, surfaceFlow: kind === 'sea-breeze' ? 'sea→land' : kind === 'land-breeze' ? 'land→sea' : 'none' };
 }
 
-/** Representative monthly normals (illustrative textbook station figures, Jan..Dec). */
+/** Illustrative monthly station figures (Jan..Dec); not verified observations or official climate normals. */
 export const STATIONS = {
   mumbai: {
     en: 'Mumbai (Coastal)', hi: 'मुंबई (तटीय)', lat: 19.1, lon: 72.9, elev: 14,

@@ -44,8 +44,8 @@
 | **Step 0 — Foundation** | Home Continue + Path progress + Search + How-to-Learn + per-card LO bars + Chapter Complete + Opening narration (Web Speech) | Student always knows *where am I, what's next, how do I learn* | Done (`ec7b9a0`) |
 | **Step 1 — T01** Understanding Social Science | + Patna place (6th lens place), + Q5/Q6 Patna questions, Inquiry Cycle in L1, Patna discover tasks | Local anchor: "my city, my Social Science" | Done (`ec7b9a0`) |
 | **Step 2 — T02** Earth's Surface | India landform atlas (Himalaya/Deccan/Plains/Coast/Islands), Everest fossil story front-and-centre | India-first geography | Done |
-| Step 3 — T03 Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather you can observe in Patna | Next, on request |
-| Step 4 — T04 Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist |
+| **Step 3 — T03** Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather in your own locality; Patna is an optional example | Done |
+| Step 4 — T04 Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist | Next, on request |
 | Step 5 — T05 State & Society | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines |
 | Step 6 — T06 Democracy | Panchayati Raj + classroom vote simulation | Democracy you practise daily |
 | Step 7 — T07 Elections | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government |
@@ -111,7 +111,29 @@
 
 ---
 
+## Step 3 — T03: Atmosphere and Climate
+
+### Audit and improvements
+- **Seven-day local weather diary (L2):** students choose any general locality (Patna is an optional example) and record dates, observation times, sky, rain, estimated wind, optional measured temperature and a reflection. Seven independently editable day entries survive navigation, language changes and reloads in local browser storage; deletion requires confirmation, while the model's Reset does not erase the diary. No geolocation or weather API is used, and students are asked not to enter personal details. If storage is blocked the page explicitly warns that the diary is temporary.
+- **Evidence, not invented numbers:** an empty rain entry means *not recorded*, while “rain not seen” applies only at observation time and does **not** assert zero rainfall for a full day. An empty temperature is not 0 °C; invalid readings are excluded from the summary. Calendar checks catch nonconsecutive or duplicate dates, including leap-day boundaries; dates alone do not count as observations. A week describes weather, not a climate normal or forecast. Safety instructions tell learners to stay indoors away from windows during thunderstorms and skip unsafe observations.
+- **Climograph honesty and access (L2):** existing monthly arrays were not sourced as official station normals; the graph, readout, prediction and model note now identify them as illustrative teaching values. The rainfall axis has numeric ticks, the legend explains both axes and lines, and a bilingual 12-row table exposes the same monthly data to keyboard/screen-reader users. The table tracks both station controls and stays open on model or language changes. An incorrect “Mumbai wet year-round” claim was removed. Bihar is not given invented station values.
+- **Monsoon mechanism (L3):** four linked, keyboard-operable steps trace land–sea heating and pressure, the shifting ITCZ, cross-equatorial flow and Coriolis deflection, Arabian Sea/Bay branches, relief and rain shadow, and the seasonal reversal. They compare typical Bihar and Tamil Nadu rainfall seasons without claiming a fixed daily pattern. Selecting a step changes the existing map; map controls, pins, Reset and predictions update the explanation. Map paths now have directional arrowheads and one highlight colour per season, not a fabricated rainfall scale. Onset, breaks and withdrawal vary; this simplified diagram is neither a warning nor a forecast.
+- **Teaching and scope:** the opening question, teacher flow, model limitations and a new comparison prediction reinforce the weather–climate distinction. The diary and inquiry are companions to existing LOs, not new simulations: the catalog remains **78/78 LOs and 79 simulations**. Hindi translations remain draft pending a subject-teacher review. The diary is learner-entered and unverified; clearing browser data removes it. First-use offline tests cover the new code and Hindi font, but uncached illustration images may be absent offline.
+
+### Teaching references
+- NCERT Class IX *Climate* (2019 edition, reproduced): seasonal reversal, convergence, branches, relief, breaks and the Tamil Nadu coast [1](https://cdn1.byjus.com/wp-content/uploads/2019/11/NCERT-Book-for-Class-9-Geography-Chapter-4.pdf).
+- IMD/MAUSAM study of normal monsoon onset, progress and withdrawal: normal Kerala onset is around 1 June; observed timing varies [1](https://mausamjournal.imd.gov.in/index.php/MAUSAM/article/view/33).
+- WMO: standard climate normals use 30-year reference periods [1](https://wmo.int/media/news/wmo-publishes-global-update-of-climate-datasets). IMD thunderstorm and lightning safety guidance [1](https://mausam.imd.gov.in/Forecast/mcmarq/mcmarq_data/dos-donts-ts2025.pdf).
+
+### Verification
+- `npm run catalog` and `npm run sw` regenerated the 78-LO/79-simulation catalog and **124-file** content-hashed precache. `npm run verify` passed architecture checks and **47/47 tests**.
+- `npm run test:t03` passed all seven diary entries, missing-vs-not-seen rain, date and temperature validation, edits/reload/deletion, storage denial, EN/HI/both, keyboard/touch, the monthly table, dark-mode selected-text contrast, map synchronisation and first-open offline interaction. No network writes or JavaScript errors were reported. `npm run test:t02` also passed its previous mobile, offline, progress and WebGL regressions.
+- `npm run a11y` passed automated checks across all 16 themes. A 16-theme desktop smoke passed before the final T03 table/safety refinements; T03 desktop and 360 px mobile smoke were rerun afterward with no errors or horizontal page overflow. One concurrent smoke attempt timed out; its sequential rerun passed. Automated checks do not replace a real screen-reader or subject-teacher review.
+- `npm run perf:size` measured T03 entry at approximately **1,185.2 KB estimated gzip / 55 requests**, excluding background service-worker precaching. Images and Three.js remain large; this is an emulated transfer estimate, not a physical-device benchmark.
+
+---
+
 ## How to Continue
-1. On the user's request, audit and upgrade **Step 3 — T03** only.
+1. On the user's request, audit and upgrade **Step 4 — T04** only.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

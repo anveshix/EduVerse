@@ -456,10 +456,10 @@
    "implementation": "src/modules/geography/t03-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Read and compare temperature-rainfall climographs across contrasting Indian stations shaped by latitude, altitude, coast and relief.",
-    "hi": "तट, ऊँचाई, अक्षांश और उच्चावच से प्रभावित विभिन्न भारतीय केंद्रों के तापमान-वर्षा जलवायु आरेखों की तुलना करें।"
+    "en": "Record a week of local weather and practise reading illustrative temperature–rainfall graphs; distinguish short-term observations from climate.",
+    "hi": "एक सप्ताह का स्थानीय मौसम दर्ज करें और उदाहरणात्मक तापमान–वर्षा आरेख पढ़ें; अल्पकालिक प्रेक्षण और जलवायु में अंतर समझें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "station",
@@ -506,8 +506,8 @@
    "implementation": "src/modules/geography/t03-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Trace India’s advancing (SW) and retreating (NE) monsoon winds on an India map and link rainfall seasons to farming and coastal livelihoods.",
-    "hi": "भारत के मानचित्र पर दक्षिण-पश्चिम और उत्तर-पूर्व मानसूनी पवनों की दिशा देखें और ऋतुओं को कृषि व आजीविका से जोड़ें।"
+    "en": "Explain a simplified monsoon mechanism, trace seasonal wind reversal, and compare Bihar and Tamil Nadu without treating the map as a forecast.",
+    "hi": "सरल मानसून प्रक्रिया समझें, मौसमी पवन-उलटाव देखें और बिहार व तमिलनाडु की तुलना करें; मानचित्र को पूर्वानुमान न मानें।"
    },
    "provenance": "schematic",
    "controls": [
@@ -528,8 +528,8 @@
      }
     }
    ],
-   "guidedDiscoveryPrompts": 1,
-   "predictions": 1,
+   "guidedDiscoveryPrompts": 2,
+   "predictions": 2,
    "exitQuestions": 1,
    "hasReflection": true,
    "hasReset": true,

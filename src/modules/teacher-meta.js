@@ -18,12 +18,13 @@ export const TEACHER = {
   T02: T02_TEACHER,
   T03: {
     flow: [
-      b('Atmosphere Cutaway & Climate Grapher (12 min): compare altitude temperature lapse vs station rainfall seasonality.', 'वायुमंडल काट व जलवायु ग्राफ़ (12 मिनट): ऊँचाई तापमान और मौसमी वर्षा की तुलना करें।'),
-      b('Monsoon Map & Land-Sea Breeze (12 min): track Southwest vs Northeast wind reversals and diurnal breeze direction.', 'मानसून मानचित्र व समीर (12 मिनट): दक्षिण-पश्चिम और उत्तर-पूर्व पवन दिशा देखें।'),
-      b('Flood Catchment & Carbon Footprint (10 min): test concrete vs forest runoff and household carbon choices.', 'जलग्रहण व कार्बन पदचिह्न (10 मिनट): बाढ़ अपवाह और उत्सर्जन विकल्प परखें।'),
+      b('Start a seven-day diary (10 min setup, then one safe observation per day): distinguish missing rain observations from rain not seen at that moment; compare with the illustrative station graphs.', 'सात-दिवसीय डायरी शुरू करें (10 मिनट की तैयारी, फिर प्रतिदिन सुरक्षित प्रेक्षण): बिना दर्ज वर्षा और उस समय वर्षा न दिखने में अंतर करें; उदाहरण आरेखों से तुलना करें।'),
+      b('Monsoon mechanism and map (15 min): trace heating, pressure, ITCZ, cross-equatorial flow, branches, relief and reversal. Compare Bihar and Tamil Nadu without predicting exact weather.', 'मानसून प्रक्रिया व मानचित्र (15 मिनट): तापन, दाब, ITCZ, विषुवत-पार प्रवाह, शाखाएँ, उच्चावच और वापसी समझें। सटीक मौसम बताए बिना बिहार व तमिलनाडु की तुलना करें।'),
+      b('Atmosphere, breeze, catchment and carbon labs (as time allows): test the remaining models and discuss their limits.', 'वायुमंडल, समीर, जलग्रहण और कार्बन प्रयोग (समयानुसार): शेष मॉडल परखें और उनकी सीमाओं पर चर्चा करें।'),
     ],
     misconceptions: [
-      b('“Weather and climate are the same thing.” Weather is today’s state; climate is the 30-year statistical pattern.', '“मौसम और जलवायु एक ही हैं।” मौसम दिन-प्रतिदिन की स्थिति है; जलवायु दीर्घकालिक औसत पैटर्न है।'),
+      b('“One rainy week tells us the climate.” A diary is short-term weather; WMO standard climate normals use 30-year periods. The grapher values here are illustrative, not official station normals.', '“एक वर्षा-भरा सप्ताह जलवायु बता देता है।” डायरी अल्पकालिक मौसम है; WMO मानक जलवायु औसत 30 वर्षों के होते हैं। यहाँ के आरेख मान उदाहरण हैं, आधिकारिक केंद्र औसत नहीं।'),
+      b('“The monsoon always arrives on the same day and rains continuously.” Onset, breaks and rainfall differ by year and place; the model is not a warning or forecast.', '“मानसून हर वर्ष एक ही दिन आता है और लगातार वर्षा होती है।” आगमन, विराम और वर्षा वर्ष व स्थान के अनुसार बदलते हैं; मॉडल चेतावनी या पूर्वानुमान नहीं है।'),
     ],
   },
   T04: {
@@ -116,7 +117,7 @@ export const TEACHER = {
 export const LIMITS = {
   T01: b('Illustrative four-lens summaries and simplified six-node society graph for introductory framing.', 'प्रारंभिक समझ के लिए संक्षिप्त चार-लेंस विवरण और 6-नोड समाज आरेख।'),
   T02: T02_LIMITS,
-  T03: b('Standard Atmosphere curve, schematic wind pressures, and simplified catchment/carbon formulas for conceptual understanding — not real weather forecasts.', 'मानक वायुमंडल वक्र और सरलीकृत पवन-अपवाह-कार्बन सूत्र केवल अवधारणात्मक समझ हेतु हैं — मौसम पूर्वानुमान नहीं।'),
+  T03: b('Station values are illustrative, not official climate normals. Diary entries are learner observations stored locally, not verified station data. Monsoon arrows, catchment and carbon models are simplified; none is a weather forecast.', 'केंद्र के मान उदाहरण हैं, आधिकारिक जलवायु औसत नहीं। डायरी स्थानीय रूप से सहेजे विद्यार्थी प्रेक्षण हैं, सत्यापित केंद्र आँकड़े नहीं। मानसून तीर, जलग्रहण व कार्बन मॉडल सरल हैं; इनमें कोई मौसम पूर्वानुमान नहीं है।'),
   T04: b('Dates are approximate archaeological ranges; the 3D Harappan town is a synthetic educational reconstruction, not a survey of one exact dig.', 'तिथियाँ अनुमानित पुरातात्विक परास हैं; 3D हड़प्पा नगर एक शैक्षिक पुनर्निर्माण है, किसी एक उत्खनन का सटीक मानचित्र नहीं।'),
   T05: b('Schematic regional extents and simplified governance flow diagrams representing centuries of diverse change.', 'सदियों के विविध ऐतिहासिक परिवर्तनों के लिए योजनाबद्ध क्षेत्रीय विस्तार और सरलीकृत प्रशासन आरेख।'),
   T06: b('Fictional assessment cases and concise constitutional summaries; real democracies involve many evolving institutions.', 'काल्पनिक परीक्षण केस और संक्षिप्त संवैधानिक तुलना; वास्तविक लोकतंत्र में कई गतिशील संस्थाएँ होती हैं।'),

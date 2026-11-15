@@ -69,6 +69,7 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
   const persist = () => store.saveSim();
   const dict = {};
   const widgets = {};
+  const drawListeners = new Set();
   let demoTimer = 0;
   let activeSpotIdx = -1;
   let lastPlate = null;
@@ -140,6 +141,7 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
     chartBox.querySelectorAll('svg[role="img"]').forEach((svg) => { if (v.aria && !svg.getAttribute('aria-label')) svg.setAttribute('aria-label', v.aria); });
     read.innerHTML = v.lines.map((l) => `<div class="ro-line ${l.cls ?? ''}">${biHtml(l, { block: true })}</div>`).join('');
     onDraw?.(S);
+    drawListeners.forEach((listener) => listener(S));
   }
 
   // Auto-play demo button: gently cycles the first slider or chip so passive exploration comes alive
@@ -224,10 +226,12 @@ export function createLab(spec, themeId, { onDraw, skipAuto3d = false } = {}) {
       }
       sync();
     },
+    // Companion activities can observe model changes from controls, predictions, reset and relabelling.
+    onDraw(listener) { drawListeners.add(listener); return () => drawListeners.delete(listener); },
     enable3d: () => auto3d?.enable?.(),
     disable3d: () => auto3d?.disable?.(),
     relabel() { preds.forEach((p) => p.relabel()); exitEls.forEach((q) => q.relabel()); relabelBi(el); i18n.apply(el); ta.placeholder = t('reflect.ph'); auto3d?.relabel?.(); draw(); },
-    destroy() { stopDemo(); auto3d?.destroy?.(); },
+    destroy() { stopDemo(); drawListeners.clear(); auto3d?.destroy?.(); },
     debug: () => ({ state: { ...S }, view: spec.view(S) }),
   };
 }
@@ -251,6 +255,8 @@ export function mountLabs(root, themeId, defs, tabs) {
   root.append(tb.root); i18n.apply(root);
   sync3dTab(ui.tab);
   return {
+    // Keep the existing tab/lab lifecycle while allowing a theme to attach companions to a specific LO.
+    lab(id) { const index = defs.findIndex((d) => d.id === id); return index < 0 ? null : labs[index]; },
     relabel() { labs.forEach((l) => l.relabel()); i18n.apply(root); },
     destroy() { labs.forEach((l) => l.destroy?.()); },
     debug: () => Object.fromEntries(labs.map((l, i) => [defs[i].id, l.debug()])),
