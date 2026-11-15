@@ -2072,7 +2072,7 @@
     "en": "Explain how the Moon and Sun produce tides and why the tidal range is largest at new and full moon (spring tides) and smallest at the quarters (neap tides).",
     "hi": "समझाएँ कि चंद्रमा और सूर्य ज्वार कैसे बनाते हैं और अमावस्या-पूर्णिमा पर ज्वारीय परिसर (वृहत् ज्वार) सबसे अधिक तथा अष्टमी पर (निम्न ज्वार) सबसे कम क्यों होता है।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "phase",
@@ -2114,7 +2114,7 @@
     "en": "Balance fishing fleet size, net mesh rules, closed spawning seasons and mangrove nurseries to sustain coastal livelihoods.",
     "hi": "तटीय आजीविका टिकाए रखने के लिए नावों की संख्या, जाल के आकार, प्रजनन-काल बंद और मैंग्रोव संरक्षण का संतुलन समझें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "boats",
@@ -2136,8 +2136,8 @@
      "id": "closed",
      "type": "slider",
      "label": {
-      "en": "Monsoon closed months",
-      "hi": "मानसून प्रजनन-बंद (महीने)"
+      "en": "Imagined closed months",
+      "hi": "काल्पनिक बंद अवधि (महीने)"
      }
     },
     {
@@ -2177,8 +2177,8 @@
    "implementation": "src/modules/geography/t10-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Calculate how fast a tsunami travels, why it slows near the coast, and how much time a community has to evacuate after a warning.",
-    "hi": "गणना करें कि सुनामी कितनी तेज़ चलती है, तट के पास क्यों धीमी हो जाती है, और चेतावनी के बाद समुदाय के पास निकलने के लिए कितना समय है।"
+    "en": "Explore an idealised tsunami wave-speed calculation and distinguish it from a real warning or evacuation decision.",
+    "hi": "सुनामी गति की आदर्श गणना समझें और उसे वास्तविक चेतावनी या निकासी निर्णय से अलग पहचानें।"
    },
    "provenance": "documented",
    "controls": [
@@ -2202,8 +2202,8 @@
      "id": "siren",
      "type": "slider",
      "label": {
-      "en": "Minutes needed to reach high ground",
-      "hi": "ऊँचे स्थान तक पहुँचने के लिए आवश्यक मिनट"
+      "en": "Imagined travel time (minutes)",
+      "hi": "काल्पनिक यात्रा समय (मिनट)"
      }
     }
    ],
@@ -2280,7 +2280,7 @@
     "en": "Match temperature and rainfall belts to Earth’s major biomes on a world map.",
     "hi": "विश्व मानचित्र पर तापमान और वर्षा पट्टियों का पृथ्वी के प्रमुख बायोम से मिलान करें।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "temp",
@@ -2377,8 +2377,8 @@
    "implementation": "src/modules/geography/t11-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Show how plants, herbivores and predators depend on one another and how removing predators changes the whole food web.",
-    "hi": "दिखाएँ कि पौधे, शाकाहारी और शिकारी एक-दूसरे पर कैसे निर्भर हैं और शिकारियों को हटाने से पूरा खाद्य-जाल कैसे बदलता है।"
+    "en": "Compare a two-population predator–prey model and discuss possible wider food-web effects that it does not calculate.",
+    "hi": "दो-जनसंख्या शिकारी–शिकार मॉडल तुलना करें और खाद्य-जाल पर उन संभावित प्रभावों की चर्चा करें जिनकी गणना यह नहीं करता।"
    },
    "provenance": "schematic",
    "controls": [
@@ -2427,8 +2427,8 @@
    "implementation": "src/modules/geography/t11-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Decide how much of a forest can be harvested each year without destroying it, using regrowth and the maximum sustainable yield.",
-    "hi": "पुनर्वृद्धि और अधिकतम धारणीय उपज के आधार पर तय करें कि वन को नष्ट किए बिना हर वर्ष कितना काटा जा सकता है।"
+    "en": "Compare harvest and regrowth in an invented forest-stock model, and discuss why real forest management requires more evidence.",
+    "hi": "काल्पनिक वन-भंडार मॉडल में कटाई और पुनर्वृद्धि की तुलना करें और चर्चा करें कि वास्तविक प्रबंधन में अधिक साक्ष्य क्यों चाहिए।"
    },
    "provenance": "schematic",
    "controls": [
@@ -2477,10 +2477,10 @@
    "implementation": "src/modules/geography/t11-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Test how heat, dry humidity, wind and dry pine needles drive forest-fire spread, and how firebreaks and community patrols lower risk.",
-    "hi": "परखें कि तापमान, सूखापन, पवन और सूखी पत्तियाँ जंगल की आग को कैसे बढ़ाती हैं, और फायर-लाइन तथा सामुदायिक गश्त जोखिम कैसे घटाती हैं।"
+    "en": "Compare fire-related conditions in an invented index and discuss prevention and local safety guidance.",
+    "hi": "काल्पनिक सूचक में आग से जुड़ी परिस्थितियों की तुलना करें और रोकथाम व स्थानीय सुरक्षा निर्देशों पर चर्चा करें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "temp",
@@ -2518,8 +2518,8 @@
      "id": "firebreak",
      "type": "toggle",
      "label": {
-      "en": "Clear 10 m firebreaks + controlled litter removal",
-      "hi": "10 मी फायर-लाइन + सूखी पत्तियाँ हटाना"
+      "en": "Assume a model fuel break",
+      "hi": "मॉडल में ईंधन-विराम मानें"
      }
     }
    ],
@@ -2610,8 +2610,8 @@
      "id": "alliance",
      "type": "toggle",
      "label": {
-      "en": "Cross-community & terrain defence pact",
-      "hi": "स्थानीय गठबंधन व भूभाग रक्षा नीति"
+      "en": "Imagine a local alliance",
+      "hi": "काल्पनिक स्थानीय गठबंधन"
      }
     }
    ],

@@ -10,6 +10,10 @@ const SCENARIOS = {
   perishable: { b: 1, d: 0.2, lim: 25 },
 };
 export const SCENARIO_IDS = Object.keys(SCENARIOS);
+/** Convert a quoted price per 100 kg to a price per kg; reject invalid inputs. */
+export function quintalToKilogramPrice(price) {
+  return typeof price === 'number' && Number.isFinite(price) && price >= 0 && price <= 1000000 ? price / 100 : null;
+}
 const sc = (m) => SCENARIOS[m.scenario] ?? SCENARIOS.base;
 const EPS = 0.5;
 

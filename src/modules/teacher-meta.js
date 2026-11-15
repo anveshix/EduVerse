@@ -80,14 +80,16 @@ export const TEACHER = {
   T10: {
     flow: [
       b('3D Ocean Relief & Motions (15 min): sculpt shelf, slope, trench, and ridge; contrast waves, spring/neap tides, and currents.', '3D महासागर उच्चावच व गति (15 मिनट): मग्नतट, गर्त, ज्वार-भाटा और धाराएँ समझें।'),
-      b('Fisheries, Coastal Hazards & Maritime Law (15 min): manage MSY, calculate tsunami evacuation minutes, and inspect UNCLOS zones.', 'मत्स्य, चक्रवात/सुनामी व समुद्री नियम (15 मिनट): टिकाऊ मत्स्य व UNCLOS देखें।'),
+      b('Fisheries, Coastal Hazards & Maritime Law (15 min): compare invented stock indices with local livelihoods, distinguish cyclones and tsunami warnings, and inspect UNCLOS zones. The tsunami calculation is not an evacuation clock.', 'मत्स्य, तटीय खतरे व समुद्री नियम (15 मिनट): काल्पनिक भंडार सूचक व आजीविका की तुलना करें, चक्रवात और सुनामी चेतावनी में अंतर समझें। सुनामी गणना निकासी घड़ी नहीं है।'),
     ],
   },
   T11: {
     flow: [
-      b('World Biomes & India Biosphere Reserves (15 min): match climate to flora/fauna and locate reserves from Nilgiri to Sundarbans.', 'विश्व बायोम व भारत जैवमंडल (15 मिनट): जलवायु के अनुसार वनस्पति और आरक्षित क्षेत्र पहचानें।'),
-      b('Forest Trade-offs, Fire Mitigation & Sacred Groves (15 min): balance ecotourism, test fire drivers, and study community conservation.', 'पारिस्थितिक पर्यटन, वनाग्नि व पवित्र उपवन (15 मिनट): वनाग्नि रोकथाम और सामुदायिक संरक्षण देखें।'),
+      b('Habitats and reserves (15 min): compare Thar, Sundarbans, Western Ghats and Bihar’s Kabartal; distinguish a Ramsar wetland from a biosphere reserve and test the simplified climate matcher.', 'आवास और आरक्षित क्षेत्र (15 मिनट): थार, सुंदरबन, पश्चिमी घाट और बिहार के काबरताल तुलना करें; रामसर आर्द्रभूमि व जैवमंडल आरक्षित क्षेत्र अलग समझें।'),
+      b('Forest trade-offs (15 min): compare the fictional visit-count reference, livelihoods, rights and habitat; test harvest starting stock and discuss fire prevention without treating the model as an alert.', 'वन संतुलन (15 मिनट): काल्पनिक भ्रमण संख्या के साथ आजीविका, अधिकार व आवास तुलना करें; शुरुआती वन भंडार परखें और मॉडल को चेतावनी न मानें।'),
     ],
+    prompts: [b('Whose livelihoods and knowledge should be heard in a wetland or forest decision? What would the model need to know before anyone could judge sustainability?', 'आर्द्रभूमि या वन निर्णय में किसकी आजीविका व ज्ञान सुना जाना चाहिए? टिकाऊपन जाँचने से पहले मॉडल को क्या जानना होगा?')],
+    misconceptions: [b('Grassland is not empty land; Ramsar status is not a biosphere-reserve designation. A model index, numerical visitor reference or maximum growth does not prove real-world safety or sustainability.', 'घासभूमि खाली जमीन नहीं है; रामसर दर्जा जैवमंडल आरक्षित क्षेत्र नहीं है। मॉडल सूचक, भ्रमण संदर्भ या अधिकतम वृद्धि वास्तविक सुरक्षा या टिकाऊपन सिद्ध नहीं करता।')],
   },
   T12: {
     flow: [
@@ -131,8 +133,8 @@ export const LIMITS = {
   T07: b('All party names, block populations, and vote shares in the sandboxes are strictly fictional for teaching mechanics.', 'प्रयोगशालाओं में सभी दल, मत-प्रतिशत और ब्लॉक जनसंख्या केवल शिक्षण हेतु काल्पनिक हैं।'),
   T08: b('Smooth straight/curved frontier models with fictional rupee figures to demonstrate opportunity cost and safety-net arithmetic.', 'अवसर-लागत व सुरक्षा-जाल गणित दिखाने हेतु काल्पनिक रुपये और सरल वक्र मॉडल।'),
   T09: T09_LIMITS,
-  T10: b('Vertical ocean depth in 3D cutaway is strongly exaggerated; logistics fisheries and tsunami speeds are textbook order-of-magnitude models.', '3D समुद्री काट में गहराई अतिरंजित है; मत्स्य और सुनामी मॉडल पाठ्यपुस्तकीय परिमाण दिखाने हेतु हैं।'),
-  T11: b('Simplified biome boundaries, reserve markers, and heuristic fire-risk / ecotourism formulas — check local forest advisories for real conditions.', 'सरल बायोम सीमाएँ, आरक्षित क्षेत्र बिंदु और वनाग्नि-जोखिम के शैक्षिक सूत्र।'),
+  T10: b('The 3D depth is exaggerated. Fishery indices are invented, and constant-depth tsunami arithmetic is not an evacuation clock. Follow current official and local warnings.', '3D गहराई अतिरंजित है। मत्स्य सूचक काल्पनिक हैं और समान गहराई की सुनामी गणना निकासी घड़ी नहीं है। वर्तमान आधिकारिक और स्थानीय चेतावनी मानें।'),
+  T11: b('Habitat dots and climate envelopes are schematic. Harvest, visitor reference and fire indices are invented; none certifies sustainability or safety. Follow current local fire instructions. Hindi needs teacher review.', 'आवास बिंदु व जलवायु सीमाएँ योजनाबद्ध हैं। कटाई, भ्रमण संदर्भ और आग सूचक काल्पनिक हैं; कोई टिकाऊपन या सुरक्षा सिद्ध नहीं करता। वर्तमान स्थानीय आग निर्देश मानें। हिंदी की शिक्षक से जाँच चाहिए।'),
   T12: b('3D hill fort is an architectural composite; regional polity boundaries varied considerably across 1000–1700 CE.', '3D पहाड़ी दुर्ग एक समग्र स्थापत्य पुनर्निर्माण है; 1000–1700 ई. में क्षेत्रीय सीमाएँ समय-समय पर बदलती रहीं।'),
   T13: b('Ports and routes are simplified great-circle arcs across multiple centuries; verify exact dates against textbook chronologies.', 'बंदरगाह व मार्ग अनेक सदियों के सरलीकृत चाप हैं; सटीक तिथियों के लिए पाठ्यपुस्तक देखें।'),
   T14: b('Conceptual governance indicators and fictional grievance timelines illustrating constitutional accountability.', 'संवैधानिक जवाबदेही दर्शाने वाले अवधारणात्मक शासन सूचक और काल्पनिक शिकायत प्रक्रिया।'),

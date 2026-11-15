@@ -3,9 +3,11 @@ import * as i18n from '../../core/i18n.js';
 import * as store from '../../core/store.js';
 import { createLab, createThreeLab } from '../../components/lab-kit.js';
 import { createFort3d } from './fort-3d.js';
-import { tabs as mkTabs } from '../../components/widgets.js';
+import { tabs as mkTabs, bi } from '../../components/widgets.js';
 import { loadGeoAll } from '../../engines/viz.js';
 import { regionalPolitiesMap, fortBuilder, heritageGallery, bhaktiNetwork, continuityTimeline } from './t12-specs.js';
+import { createPerspectives } from './perspectives.js';
+import { h } from '../../core/dom.js';
 
 export function mount(root) {
   const lab1 = createLab(regionalPolitiesMap, 'T12');
@@ -14,6 +16,14 @@ export function mount(root) {
   const lab4 = createLab(bhaktiNetwork, 'T12');
   const lab5 = createLab(continuityTimeline, 'T12');
   const labs = [lab1, lab2, lab3, lab4, lab5];
+  const perspectives = createPerspectives();
+  lab1.el.querySelector('.lab-grid').before(perspectives.el);
+  const source = (href, en, hi) => h('p', { class: 'note' }, h('a', { href, target: '_blank', rel: 'noopener noreferrer' }, bi({ en, hi }, { tag: 'span' })));
+  lab1.el.querySelector('.lab-grid').before(
+    source('https://tourism.bihar.gov.in/en/destinations/bhagalpur/ruins-of-vikramshila', 'Bihar Tourism: Vikramshila ruins (internet required)', 'बिहार पर्यटन: विक्रमशिला अवशेष (इंटरनेट आवश्यक)'),
+    source('https://gmda.assam.gov.in/portlet-sub-innerpage/saraighat-war-memorial-park-agyathuri', 'Assam: Saraighat memorial (internet required)', 'असम: सरायघाट स्मारक (इंटरनेट आवश्यक)'));
+  lab2.el.querySelector('.lab-grid').before(source('https://whc.unesco.org/en/list/247/', 'UNESCO: Hill Forts of Rajasthan (internet required)', 'यूनेस्को: राजस्थान के पहाड़ी दुर्ग (इंटरनेट आवश्यक)'));
+  lab4.el.querySelector('.lab-grid').before(source('https://ncert.nic.in/textbook/pdf/gess106.pdf', 'NCERT: Devotional Paths to the Divine (internet required)', 'NCERT: ईश्वर से अनुराग (इंटरनेट आवश्यक)'));
 
   i18n.register({
     'T12.tab.L1': { en: 'Regional polities (L1)', hi: 'क्षेत्रीय राज्य (L1)' },
@@ -24,6 +34,7 @@ export function mount(root) {
   });
 
   const ui = store.simState('T12.ui', { tab: 'L1' });
+  if (!['L1', 'L2', 'L3', 'L4', 'L5'].includes(ui.tab)) ui.tab = 'L1';
   const tb = mkTabs({
     active: ui.tab,
     onChange: (id) => {
@@ -46,8 +57,8 @@ export function mount(root) {
   loadGeoAll().then(() => { if (alive) { lab1.draw(); lab4.draw(); } });
 
   return {
-    relabel() { labs.forEach((l) => l.relabel()); i18n.apply(root); },
-    destroy() { alive = false; lab2.destroy(); },
+    relabel() { labs.forEach((l) => l.relabel()); perspectives.relabel(); i18n.apply(root); },
+    destroy() { alive = false; perspectives.destroy(); labs.forEach((l) => l.destroy?.()); },
     debug: () => ({ L1: lab1.debug(), L2: lab2.debug(), L3: lab3.debug(), L4: lab4.debug(), L5: lab5.debug() }),
   };
 }

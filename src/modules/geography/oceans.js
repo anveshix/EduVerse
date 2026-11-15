@@ -5,6 +5,8 @@ import { createLab, createThreeLab } from '../../components/lab-kit.js';
 import { createOcean3d } from './ocean-3d.js';
 import { tabs as mkTabs } from '../../components/widgets.js';
 import { tides, tsunami, oceanRelief, fisheries, maritimeCoop } from './t10-specs.js';
+import { createFisheryConnections, createHazardConnections } from './ocean-connections.js';
+import { createOceanMotion } from './ocean-motion.js';
 
 export function mount(root) {
   const lab1 = createThreeLab(oceanRelief, 'T10', createOcean3d);
@@ -13,12 +15,18 @@ export function mount(root) {
   const lab4 = createLab(tsunami, 'T10');
   const lab5 = createLab(maritimeCoop, 'T10');
   const labs = [lab1, lab2, lab3, lab4, lab5];
+  const oceanMotion = createOceanMotion();
+  const fisheryConnections = createFisheryConnections(lab3);
+  const hazardConnections = createHazardConnections();
+  lab2.el.querySelector('.lab-grid').before(oceanMotion.el);
+  lab3.el.querySelector('.lab-grid').before(fisheryConnections.el);
+  lab4.el.querySelector('.lab-grid').before(hazardConnections.el);
 
   i18n.register({
     'T10.tab.L1': { en: '3D Ocean floor (L1)', hi: '3D समुद्र-तल (L1)' },
-    'T10.tab.L2': { en: 'Tides (L2)', hi: 'ज्वार-भाटा (L2)' },
+    'T10.tab.L2': { en: 'Ocean motion (L2)', hi: 'महासागरीय गति (L2)' },
     'T10.tab.L3': { en: 'Fisheries (L3)', hi: 'मत्स्य आजीविका (L3)' },
-    'T10.tab.L4': { en: 'Tsunami timing (L4)', hi: 'सुनामी समय (L4)' },
+    'T10.tab.L4': { en: 'Coastal hazards (L4)', hi: 'तटीय खतरे (L4)' },
     'T10.tab.L5': { en: 'Maritime law (L5)', hi: 'समुद्री सहयोग (L5)' },
   });
 
@@ -28,6 +36,7 @@ export function mount(root) {
     onChange: (id) => {
       ui.tab = id; store.saveSim();
       if (id === 'L1') lab1.enable(); else lab1.disable();
+      if (id === 'L2') oceanMotion.enable();
     },
     tabs: [
       { id: 'L1', key: 'T10.tab.L1', el: lab1.el },
@@ -40,10 +49,11 @@ export function mount(root) {
   root.append(tb.root);
   i18n.apply(root);
   if ((ui.tab || 'L1') === 'L1') lab1.enable();
+  if (ui.tab === 'L2') oceanMotion.enable();
 
   return {
-    relabel() { labs.forEach((l) => l.relabel()); i18n.apply(root); },
-    destroy() { lab1.destroy(); },
+    relabel() { labs.forEach((l) => l.relabel()); oceanMotion.relabel(); fisheryConnections.relabel(); hazardConnections.relabel(); i18n.apply(root); },
+    destroy() { oceanMotion.destroy(); fisheryConnections.destroy(); hazardConnections.destroy(); labs.forEach((l) => l.destroy?.()); },
     debug: () => ({ L1: lab1.debug(), L2: lab2.debug(), L3: lab3.debug(), L4: lab4.debug(), L5: lab5.debug() }),
   };
 }

@@ -50,10 +50,10 @@
 | **Step 6 — T06 Democracy** | Panchayati Raj + classroom vote simulation | Democracy you practise daily | Done |
 | **Step 7 — T07 Elections** | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government | Done |
 | **Step 8 — T08 Economics Basics** | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket | Done |
-| Step 9 — T09 Price Puzzle | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week |
-| Step 10 — T10 Oceans | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar |
-| Step 11 — T11 Life on Earth | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you |
-| Step 12 — T12 Resistance | Multiple perspectives (ruler, farmer, trader, woman) | History with many voices |
+| **Step 9 — T09 Price Puzzle** | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week | Done |
+| **Step 10 — T10 Oceans** | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar | Done |
+| **Step 11 — T11 Life on Earth** | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you | Done |
+| Step 12 — T12 Resistance | Multiple perspectives (ruler, farmer, trader, woman) | History with many voices | In progress |
 | Step 13 — T13 India & World-I | Silk Road + maritime map lab, Patliputra trade | India connected to world |
 | Step 14 — T14 Authority | School rules → Constitution, grievance timeline | Why rules are fair (or not) |
 | Step 15 — T15 Startups | Local entrepreneur stories, balance-sheet builder (fix D9) | Idea → business |
@@ -232,7 +232,82 @@
 
 ---
 
+## Step 9 — T09: The Price Puzzle
+
+### Audit and improvements
+- **Market evidence (L1–L3):** four revisitable, sourced examples distinguish a reported 3 July 2024 Patna wholesale tomato quote (₹60–70/kg) and Antaghat retail quote (about ₹100/kg), the 16 July 2023 ₹80/kg concessional tomato sale at selected points including Patna, a November 2023 ₹25/kg subsidised onion intervention at selected outlets in India, and 2024–25 common-paddy MSP of ₹2,300/quintal (₹23/kg). Dates, location, source and type of price are explicit: none is a current quote; the onion source does not establish a Patna mandi price. Different quotes do not establish seller profits. An MSP announcement does not guarantee every farmer's sale or access to procurement; MSP here is for paddy, not a tomato/onion quote.
+- **Evidence versus model:** students test an interpretation of each source, retry an answer, and send a fictional 20-unit supply fall to the existing perishable-goods graph. The graph's invented price and quantities are not a reconstruction, measurement or forecast, and a real price spike may have multiple causes. Buttons work by keyboard and persist locally; a reset and blocked-storage notice are provided. The activity is inside the existing market tab and adds no new LO or catalog simulation.
+- **Progress and prediction repair:** added exit questions for L2, L3, L4 and L6 while retaining the existing x1–x3 mappings, enabling 6/6 progress without discarding previous answers. The first three market predictions now start from the described baseline rather than arbitrary previous slider positions; revision markers preserve earlier answers and avoid misrepresenting them as responses to the corrected experiment. The public-good explanation no longer promises every real tax arrangement will solve the problem.
+- New Hindi is **draft pending subject-teacher review**. Source links require internet; the dated text, questions and model work after the service worker is installed. Automated accessibility checks do not replace a human screen-reader review.
+
+### Teaching references
+- [Prabhat Khabar, 3 July 2024](https://www.prabhatkhabar.com/video/patna-vegetable-market-rate-tomato-price-jumped-from-rs-60-to-rs-100-in-two-days): reported Patna wholesale and Antaghat market tomato prices; the two quotes do not measure a single seller's costs.
+- PIB: [16 July 2023 tomato intervention](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1939908); [4 November 2023 onion buffer intervention](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1974673); [6 December 2024 paddy MSP](https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2081586).
+- [Agmarknet FAQ](https://agmarknet.gov.in/OtherPages/FAQ.aspx): wholesale prices and arrivals vary by market and commodity. Consult current official sources for present-day data.
+
+### Verification
+- `npm run catalog && npm run sw`: 78/78 LOs, 79 simulations and 142 precached files. `npm run verify` passed architecture checks and 72/72 tests.
+- `npm run test:t09` checked evidence scope, conversion, supply-shift link, prediction baseline, 6/6 exit progress, old-answer retention, EN/HI/both, 360 px keyboard/touch, state repair, blocked storage and offline first-open after installation. `test:t08` and `test:home` regressions passed. Targeted accessibility and desktop/360 px smoke passed without page errors or horizontal overflow.
+
+---
+
+## Step 10 — T10: Oceans and Life
+
+### Audit and improvements
+- **Ocean motion and currents (L2):** the prior tide lab did not cover the LO's wave/current comparison or current map. A bilingual, keyboard-operable source inquiry now distinguishes wind waves, tides and tidal currents and compares the Gulf Stream, Peru Current/upwelling and reversing West India Coastal Current. The world map uses approximate arrows, not real-time measurements or navigational guidance; India’s summer and winter examples reverse the sketched arrow. Currents influence climate and food webs alongside other factors. The existing tide model remains, with its displayed heights explicitly marked illustrative rather than a local prediction. Cases and responses persist locally and have reset and blocked-storage handling.
+- **Marine and inland livelihoods (L3):** sourced, revisitable choices cover coastal crews, processing and selling, and the difference between marine fisheries and Bihar's inland waters. A seasonal closure can protect stocks but also interrupt earnings; rules and assistance vary. Two presets update the existing model and its controls, making it possible to compare 0 versus 2 imagined closed months. Stock and cumulative catch are explicitly invented indices, not measured stocks, incomes, policy advice or a guarantee of sustainability. The updated prediction retains earlier answers under a revision marker.
+- **Bay-to-Bihar and safety (L4):** a historical IMD bulletin about Cyclone Montha and its separate Bihar rain forecast are marked as forecasts from 27 October 2025, not observations everywhere or current warnings. Coastal storm surge is not presented as a Bihar hazard. An interactive natural-warning scenario distinguishes tsunami from cyclone and says to drop, cover and hold during shaking, then move immediately inland to higher ground when it stops, without waiting for a siren or retreating sea; stay away until the local all-clear. For actual emergencies use current official and local instructions, not the app.
+- **Unsafe certainty removed:** the constant-depth speed calculation no longer claims a real evacuation margin or certifies that a route is safe. It shows signed arithmetic with explicit assumptions and prominently says never to wait for the calculation. The tsunami quiz, plate, warning-network explanation and CBQ were updated to avoid guaranteed wave heights or warning times. The fishery quiz and CBQ distinguish risks and evidence from guaranteed outcomes. All existing LO/exit IDs and saved answers remain intact; revised predictions keep their older records.
+- The reusable bilingual inquiry-card component validates local example choices, supports keyboard focus and reset, and warns about blocked storage. These companions add no catalog simulation. All T10 lab timers/stages are now destroyed on route exit. Sources need internet, while the content and models work offline after service-worker installation. New Hindi remains **draft pending subject-teacher review**; automated checks do not replace human accessibility review.
+
+### Teaching references
+- [IMD bulletin, 27 October 2025](https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2027-10-2025.pdf): Montha forecast and isolated heavy-rain forecasts including Bihar. These are historical forecasts, not current alerts.
+- [IMD cyclone safety guidance](https://mausam.imd.gov.in/chennai/mcdata/dos%26donts.pdf); [Indian Ocean Tsunami Ready guidelines](https://tsunami.incois.gov.in/tsunamiready/Guidelines_IOTR.pdf); [INCOIS early warning system](https://tsunami.incois.gov.in/TEWS/dsssop.jsp).
+- [NOAA waves](https://oceanexplorer.noaa.gov/ocean-fact/waves/), [tides](https://oceanservice.noaa.gov/education/tutorial_tides/tides01_intro.html), [boundary currents](https://oceanservice.noaa.gov/education/tutorial_currents/04currents3.html) and [upwelling](https://oceanservice.noaa.gov/education/tutorial_currents/03coastal4.html); [Indian Journal of Geo-Marine Sciences coastal current review](https://services.incois.gov.in/documents/ResearchPapers/RP25.pdf): current patterns are variable as well as seasonal.
+- [Department of Fisheries annual report 2024–25](https://www.dof.gov.in/static/uploads/2025/08/4686b6bf87e0a1844293531a7ad72c74.pdf): marine and inland fisheries, livelihoods and welfare; actual rules differ by fishery and place.
+
+### Verification
+- `npm run catalog && npm run sw`: 78/78 LOs, 79 simulations and 145 precached files. `npm run verify` passed architecture checks and 76/76 tests.
+- `npm run test:t10` checked the ocean-motion and reversing-current map, fisheries controls, source scope, natural-warning decisions, model limits, old-answer retention, 5/5 LO progress, EN/HI/both, 360 px keyboard/touch, malformed state, blocked storage, offline first-open after installation and no network writes. `test:t09` passed as a regression. Targeted accessibility and desktop/mobile smoke passed without reported page errors or horizontal overflow.
+
+---
+
+## Step 11 — T11: Life on Earth
+
+### Audit and improvements
+- **Four habitats (L1):** a sourced, numbered India-map inquiry compares Thar's grasslands, Sundarbans mangroves, Western Ghats and Kabartal/Kanwar Jheel in Begusarai, Bihar. It connects local livelihoods and biodiversity, distinguishes the 2020 Ramsar designation from a biosphere reserve, and considers seasonal farming, fishing, birds and water management. Map dots are examples, not habitat boundaries. Two clearly invented warm/dry and warm/wet presets update the existing climate matcher; temperature and rain alone cannot classify a mangrove or wetland. The matcher now labels its nearest-envelope fallback and does not claim cold Ladakh as an example of its hot-desert category.
+- **Reserve accuracy (L2):** the map is explicitly a selection with approximate dots and representative state shading. Palamau/Betla, a tiger reserve, was incorrectly listed as a biosphere reserve; it has been replaced with nationally designated Achanakmar-Amarkantak. Manas is no longer conflated with Kaziranga. A legacy Palamau selection is retained as `previousReserve` while the working selection falls back to Nilgiri; existing answers and progress remain. A link points to the MoEFCC list as of December 2023.
+- **Tourism and livelihoods (L3):** an interactive fictional visit-count reference gives exact above/equal/below arithmetic and asks whose decisions, rights, livelihoods and ecological safeguards matter. Its invented 80 visits is neither an actual carrying capacity nor a safety or sustainability threshold. The 50-year harvest lab now shows actual outcomes, including depletion when a low starting stock is combined with a harvest below peak growth; it no longer promises perpetual production. The two-species food-web model explicitly does not calculate plants, grazing or food scarcity.
+- **Fire and forest knowledge (L4–L5):** the fire index and assumed fuel-break effect are explicitly fictional; invented spread-speed claims and guarantees of safety were removed. A local-preparation inquiry asks students to discuss prevention and reporting with adults and authorities; its smoke scenario warns never to approach or fight a real fire. Current local emergency/forest instructions take precedence over the app. A sourced comparison of Forest Rights Act recognition and Apatani water/forest knowledge distinguishes legal processes from an app decision and UNESCO's tentative list from World Heritage inscription. Traditional-practice and CBQ claims were qualified; the formerly purported Palamau “source case” is now an explicitly fictional village scenario. Revised predictions preserve prior answers via revision markers.
+- Companions are within existing LOs, add no catalog simulations and store only example choices locally, with reset and blocked-storage notices. Source links require internet; content works offline after service-worker installation. New Hindi is **draft pending subject-teacher review**; automated checks do not replace human accessibility review.
+
+### Teaching references
+- [Ramsar Sites Information Service, Kabartal (2020)](https://rsis.ramsar.org/ris/2436); [Wildlife Institute of India, Thar research](https://wii.gov.in/uploads/media/pdf/rti/RTI_2018_19_Q2_035_Reply_Aman_Bansal_GIB_Thar_report_2015.pdf); UNESCO's [Sundarbans National Park](https://whc.unesco.org/en/list/452/) and [Western Ghats](https://whc.unesco.org/en/list/1342/) descriptions.
+- [MoEFCC biosphere-reserve list](https://moef.gov.in/uploads/pdf/Approved%20copy%20of%20Website%20note%20of%20BR.pdf), dated December 2023; [MoEFCC elephant conservation planning framework](https://moef.gov.in/uploads/pdf/framework_preparation_elephant_conservation_plan.pdf), which discusses ecological concerns, carrying capacity and community participation.
+- [Uttarakhand Forest Department, forest fire information](https://forest.uk.gov.in/forest-fire-info); [FSI/NDMA example forest-fire alert (2025)](https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1743501749456010). The dated alert is not a current local warning.
+- [Ministry of Tribal Affairs, Forest Rights Act training manual](https://tribal.nic.in/FRA/data/FRATrainingManual.pdf); [UNESCO tentative list, Apatani cultural landscape](https://whc.unesco.org/en/tentativelists/5893/). Actual rights and local rules require current authoritative information.
+
+### Verification
+- `npm run catalog && npm run sw`: 78/78 LOs, 79 simulations, 146 precached files. `npm run verify` passed architecture checks and 83/83 tests.
+- `npm run test:t11` checked all four habitats, wetland designation, sources, approximate map selection, linked climate controls, tourism arithmetic, low-stock harvest, fire-model limits and safe-response inquiry, forest rights and knowledge, reserve migration and old-prediction retention, EN/HI/both, keyboard, 360 px, blocked storage, first-open offline after installation, 5/5 progress and no network writes. `test:t09` and `test:t10` passed as regressions. Targeted accessibility and desktop/360 px smoke passed without reported page errors or horizontal overflow; the mobile habitat card was visually inspected.
+
+---
+
+## Step 12 — T12: Resistance and Resilience (in progress)
+
+### Work completed
+- **Multiple perspectives (L1):** a bilingual, revisitable inquiry asks learners to examine the same *fictional* fort-settlement decision from the perspectives of a ruler/official, cultivator, trader and woman craftsperson. Learners compare what court records, revenue records and physical remains can and cannot establish. The people, event and concerns are invented, not quotations or a claim about a named fort. Roles overlap: women also farmed, traded and ruled, and no one voice speaks for an entire group. The links provide background rather than evidence for the invented people.
+- **Map framing (L1):** removed whole-state historical shading, clarified that modern boundaries and approximate markers are not historical borders, moved Vikramashila's marker to the Bhagalpur area of Bihar, replaced a misleading 1680 Chittor marker with Udaipur, and dated the Saraighat battle as 1671 rather than 1680. The alliance switch now poses an imagined comparison, not an automatic historical outcome. A changed prediction retains the earlier answer under a revision marker. Existing exit IDs, reflections, stars and other progress remain intact.
+- Added links to [NCERT on court accounts and Raziyya](https://ncert.nic.in/textbook/pdf/gess103.pdf), [UNESCO on Rajasthan's hill forts](https://whc.unesco.org/en/list/247/), [NCERT on devotional traditions](https://ncert.nic.in/textbook/pdf/gess106.pdf), [Bihar Tourism on Vikramshila](https://tourism.bihar.gov.in/en/destinations/bhagalpur/ruins-of-vikramshila) and [Assam's Saraighat memorial](https://gmda.assam.gov.in/portlet-sub-innerpage/saraighat-war-memorial-park-agyathuri). Links require internet; the inquiry works offline after service-worker installation.
+- The inquiry choices persist locally, can be reset, and report blocked storage; the theme now destroys all lab timers/stages on exit. New Hindi remains **draft pending subject-teacher review**.
+
+### Verification and remaining review
+- `npm run catalog && npm run sw && npm run verify`: 78/78 LOs, 79 simulations, 147 precached files and 85/85 tests. `npm run test:t12` exercised the four perspectives, source limits, revised prediction/legacy progress, EN/HI/both, keyboard, 360 px, blocked storage and first-open offline after installation. Targeted accessibility and desktop/mobile smoke passed without reported errors or horizontal overflow.
+- **Do not mark Step 12 complete yet:** review and qualify the inherited fort score and siege claims, Bhakti map's implied linear route and universal participation claims, and continuity timeline's dated labels. Recheck the T12 teacher/CBQ material and run the full chapter verification after those corrections. Steps 13–17 remain planned.
+
+---
+
 ## How to Continue
-1. Continue with **Step 9 — T09**, then follow the roadmap in order, one chapter at a time.
+1. Finish the remaining **Step 12 — T12** review above, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

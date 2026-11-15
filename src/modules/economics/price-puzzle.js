@@ -12,6 +12,7 @@ import { loadTheme3d } from '../../components/diorama/loader.js';
 import * as M from './models.js';
 import { OPT, EXIT, REFLECT } from './content.js';
 import { UI_T09 } from '../../i18n/modules/t09.js';
+import { createMandiInquiry } from './mandi-inquiry.js';
 
 i18n.register(UI_T09);
 
@@ -142,9 +143,10 @@ export function mount(root, ctx) {
 
     // ---- predictions: answer is computed from the model, never hard-coded ----
     const run = {
-      p1: () => { m.price = 75; m.ceilingOn = false; sync(); return M.statusAt(m, 75).status; },
-      p2: () => { const b = M.equilibrium(m); m.sD = Math.min(M.shiftLimit(m.scenario), m.sD + 20); sync(); return dir(b, M.equilibrium(m)); },
-      p3: () => { const b = M.equilibrium(m); m.sS = Math.max(-M.shiftLimit(m.scenario), m.sS - 20); sync(); return dir(b, M.equilibrium(m)); },
+      // Each question describes a fresh experiment; do not let earlier slider positions change it.
+      p1: () => { Object.assign(m, M.initialMarket(), { price: 75 }); sync(); return M.statusAt(m, 75).status; },
+      p2: () => { Object.assign(m, M.initialMarket()); const b = M.equilibrium(m); m.sD = 20; sync(); return dir(b, M.equilibrium(m)); },
+      p3: () => { Object.assign(m, M.initialMarket()); const b = M.equilibrium(m); m.sS = -20; sync(); return dir(b, M.equilibrium(m)); },
       p4: () => { const e = M.equilibrium(m); m.ceilingOn = true; m.ceiling = Math.round(e.P * 0.7); m.price = Math.round(Math.min(95, e.P + 25)); sync(); const c = M.compute(m); return c.binding ? 'shortage' : 'noeffect'; },
       p5: () => {
         const a = { ...M.initialMarket(), scenario: 'base', sD: -15 }, b = { ...M.initialMarket(), scenario: 'perishable', sD: -15 };
@@ -155,11 +157,11 @@ export function mount(root, ctx) {
     };
     const dir = (a, b) => `P${b.P > a.P + 1e-9 ? 'u' : 'd'}Q${b.Q > a.Q + 1e-9 ? 'u' : 'd'}`;
     const preds = [
-      { id: 'p1', stem: { en: 'The price is raised to ₹75 (the equilibrium is ₹50). What happens in the market?', hi: 'कीमत बढ़ाकर ₹75 कर दी जाती है (संतुलन ₹50 है)। बाज़ार में क्या होगा?' }, options: ['surplus', 'shortage', 'balanced'].map(opt), run: run.p1,
+      { id: 'p1', revision: 't09-step9', stem: { en: 'The price is raised to ₹75 (the equilibrium is ₹50). What happens in the market?', hi: 'कीमत बढ़ाकर ₹75 कर दी जाती है (संतुलन ₹50 है)। बाज़ार में क्या होगा?' }, options: ['surplus', 'shortage', 'balanced'].map(opt), run: run.p1,
         explain: () => { const a = M.statusAt(m, 75); return { en: `At ₹75 buyers want ${fmt(a.Qd, 0)} units but sellers offer ${fmt(a.Qs, 0)}: ${a.status === 'surplus' ? `${fmt(a.surplus, 0)} units stay unsold, so sellers have to cut the price.` : a.status}`, hi: `₹75 पर खरीदार ${fmt(a.Qd, 0)} इकाई चाहते हैं पर विक्रेता ${fmt(a.Qs, 0)} देते हैं: ${a.status === 'surplus' ? `${fmt(a.surplus, 0)} इकाई बिना बिकी रहती हैं, इसलिए विक्रेताओं को कीमत घटानी पड़ती है।` : a.status}` }; } },
-      { id: 'p2', stem: { en: 'Festival season: demand shifts RIGHT by 20 units at every price. What happens to the equilibrium price and quantity?', hi: 'त्योहार का मौसम: हर कीमत पर माँग 20 इकाई दाईं ओर खिसकती है। संतुलन कीमत और मात्रा का क्या होगा?' }, options: ['PuQu', 'PuQd', 'PdQu', 'PdQd'].map(opt), run: run.p2,
+      { id: 'p2', revision: 't09-step9', stem: { en: 'Festival season: demand shifts RIGHT by 20 units at every price. What happens to the equilibrium price and quantity?', hi: 'त्योहार का मौसम: हर कीमत पर माँग 20 इकाई दाईं ओर खिसकती है। संतुलन कीमत और मात्रा का क्या होगा?' }, options: ['PuQu', 'PuQd', 'PdQu', 'PdQd'].map(opt), run: run.p2,
         explain: () => { const e = M.equilibrium(m); return { en: `The whole demand curve moved (see the dashed original). The new crossing is at ₹${fmt(e.P, 0)} and ${fmt(e.Q, 0)} units: the price rose and sellers moved UP along their supply curve.`, hi: `पूरा माँग वक्र खिसक गया (धराशायी मूल रेखा देखें)। नया कटाव-बिंदु ₹${fmt(e.P, 0)} और ${fmt(e.Q, 0)} इकाई पर है: कीमत बढ़ी और विक्रेता अपने पूर्ति वक्र पर ऊपर की ओर चले।` }; } },
-      { id: 'p3', stem: { en: 'A poor harvest: supply shifts LEFT by 20 units at every price. What happens to the equilibrium?', hi: 'खराब फ़सल: हर कीमत पर पूर्ति 20 इकाई बाईं ओर खिसकती है। संतुलन का क्या होगा?' }, options: ['PuQu', 'PuQd', 'PdQu', 'PdQd'].map(opt), run: run.p3,
+      { id: 'p3', revision: 't09-step9', stem: { en: 'A poor harvest: supply shifts LEFT by 20 units at every price. What happens to the equilibrium?', hi: 'खराब फ़सल: हर कीमत पर पूर्ति 20 इकाई बाईं ओर खिसकती है। संतुलन का क्या होगा?' }, options: ['PuQu', 'PuQd', 'PdQu', 'PdQd'].map(opt), run: run.p3,
         explain: () => { const e = M.equilibrium(m); return { en: `Fewer goods are on offer at every price, so the new crossing is at a higher price (₹${fmt(e.P, 0)}) and a smaller quantity (${fmt(e.Q, 0)}).`, hi: `हर कीमत पर कम माल उपलब्ध है, इसलिए नया कटाव-बिंदु ऊँची कीमत (₹${fmt(e.P, 0)}) और कम मात्रा (${fmt(e.Q, 0)}) पर है।` }; } },
       { id: 'p4', stem: { en: 'The government fixes a maximum price about 30% below equilibrium. What happens?', hi: 'सरकार संतुलन से लगभग 30% नीचे अधिकतम कीमत तय करती है। क्या होगा?' }, options: ['shortage', 'surplus', 'noeffect'].map(opt), run: run.p4,
         explain: () => { const c = M.compute(m); return { en: `At the capped price ₹${fmt(c.at.P, 0)} buyers want ${fmt(c.at.Qd, 0)} but sellers offer only ${fmt(c.at.Qs, 0)}: a shortage of ${fmt(c.at.shortage, 0)}. Buyers would even pay about ₹${c.blackMarketPrice != null ? fmt(c.blackMarketPrice, 0) : '-'} for the few units available, which is the pressure behind a black market.`, hi: `सीमित कीमत ₹${fmt(c.at.P, 0)} पर खरीदार ${fmt(c.at.Qd, 0)} चाहते हैं पर विक्रेता केवल ${fmt(c.at.Qs, 0)} देते हैं: ${fmt(c.at.shortage, 0)} की कमी। उपलब्ध थोड़े माल के लिए खरीदार लगभग ₹${c.blackMarketPrice != null ? fmt(c.blackMarketPrice, 0) : '-'} तक देने को तैयार होते हैं; यही काला बाज़ार का दबाव है।` }; } },
@@ -186,11 +188,18 @@ export function mount(root, ctx) {
       h('div', { class: 'row wrap' }, bSnap, bExpUp, bExpDn),
       h('h3', { 'data-k': 'mk.h.ceil' }, t('mk.h.ceil')), tCeil.root, sCeil.root,
       h('div', { class: 'row' }, bReset));
+    const mandi = createMandiInquiry({ onModel: () => {
+      // A teaching experiment, not a claim that the historical quote followed this curve.
+      Object.assign(m, M.initialMarket(), { scenario: 'perishable', sS: -20, price: 67 });
+      sync();
+      sS.input.focus({ preventScroll: true });
+      sS.input.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'center' });
+    } });
     sync();
-    const el = h('div', { class: 'lab' }, h('div', { class: 'lab-grid' }, left, right),
+    const el = h('div', { class: 'lab' }, mandi.el, h('div', { class: 'lab-grid' }, left, right),
       h('section', { class: 'subsec' }, h('h3', { 'data-k': 'predict.h' }, t('predict.h')), predBox));
     stage3dMk = attachThreeStage(el, () => ({ price: m.price, eqP: M.equilibrium(m).P }), (api, host) => loadTheme3d('T09').then((b) => b?.(api, host)), { insertBeforeEl: chartBox, themeId: 'T09' });
-    return { el, enable3d: () => stage3dMk.enable(), disable3d: () => stage3dMk.disable(), relabel() { mkPlate.relabel(); predEls.forEach((p) => p.relabel()); stage3dMk.relabel(); draw(); }, snapshot: () => ({ m: { ...m }, c: M.compute(m) }), destroy() { stage3dMk.destroy(); } };
+    return { el, enable3d: () => stage3dMk.enable(), disable3d: () => stage3dMk.disable(), relabel() { mandi.relabel(); mkPlate.relabel(); predEls.forEach((p) => p.relabel()); stage3dMk.relabel(); draw(); }, snapshot: () => ({ m: { ...m }, c: M.compute(m) }), destroy() { mandi.destroy(); stage3dMk.destroy(); } };
   })();
 
   // ============================ EXTERNALITY LAB (L4) ============================

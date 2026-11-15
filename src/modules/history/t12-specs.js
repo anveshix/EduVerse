@@ -12,44 +12,42 @@ const T12_MAPS = {
   1050: {
     en: 'c. 1050 CE: Chola Maritime Realm, Paramaras, Palas & Western Chalukyas',
     hi: 'लगभग 1050 ई.: चोल समुद्री राज्य, परमार, पाल व चालुक्य',
-    states: { 'Tamil Nadu': '#0ea5e9', 'Andhra Pradesh': '#38bdf8', Karnataka: '#eab308', 'Madhya Pradesh': '#f59e0b', Bihar: '#22c55e', 'West Bengal': '#16a34a' },
-    pts: [{ lon: 79.1, lat: 10.8, l: b('Thanjavur (Chola)', 'तंजावुर (चोल)') }, { lon: 77.4, lat: 23.2, l: b('Dhara / Bhojpur', 'धार / भोजपुर') }, { lon: 85.1, lat: 25.1, l: b('Vikramashila / Pala', 'विक्रमशिला / पाल') }],
-    note: b('Multiple strong regional centres Patronised regional languages, temple towns, and Indian Ocean diplomacy.', 'कई मज़बूत क्षेत्रीय शक्तियों ने क्षेत्रीय भाषाओं, मंदिर नगरों और समुद्री कूटनीति को संरक्षण दिया।'),
+    pts: [{ lon: 79.1, lat: 10.8, l: b('Thanjavur (Chola)', 'तंजावुर (चोल)') }, { lon: 77.6, lat: 23.1, l: b('Bhojpur (Paramara)', 'भोजपुर (परमार)') }, { lon: 87.3, lat: 25.3, l: b('Vikramashila / Pala', 'विक्रमशिला / पाल') }],
+    note: b('Several regional powers and learning centres existed at the same time. Vikramashila is near present-day Bhagalpur, Bihar.', 'कई क्षेत्रीय सत्ताएँ और अध्ययन केंद्र एक समय में थे। विक्रमशिला वर्तमान बिहार के भागलपुर के पास है।'),
   },
   1350: {
     en: 'c. 1350 CE: Delhi Sultanate, Vijayanagara, Bahmani & Eastern Ganga (Odisha)',
-    hi: 'लगभग 1350 ई.: दिल्ली सल्तनत, विजयनगर, बहमनी व गजपति/गंग ओडिशा',
-    states: { Delhi: '#dc2626', 'Uttar Pradesh': '#ef4444', Karnataka: '#f59e0b', 'Andhra Pradesh': '#fbbf24', Maharashtra: '#8b5cf6', Odisha: '#10b981', Assam: '#059669' },
+    hi: 'लगभग 1350 ई.: दिल्ली सल्तनत, विजयनगर, बहमनी व पूर्वी गंग (ओडिशा)',
     pts: [{ lon: 77.2, lat: 28.6, l: b('Delhi', 'दिल्ली') }, { lon: 76.5, lat: 15.3, l: b('Hampi (Vijayanagara)', 'हम्पी (विजयनगर)') }, { lon: 94.6, lat: 26.9, l: b('Ahom (Assam)', 'अहोम (असम)') }],
-    note: b('As Sultanate control stretched thin, Vijayanagara, Bahmani, Mewar and the Ahom kingdom consolidated resilient regional governance.', 'सल्तनत विस्तार के बीच विजयनगर, बहमनी, मेवाड़ और अहोम राज्यों ने मज़बूत क्षेत्रीय प्रतिरोध व शासन खड़ा किया।'),
+    note: b('Delhi, Vijayanagara, the Bahmani kingdom and other regional powers had changing relationships, including alliances and conflict.', 'दिल्ली, विजयनगर, बहमनी राज्य और अन्य क्षेत्रीय सत्ताओं के संबंध बदलते रहे, जिनमें गठबंधन और संघर्ष शामिल थे।'),
   },
   1680: {
     en: 'c. 1680 CE: Mughal Empire, Maratha Swarajya, Rajput & Ahom Resistance',
     hi: 'लगभग 1680 ई.: मुगल साम्राज्य, मराठा स्वराज्य, राजपूत व अहोम प्रतिरोध',
-    states: { Delhi: '#7c3aed', 'Uttar Pradesh': '#8b5cf6', Maharashtra: '#ea580c', Rajasthan: '#f59e0b', Assam: '#10b981', Punjab: '#0284c7' },
-    pts: [{ lon: 73.4, lat: 18.2, l: b('Raigad (Maratha)', 'रायगढ़ (मराठा)') }, { lon: 74.6, lat: 24.9, l: b('Chittor / Mewar', 'चित्तौड़ / मेवाड़') }, { lon: 91.7, lat: 26.1, l: b('Saraighat (Ahom)', 'सरायघाट (अहोम)') }],
-    note: b('Hill-fort networks (Raigad, Chittor), riverine tactics (Lachit Borphukan at Saraighat) and local alliances preserved regional autonomy.', 'पहाड़ी दुर्ग नेटवर्क, नदी रणनीति (सरायघाट में लचित बोरफुकन) और स्थानीय गठबंधनों ने स्वायत्तता बचाई।'),
+    pts: [{ lon: 73.4, lat: 18.2, l: b('Raigad (Maratha)', 'रायगढ़ (मराठा)') }, { lon: 73.7, lat: 24.6, l: b('Udaipur (Mewar)', 'उदयपुर (मेवाड़)') }, { lon: 91.7, lat: 26.1, l: b('Saraighat (1671)', 'सरायघाट (1671)') }],
+    note: b('Fort networks, diplomacy, alliances and river warfare shaped different conflicts. The Saraighat marker refers to the 1671 battle, not a 1680 event.', 'दुर्ग, कूटनीति, गठबंधन और नदी युद्ध ने अलग संघर्षों को आकार दिया। सरायघाट चिह्न 1671 के युद्ध का है, 1680 की घटना का नहीं।'),
   },
 };
 
 export const regionalPolitiesMap = {
   id: 'T12.L1',
   objective: b('Compare dated political maps of India (1000–1700 CE) and analyse why terrain and local alliances shaped resistance and resilience.', '1000–1700 ई. के भारत के ऐतिहासिक मानचित्रों की तुलना करें और समझें कि भूभाग व गठबंधनों ने प्रतिरोध को कैसे आकार दिया।'),
-  note: { kind: 'reconstruction', en: 'Approximate regional spheres over modern Indian states (datta07/INDIAN-SHAPEFILES).', hi: 'अनुमानित क्षेत्रीय विस्तार आधुनिक राज्य सीमाओं पर दर्शाया गया है।' },
+  note: { kind: 'reconstruction', en: 'Approximate example locations on modern state outlines, not historical borders or a complete map of power. The alliance switch is an imagined discussion prompt, not evidence of an actual pact or outcome.', hi: 'आधुनिक राज्य रूपरेखा पर अनुमानित उदाहरण स्थल हैं, ऐतिहासिक सीमाएँ या सत्ता का पूरा मानचित्र नहीं। गठबंधन स्विच काल्पनिक चर्चा है, वास्तविक समझौते या परिणाम का साक्ष्य नहीं।' },
   init: () => ({ year: '1350', alliance: true }),
+  prepareState(S) { if (!Object.hasOwn(T12_MAPS, S.year)) S.year = '1350'; S.alliance = !!S.alliance; },
   controls: [
     { id: 'year', type: 'chips', label: b('Snapshot year', 'वर्ष चुनें'), options: [opt('1050', 'c. 1050 CE', '1050 ई.'), opt('1350', 'c. 1350 CE', '1350 ई.'), opt('1680', 'c. 1680 CE', '1680 ई.')] },
-    { id: 'alliance', type: 'toggle', label: b('Cross-community & terrain defence pact', 'स्थानीय गठबंधन व भूभाग रक्षा नीति') },
+    { id: 'alliance', type: 'toggle', label: b('Imagine a local alliance', 'काल्पनिक स्थानीय गठबंधन') },
   ],
   view(S) {
     const m = T12_MAPS[S.year];
     const markers = m.pts.map((p) => ({ lon: p.lon, lat: p.lat, r: 7.5, fill: '#b91c1c', pulse: true, label: p.l }));
-    const svg = indiaMapSvg({ w: 640, h: 410, stateColors: m.states, markers, aria: m.en });
+    const svg = indiaMapSvg({ w: 640, h: 410, markers, aria: P(`Approximate locations: ${m.en}. Modern outlines are not historical borders.`, `अनुमानित स्थल: ${m.hi}। आधुनिक सीमाएँ ऐतिहासिक सीमाएँ नहीं हैं।`) });
     return {
       plate: {
         src: 'assets/images/plates/t12-heritage.jpg',
-        en: 'Regional capitals & fortifications (1000–1700 CE) — tap pins to shift historical snapshot and test alliances.',
-        hi: '1000–1700 ई. की क्षेत्रीय शक्तियाँ व दुर्ग — ऐतिहासिक वर्ष व रक्षा गठबंधन बदलने हेतु पिन पर टैप करें।',
+        en: 'Schematic regional centres: tap a pin to change the map example. Modern state outlines are not historical borders.',
+        hi: 'योजनाबद्ध क्षेत्रीय केंद्र: मानचित्र उदाहरण बदलने को पिन चुनें। आधुनिक राज्य सीमाएँ ऐतिहासिक सीमाएँ नहीं हैं।',
         spots: [
           { x: 24, y: 52, en: 'c. 1050 CE Chola & Paramara Realms', hi: 'ल. 1050 ई. चोल व परमार राज्य', detail: b('Maritime Cholas, Dhara & Pala universities flourished across vibrant regions.', 'तंजावुर, धार व पाल केंद्रों ने कला व समुद्री कूटनीति बढ़ाई।'), set: { year: '1050' } },
           { x: 52, y: 42, en: 'c. 1350 CE Hampi, Mewar & Ahom', hi: 'ल. 1350 ई. हम्पी, मेवाड़ व अहोम', detail: b('Vijayanagara, Eastern Ganga & Ahom fortified regional states resiliently.', 'विजयनगर, ओडिशा व अहोम ने सुदृढ़ क्षेत्रीय स्वायत्तता खड़ी की।'), set: { year: '1350' } },
@@ -62,19 +60,20 @@ export const regionalPolitiesMap = {
         { en: m.en, hi: m.hi, cls: 'balanced' },
         m.note,
         S.alliance
-          ? b('Alliance scenario: combining hill forts, river fleets and local agricultural trust raises regional resilience sharply.', 'गठबंधन स्थिति: पहाड़ी दुर्ग, नदी बेड़ा और स्थानीय किसानों का विश्वास क्षेत्रीय दृढ़ता बढ़ाते हैं।')
-          : b('Fragmented scenario: rival neighbouring chiefs acting alone face higher risk of piecemeal defeat.', 'विभाजित स्थिति: आपस में लड़ते पड़ोसी शासकों के अलग-अलग हारने का जोखिम बढ़ता है।'),
+          ? b('Imagined alliance: who might cooperate, on what terms, and whose needs could be overlooked? This switch does not predict a historical outcome.', 'काल्पनिक गठबंधन: कौन किन शर्तों पर सहयोग कर सकता है और किसकी ज़रूरतें छूट सकती हैं? स्विच ऐतिहासिक परिणाम नहीं बताता।')
+          : b('Imagined separate decisions: how might different leaders and residents respond? Real alliances and conflicts changed over time.', 'काल्पनिक अलग निर्णय: अलग नेता और निवासी कैसे प्रतिक्रिया कर सकते हैं? वास्तविक गठबंधन व संघर्ष समय के साथ बदले।'),
+        b('Dots are approximate examples. Modern state outlines are not historical borders.', 'बिंदु अनुमानित उदाहरण हैं। आधुनिक राज्य रूपरेखा ऐतिहासिक सीमाएँ नहीं हैं।'),
       ],
     };
   },
-  discover: [b('Compare 1350 CE and 1680 CE maps. Notice which forested/hill regions (Assam, Western Ghats, Mewar) repeatedly checked imperial expansion.', '1350 और 1680 ई. के मानचित्र देखें। किन पहाड़ी/वनाच्छादित क्षेत्रों ने बार-बार अपनी स्वायत्तता बचाई?')],
+  discover: [b('Compare the 1350 and 1680 examples. How might terrain, alliances and different residents’ interests have mattered? What evidence would you seek?', '1350 और 1680 के उदाहरण तुलना करें। भूभाग, गठबंधन और अलग निवासियों के हित कैसे महत्त्वपूर्ण हो सकते थे? आप कौन-सा साक्ष्य खोजेंगे?')],
   predictions: [
     {
-      id: 'p1',
-      stem: b('How did the Ahom kingdom defeat larger invading armies at Saraighat (1671) along the Brahmaputra?', 'अहोम राज्य ने 1671 में सरायघाट पर विशाल आक्रमणकारी सेना को कैसे रोका?'),
-      options: [opt('river', 'By using monsoon floods, river-boat warfare, bamboo stockades and hill terrain to their advantage', 'मानसूनी बाढ़, नदी-नौका युद्ध, बाँस की बाड़ व पहाड़ी भूभाग का कुशल उपयोग कर'), opt('desert', 'By fighting on open flat sand dunes', 'खुले रेगिस्तानी टीलों पर लड़कर')],
+      id: 'p1', revision: 't12-step12',
+      stem: b('Which feature was important in the 1671 Battle of Saraighat?', '1671 के सरायघाट युद्ध में कौन-सी विशेषता महत्त्वपूर्ण थी?'),
+      options: [opt('river', 'River warfare on the Brahmaputra and knowledge of local terrain', 'ब्रह्मपुत्र पर नदी युद्ध और स्थानीय भूभाग का ज्ञान'), opt('desert', 'A battle on open sand dunes', 'खुले रेगिस्तानी टीलों पर युद्ध')],
       run: (S) => { S.year = '1680'; S.alliance = true; return 'river'; },
-      explain: () => b('Ahom commander Lachit Borphukan lured the heavy fleet into narrow Brahmaputra river bends where nimble boats prevailed.', 'अहोम सेनापति लचित बोरफुकन ने ब्रह्मपुत्र के संकरे मोड़ पर चुस्त नौकाओं से भारी बेड़े को हराया।'),
+      explain: () => b('Ahom forces under Lachit Borphukan fought Mughal forces at Saraighat in 1671. Terrain, planning and river warfare mattered; a map alone cannot explain every cause.', 'लचित बोरफुकन के नेतृत्व में अहोम सेना ने 1671 में सरायघाट पर मुगल सेना से युद्ध किया। भूभाग, योजना और नदी युद्ध महत्त्वपूर्ण थे; अकेला मानचित्र हर कारण नहीं बताता।'),
     },
   ],
   exit: [

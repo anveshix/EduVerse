@@ -2,6 +2,9 @@
 import { mountLabs } from '../../components/lab-kit.js';
 import { loadGeoAll } from '../../engines/viz.js';
 import { harvest, foodweb, biomeMap, reserveMap, firePlanner, traditionalConservation } from './t11-specs.js';
+import { createHabitatInquiry, createTourismPlanner, createFireInquiry, createForestKnowledge } from './habitat-inquiry.js';
+import { h } from '../../core/dom.js';
+import { bi } from '../../components/widgets.js';
 
 export function mount(root) {
   const res = mountLabs(
@@ -17,7 +20,19 @@ export function mount(root) {
       { en: 'Sacred groves (L5)', hi: 'पारंपरिक संरक्षण (L5)' },
     ],
   );
+  const habitat = createHabitatInquiry(res.lab('T11.L1'));
+  const tourism = createTourismPlanner();
+  const fireInquiry = createFireInquiry();
+  const knowledge = createForestKnowledge();
+  res.lab('T11.L1').el.querySelector('.lab-grid').before(habitat.el);
+  res.lab('T11.L3').el.querySelector('.lab-grid').before(tourism.el);
+  res.lab('T11.L4').el.querySelector('.lab-grid').before(fireInquiry.el);
+  res.lab('T11.L5').el.querySelector('.lab-grid').before(knowledge.el);
+  const reserveNote = h('p', { class: 'note' }, bi({ en: 'Selected examples only; dots are approximate and state shading is not the reserve boundary. ', hi: 'केवल कुछ उदाहरण; बिंदु अनुमानित हैं और राज्य का रंग आरक्षित क्षेत्र की सीमा नहीं है। ' }, { tag: 'span' }),
+    h('a', { href: 'https://moef.gov.in/uploads/pdf/Approved%20copy%20of%20Website%20note%20of%20BR.pdf', target: '_blank', rel: 'noopener noreferrer' }, bi({ en: 'MoEFCC reserve list (internet required)', hi: 'MoEFCC आरक्षित क्षेत्र सूची (इंटरनेट आवश्यक)' }, { tag: 'span' })));
+  res.lab('T11.L2').el.querySelector('.lab-grid').before(reserveNote);
   let alive = true;
-  loadGeoAll().then(() => { if (alive) res.relabel(); });
-  return { ...res, destroy() { alive = false; res.destroy?.(); } };
+  function relabel() { res.relabel(); habitat.relabel(); tourism.relabel(); fireInquiry.relabel(); knowledge.relabel(); }
+  loadGeoAll().then(() => { if (alive) relabel(); });
+  return { ...res, relabel, destroy() { alive = false; habitat.destroy(); tourism.destroy(); fireInquiry.destroy(); knowledge.destroy(); res.destroy?.(); } };
 }
