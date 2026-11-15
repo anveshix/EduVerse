@@ -14,7 +14,7 @@ const C = {
 };
 
 /** Each item: id, label, evidence, question, options [{id,text,correct}], explain, source, sourceLabel. */
-export function createInquiryExplorer({ id, storageKey, className = '', kicker, title, intro, limit, items, actions = [] }) {
+export function createInquiryExplorer({ id, storageKey, className = '', kicker, title, intro, limit, items, actions = [], visual = null }) {
   const initial = () => ({ selected: items[0].id, answers: {} });
   let S = store.simState(storageKey, initial());
   if (!S || typeof S !== 'object' || Array.isArray(S)) { store.resetSim(storageKey); S = store.simState(storageKey, initial()); }
@@ -22,6 +22,7 @@ export function createInquiryExplorer({ id, storageKey, className = '', kicker, 
   if (!S.answers || typeof S.answers !== 'object' || Array.isArray(S.answers)) S.answers = {};
   for (const item of items) if (!item.options.some((option) => option.id === S.answers[item.id])) delete S.answers[item.id];
   const choices = h('div', { class: 'civic-choices', role: 'group', 'aria-labelledby': `${id}-title` });
+  const illustration = visual ? h('div', { class: 'inquiry-visual', 'data-inquiry-visual': '' }) : null;
   const detail = h('div', { class: 'civic-detail', 'data-inquiry-evidence': '' });
   const quiz = h('div', { class: 'civic-quiz', 'data-inquiry-question': '' });
   const feedback = h('div', { class: 'civic-result', role: 'status', 'aria-live': 'polite', 'data-inquiry-feedback': '' });
@@ -33,7 +34,7 @@ export function createInquiryExplorer({ id, storageKey, className = '', kicker, 
   const actionButtons = actions.map((action) => h('button', { type: 'button', class: 'btn', 'data-inquiry-action': action.id, onclick: () => action.run() }, bi(action.label, { tag: 'span' })));
   const el = h('section', { class: `civic-card inquiry-explorer ${className}`, 'aria-labelledby': `${id}-title`, 'data-inquiry': id },
     bi(kicker, { tag: 'p', cls: 'civic-kicker' }), bi(title, { tag: 'h3', cls: 'civic-title' }), bi(intro, { tag: 'p' }),
-    choices, detail, quiz, feedback, limit ? bi(limit, { tag: 'p', cls: 'civic-limit' }) : null,
+    choices, illustration, detail, quiz, feedback, limit ? bi(limit, { tag: 'p', cls: 'civic-limit' }) : null,
     actionButtons.length ? h('div', { class: 'civic-choices' }, ...actionButtons) : null,
     h('p', {}, h('button', { type: 'button', class: 'btn', 'data-inquiry-reset': '', onclick: () => { Object.assign(S, initial()); save(); render(); } }, bi(C.reset, { tag: 'span' }))), storage);
   el.querySelector('.civic-title').id = `${id}-title`;
@@ -42,6 +43,7 @@ export function createInquiryExplorer({ id, storageKey, className = '', kicker, 
   function render() {
     const item = items.find((entry) => entry.id === S.selected);
     buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.inquiryCase === item.id)));
+    if (illustration) illustration.replaceChildren(visual(item));
     const source = item.source ? h('p', {}, bi(C.source, { tag: 'span' }), ': ', h('a', { href: item.source, target: '_blank', rel: 'noopener noreferrer' }, bi(item.sourceLabel, { tag: 'span' }))) : null;
     detail.replaceChildren(bi(item.evidence, { tag: 'p', cls: 'civic-outcome' }), ...(source ? [source] : []));
     const options = h('div', { class: 'civic-choices', role: 'group', 'aria-labelledby': `${id}-question` });

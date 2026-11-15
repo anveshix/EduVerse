@@ -13,7 +13,7 @@ const PH = { 0: b('New moon', 'अमावस्या'), 90: b('First quarter'
 export const tides = {
   id: 'T10.L2',
   objective: b('Explain how the Moon and Sun produce tides and why the tidal range is largest at new and full moon (spring tides) and smallest at the quarters (neap tides).', 'समझाएँ कि चंद्रमा और सूर्य ज्वार कैसे बनाते हैं और अमावस्या-पूर्णिमा पर ज्वारीय परिसर (वृहत् ज्वार) सबसे अधिक तथा अष्टमी पर (निम्न ज्वार) सबसे कम क्यों होता है।'),
-  note: { kind: 'documented', en: 'Uses the real lunar (12 h 25 min) and solar (12 h) tidal periods and the Sun’s tidal strength about 46% of the Moon’s. Real coasts differ with shape and depth.', hi: 'वास्तविक चंद्र (12 घं 25 मि) और सौर (12 घं) ज्वारीय अवधियों तथा चंद्रमा की तुलना में सूर्य के लगभग 46% ज्वारीय बल का उपयोग। वास्तविक तटों पर आकार और गहराई से अंतर होता है।' },
+  note: { kind: 'schematic', en: 'An idealised two-component model uses approximate lunar (12 h 25 min) and solar (12 h) periods. Its heights are illustrative, not a local tide prediction; real coasts differ with shape, depth and weather.', hi: 'दो घटकों का सरल मॉडल अनुमानित चंद्र (12 घं 25 मि) और सौर (12 घं) अवधि उपयोग करता है। इसकी ऊँचाई उदाहरण है, स्थानीय पूर्वानुमान नहीं; तट के आकार, गहराई और मौसम से वास्तविक ज्वार बदलते हैं।' },
   init: () => ({ phase: '0' }),
   controls: [{ id: 'phase', type: 'chips', label: b('Moon phase', 'चंद्र कला'), options: Object.entries(PH).map(([deg, o]) => ({ id: deg, ...o })) }],
   view(S) {
@@ -30,16 +30,16 @@ export const tides = {
         en: 'Indian Ocean high-tide jetty, open sea & low-tide mudflats — tap pins to shift lunar phase between Spring and Neap tides.',
         hi: 'उच्च ज्वार बंदरगाह, खुला सागर व निम्न ज्वार तट — वृहत् व निम्न ज्वार की चंद्र स्थिति बदलने हेतु पिन पर टैप करें।',
         spots: [
-          { x: 22, y: 66, en: 'New Moon Spring High Tide', hi: 'अमावस्या वृहत् उच्च ज्वार', detail: b('Sun and Moon align on one side — boats ride maximum high tide right up to the jetty.', 'सूर्य और चंद्रमा एक सीध में — दोनों के खिंचाव जुड़कर अधिकतम ज्वार लाते हैं।'), set: { phase: '0' } },
-          { x: 58, y: 46, en: 'First Quarter Neap Tide', hi: 'अष्टमी निम्न ज्वार', detail: b('Sun and Moon pull at 90°, giving milder swells across the open harbour.', 'सूर्य-चंद्रमा 90° पर होने से आंशिक कटौती होती है और छोटा ज्वारीय परिसर मिलता है।'), set: { phase: '90' } },
-          { x: 88, y: 68, en: 'Full Moon Extreme Low Mudflat', hi: 'पूर्णिमा वृहत् निम्न जल तट', detail: b('Spring tides bring both the highest flood tides and the widest exposed low-tide flats.', 'पूर्णिमा पर उच्चतम ज्वार के साथ सबसे विस्तृत निम्न-जल तट भी उभरते हैं।'), set: { phase: '180' } },
+          { x: 22, y: 66, en: 'New Moon Spring Tide', hi: 'अमावस्या वृहत् ज्वार', detail: b('Sun and Moon align in this model, producing a larger tidal range than at the quarter phases.', 'इस मॉडल में सूर्य और चंद्रमा एक सीध में हैं, जिससे चतुर्थांश की तुलना में ज्वारीय परिसर बड़ा होता है।'), set: { phase: '0' } },
+          { x: 58, y: 46, en: 'First Quarter Neap Tide', hi: 'अष्टमी निम्न ज्वार', detail: b('Sun and Moon are at 90°, giving a smaller tidal range in this model; tides are not the same as wind-driven swells.', 'सूर्य-चंद्रमा 90° पर होने से मॉडल में छोटा ज्वारीय परिसर मिलता है; ज्वार और पवन-लहरें एक नहीं हैं।'), set: { phase: '90' } },
+          { x: 88, y: 68, en: 'Full Moon Spring Tide', hi: 'पूर्णिमा वृहत् ज्वार', detail: b('The full-moon setting also has a larger model range; real water levels depend on place and conditions.', 'पूर्णिमा पर भी मॉडल का परिसर बड़ा है; वास्तविक जलस्तर स्थान और परिस्थितियों पर निर्भर है।'), set: { phase: '180' } },
         ],
       },
       svg: small + ch.html({ label: P('Tide height over three days', 'तीन दिन में ज्वार की ऊँचाई') }), aria: `Tide range ${fmt(range, 2)} metres at ${PH[psi].en}.`,
       lines: [
-        { en: `${PH[psi].en}: tidal range ${fmt(range, 2)} m (high minus low).`, hi: `${PH[psi].hi}: ज्वारीय परिसर ${fmt(range, 2)} मी (उच्च घटा निम्न)।` },
-        spring ? { en: 'Sun, Earth and Moon line up, so the Sun’s pull adds to the Moon’s: SPRING tides, the highest highs and lowest lows.', hi: 'सूर्य, पृथ्वी और चंद्रमा एक सीध में आते हैं, इसलिए सूर्य का खिंचाव चंद्रमा के खिंचाव में जुड़ता है: वृहत् (बड़े) ज्वार, सबसे ऊँचा और सबसे नीचा जल।', cls: 'warn' }
-          : { en: 'Sun and Moon pull at right angles, so they partly cancel: NEAP tides with a smaller range.', hi: 'सूर्य और चंद्रमा समकोण पर खिंचाव डालते हैं, इसलिए आंशिक रूप से कट जाते हैं: निम्न ज्वार, छोटा परिसर।', cls: 'balanced' },
+        { en: `${PH[psi].en}: illustrative model range ${fmt(range, 2)} m (high minus low), not a local prediction.`, hi: `${PH[psi].hi}: उदाहरण मॉडल परिसर ${fmt(range, 2)} मी (उच्च घटा निम्न), स्थानीय पूर्वानुमान नहीं।` },
+        spring ? { en: 'Sun, Earth and Moon line up: their tide-producing effects reinforce each other, giving a larger SPRING range in this model.', hi: 'सूर्य, पृथ्वी और चंद्रमा एक सीध में हैं: ज्वार उत्पन्न करने वाले प्रभाव जुड़कर इस मॉडल में बड़ा वृहत् ज्वार परिसर बनाते हैं।', cls: 'warn' }
+          : { en: 'Sun and Moon are at right angles, so their tide-producing effects partly offset: this model has a smaller NEAP range.', hi: 'सूर्य और चंद्रमा समकोण पर हैं, इसलिए ज्वार-उत्पादक प्रभाव आंशिक रूप से घटते हैं: मॉडल में निम्न ज्वार परिसर छोटा है।', cls: 'balanced' },
         { en: 'Many coasts have roughly two high tides a lunar day; other coasts have different patterns. Use local tide tables.', hi: 'कई तटों पर एक चंद्र दिवस में लगभग दो उच्च ज्वार आते हैं; अन्य तटों पर क्रम अलग है। स्थानीय ज्वार सारणी देखें।', cls: 'note' },
       ],
     };

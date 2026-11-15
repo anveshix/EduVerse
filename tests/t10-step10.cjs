@@ -29,6 +29,25 @@ const track = (page, errors) => {
     const page = await mobile.newPage(), errors = [], writes = []; track(page, errors);
     page.on('request', (req) => { if (!['GET', 'HEAD'].includes(req.method())) writes.push(`${req.method()} ${req.url()}`); });
     await page.goto(`${base}?nowebgl=1#/theme/T10`); await page.waitForSelector('#lab-T10-L1', { timeout: 15000 });
+    await page.click('#tab-L2');
+    const motion = page.locator('.ocean-motion'), motionDetail = motion.locator('[data-inquiry-evidence]');
+    assert.match(await motionDetail.innerText(), /wave carries energy onward.*orbits/s);
+    await motion.locator('[data-inquiry-answer=energy]').focus(); await page.keyboard.press('Enter');
+    assert.match(await motion.locator('[data-inquiry-feedback]').innerText(), /supported choice/i);
+    await motion.locator('[data-inquiry-case=tides]').click(); assert.match(await motionDetail.innerText(), /tidal current/);
+    await motion.locator('[data-inquiry-case=gulf]').click(); assert.equal(await motion.locator('[data-current-path=gulf]').getAttribute('data-current-selected'), 'true');
+    await motion.locator('[data-inquiry-case=peru]').click(); assert.match(await motionDetail.innerText(), /nutrient-rich/);
+    await motion.locator('[data-inquiry-case=summer]').click(); const southArrow = await motion.locator('[data-current-path=india] path').last().getAttribute('transform');
+    await motion.locator('[data-inquiry-case=winter]').click(); const northArrow = await motion.locator('[data-current-path=india] path').last().getAttribute('transform');
+    assert.notEqual(southArrow, northArrow); assert.match(await motionDetail.innerText(), /northward.*opposite/s);
+    await motion.locator('[data-inquiry-answer=direction]').click();
+    await page.click('#topbar [data-lang=hi]'); assert.match(await motionDetail.innerText(), /उत्तर.*ग्रीष्म/s);
+    await page.click('#topbar [data-lang=both]'); assert.match(await motionDetail.innerText(), /northward.*उत्तर/s);
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth) <= 2);
+    await page.click('#topbar [data-lang=en]'); await page.reload(); await page.waitForSelector('.ocean-motion');
+    assert.equal(await motion.locator('[data-inquiry-case=winter]').getAttribute('aria-pressed'), 'true');
+    assert.match(await motion.locator('[data-inquiry-feedback]').innerText(), /supported choice/i);
+    await motion.locator('[data-inquiry-reset]').click(); assert.match(await motionDetail.innerText(), /surface waves/);
     await page.click('#tab-L3');
     const fish = page.locator('.ocean-fishery'), evidence = fish.locator('[data-inquiry-evidence]'), feedback = fish.locator('[data-inquiry-feedback]');
     await fish.locator('[data-inquiry-case=value]').click(); assert.match(await evidence.innerText(), /Women and men.*interrupt earnings/s);
@@ -91,8 +110,11 @@ const track = (page, errors) => {
     await op.goto(`${base}#/theme/T10`); await op.reload(); await op.waitForSelector('#tab-L4', { timeout: 15000 }); await op.click('#tab-L4');
     await op.locator('.ocean-hazards [data-inquiry-case=tsunami]').click(); await op.locator('.ocean-hazards [data-inquiry-answer=high]').click();
     await op.reload(); await op.waitForSelector('.ocean-hazards'); assert.match(await op.locator('.ocean-hazards [data-inquiry-feedback]').innerText(), /उचित विकल्प/);
+    await op.click('#tab-L2'); await op.locator('.ocean-motion [data-inquiry-case=winter]').click();
+    assert.match(await op.locator('.ocean-motion [data-inquiry-evidence]').innerText(), /उत्तर/);
+    assert.equal(await op.locator('.ocean-motion [data-current-path=india]').getAttribute('data-current-selected'), 'true');
     await op.click('#tab-L3'); await op.locator('[data-inquiry-action=zero]').click(); assert.equal(await op.locator('#T10-L3-closed').inputValue(), '0');
     assert.deepEqual(offlineErrors, []); await offline.close();
-    console.log(JSON.stringify({ theme: 'T10', marineAndInland: true, cycloneAndTsunamiSafety: true, modelNotWarning: true, modelControlsLinked: true, languages: ['en', 'hi', 'both'], keyboard: true, mobileWidth: 360, progress: '5/5', savedAndRepaired: true, deniedStorage: true, firstOpenOffline: true, networkWrites: 0, errors: [] }));
+    console.log(JSON.stringify({ theme: 'T10', oceanMotionsAndCurrentMap: true, marineAndInland: true, cycloneAndTsunamiSafety: true, modelNotWarning: true, modelControlsLinked: true, languages: ['en', 'hi', 'both'], keyboard: true, mobileWidth: 360, progress: '5/5', savedAndRepaired: true, deniedStorage: true, firstOpenOffline: true, networkWrites: 0, errors: [] }));
   } finally { await browser?.close(); server.close(); }
 })().catch((err) => { console.error(err); process.exitCode = 1; });

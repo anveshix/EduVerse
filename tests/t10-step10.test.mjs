@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { FISHERY_CASES, HAZARD_CASES } from '../src/modules/geography/ocean-connections.js';
-import { fisheries, tsunami, maritimeCoop } from '../src/modules/geography/t10-specs.js';
+import { fisheries, tsunami, maritimeCoop, tides } from '../src/modules/geography/t10-specs.js';
+import { MOTION_CASES, CURRENT_PATHS } from '../src/modules/geography/ocean-motion.js';
 import { fisheryRun, tsunamiKmh, arrivalHours } from '../src/engines/domain/ocean.js';
 import { THEME_NEP } from '../src/data/nep-cbq.js';
 
@@ -20,6 +21,24 @@ test('T10 source cases distinguish coastal hazards, historical forecasts and inl
   assert.match(HAZARD_CASES[1].evidence.en, /forecast.*not proof.*not coastal storm surge/);
   assert.match(HAZARD_CASES[2].options[0].text.en, /drop, cover and hold on.*immediately inland/);
   assert.match(HAZARD_CASES[2].explain.en, /before an official warning.*all-clear/);
+});
+test('T10 distinguishes waves, tides and illustrative world currents', () => {
+  assert.deepEqual(MOTION_CASES.map((c) => c.id), ['waves', 'tides', 'gulf', 'peru', 'summer', 'winter']);
+  for (const c of MOTION_CASES) {
+    [c.label, c.evidence, c.question, c.explain, c.sourceLabel].forEach(bilingual);
+    c.options.forEach((o) => bilingual(o.text));
+    assert.equal(c.options.filter((o) => o.correct).length, 1);
+    assert.match(c.source, /^https:\/\//);
+  }
+  assert.match(MOTION_CASES[0].evidence.en, /energy onward.*orbits.*breaking waves/i);
+  assert.match(MOTION_CASES[1].evidence.en, /tidal current/i);
+  assert.match(MOTION_CASES[2].evidence.en, /other factors matter/i);
+  assert.match(MOTION_CASES[4].evidence.en, /southward.*vary/i);
+  assert.match(MOTION_CASES[5].evidence.en, /northward.*not describe every day/i);
+  assert.deepEqual(CURRENT_PATHS.map((p) => p.id), ['gulf', 'peru', 'india']);
+  const ind = CURRENT_PATHS.find((p) => p.id === 'india').coords;
+  assert.ok(ind.at(-1)[1] < ind[0][1]);
+  assert.match(tides.view({ phase: '0' }).lines[0].en, /illustrative model.*not a local prediction/i);
 });
 test('T10 model labels invented fishery indices and avoids treating them as income forecasts', () => {
   const base = { boats: 45, meshMm: 45, mangrovePct: 60 };
