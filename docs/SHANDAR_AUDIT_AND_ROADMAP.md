@@ -47,7 +47,7 @@
 | **Step 3 — T03** Atmosphere & Climate | Monsoon mechanism deep-dive + 7-day local weather diary activity | Weather in your own locality; Patna is an optional example | Done |
 | **Step 4 — T04** Early Humans | Evidence vs Inference "Detective Kit", Harappa 3D guided tour | Think like an archaeologist | Done |
 | **Step 5 — T05 State & Society** | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines | Done |
-| Step 6 — T06 Democracy | Panchayati Raj + classroom vote simulation | Democracy you practise daily |
+| **Step 6 — T06 Democracy** | Panchayati Raj + classroom vote simulation | Democracy you practise daily | Done |
 | Step 7 — T07 Elections | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government |
 | Step 8 — T08 Economics Basics | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket |
 | Step 9 — T09 Price Puzzle | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week |
@@ -175,7 +175,25 @@
 
 ---
 
+## Step 6 — T06: Democracy
+
+### Audit and improvements
+- **Classroom decision (L1):** a bilingual, revisable tally models three project choices for 12 imagined eligible students. It handles zero votes, ties without inventing a winner, a plurality that is not necessarily a majority, a majority of votes counted versus of all eligible students, and counts not recorded without assuming why. It invites discussion of equal participation, abstention, confidentiality and rights. The tally stores only invented totals, not names; it cannot verify voters, stop repeat votes or guarantee secrecy and must not be used as an actual ballot.
+- **Panchayati Raj (L2):** an explorer distinguishes the registered electors of a Gram Sabha from elected village, intermediate/block and district Panchayats. It describes state-dependent powers, funds and procedures, the optional intermediate tier in qualifying small states, constitutional exceptions and a separate urban framework. An expandable explanation introduces reserved seats and State Election Commissions; a revisable check tests the Sabha/Panchayat distinction. Ancient assemblies are not equated with modern universal franchise or assumed to be a continuous institution.
+- **Existing lab repairs:** changing a case preset now updates its switches, and a manual switch changes the case to custom; image pins, autoplay, reset and older saved presets agree with the displayed score. Four checks are labelled as an incomplete fictional model, not proof that a real country is democratic. The parliamentary example is an explicitly simplified **confidence motion** in which all 100 vote, avoiding the former 50–50 no-confidence error; the US president is described as chosen by the Electoral College, and country descriptions now have Hindi translations. Changed L1 and L3 predictions use revision markers while retaining earlier answers and progress. The shared lab kit gained optional state-repair and coupled-control callbacks; unrelated controls retain their existing behavior.
+- The two companions do not add new LOs or catalog simulations. Local data can be cleared or may be temporary if storage is blocked. Illustrations and Three.js may be missing on the first offline visit. New Hindi remains **draft pending subject-teacher review**; automated checks do not replace human accessibility review.
+
+### Teaching reference
+- [Constitution of India, Part IX](https://mahasec.maharashtra.gov.in/Upload/PDF/Constitutional%20Provisions%20IX%20-%20Panchayats%20(Rural).pdf): Articles 243, 243A–D, 243G, 243K and 243M (definitions, tiers, representation, state powers, elections and exceptions). The app links to the [Legislative Department's Constitution](https://www.legislative.gov.in/static/uploads/2025/07/ca7ce5c746fa7480804bbdeb6cb704f0.pdf); state laws and applicable exceptions need checking for local practice.
+
+### Verification
+- `npm run catalog` and `npm run sw` regenerated **78/78 LOs, 79 simulations and 130 precached files**. `npm run verify` passed architecture checks and **61/61 tests**.
+- `npm run test:t06` passed vote arithmetic and tie behavior, four roles, keyboard and 360 px touch controls, EN/HI/both, local persistence and malformed-state repair, denied storage, first-open offline, case preset/switch/pin/autoplay synchronization, older prediction migration, confidence thresholds, 4/4 LO progress, dark contrast and WebGL lifecycle, with no network writes or JavaScript errors. Previous `test:t02`–`test:t05` regressions passed after the shared-control change.
+- Targeted T06 automated accessibility and desktop/360 px smoke passed without reported errors or page overflow.
+
+---
+
 ## How to Continue
-1. Continue with **Step 6 — T06**, then follow the roadmap in order, one chapter at a time.
+1. Continue with **Step 7 — T07**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

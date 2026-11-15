@@ -227,7 +227,7 @@ export const PART1_BUILDERS = {
     const pod = cyl(1.2, 1.3, 0.6, 16, mat(fell ? 0xdc2626 : 0x0284c7, { emissive: fell ? 0x991b1b : 0x0369a1, emissiveIntensity: 0.3 }), 0, -1.55, -2.0);
     group.add(pod);
     pick(pod, 'Parliamentary Chamber', 'संसद व लोकतांत्रिक सभा');
-    addLabel(new THREE.Vector3(0, 0.2, -2.0), fell ? 'Lost Confidence' : `Majority ${support}%`, fell ? 'विश्वासमत खोया' : `बहुमत ${support}%`);
+    addLabel(new THREE.Vector3(0, 0.2, -2.0), fell ? 'Lost Confidence' : `Support ${support}/100`, fell ? 'विश्वासमत खोया' : `समर्थन ${support}/100`);
     addLabel(new THREE.Vector3(3.4, -0.4, 1.5), 'Elected Seats', 'निर्वाचित प्रतिनिधि');
   },
 

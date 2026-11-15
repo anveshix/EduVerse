@@ -63,6 +63,8 @@ export function createInteractivePlate(getPlate, onSet) {
 export function createLab(spec, themeId, { onDraw, onSpot, skipAuto3d = false } = {}) {
   const S = store.simState(spec.id, spec.init());
   const base = spec.init(); for (const k of Object.keys(base)) if (!(k in S)) S[k] = base[k];
+  // A spec can repair or reconcile legacy state before controls are constructed.
+  spec.prepareState?.(S);
   S.done ??= {};
   const prog = store.progress(themeId);
   prog.exit ??= {}; prog.reflect ??= {};
@@ -87,16 +89,22 @@ export function createLab(spec, themeId, { onDraw, onSpot, skipAuto3d = false } 
   for (const c of spec.controls) {
     const key = `${spec.id}.c.${c.id}`;
     if (c.type === 'slider') {
-      widgets[c.id] = slider({ id: `${spec.id}-${c.id}`.replace(/\./g, '-'), labelKey: key, min: c.min, max: c.max, step: c.step ?? 1, value: S[c.id], format: c.fmt ?? String, hintKey: c.hint ? `${key}.hint` : undefined, onInput: (v) => { S[c.id] = v; draw(); } });
+      widgets[c.id] = slider({ id: `${spec.id}-${c.id}`.replace(/\./g, '-'), labelKey: key, min: c.min, max: c.max, step: c.step ?? 1, value: S[c.id], format: c.fmt ?? String, hintKey: c.hint ? `${key}.hint` : undefined, onInput: (v) => changeControl(c, v) });
     } else if (c.type === 'chips') {
-      widgets[c.id] = chips({ name: `${spec.id}-${c.id}`, value: S[c.id], options: c.options.map((o) => ({ id: o.id, key: `${key}.${o.id}` })), onSelect: (v) => { S[c.id] = v; draw(); } });
+      widgets[c.id] = chips({ name: `${spec.id}-${c.id}`, value: S[c.id], options: c.options.map((o) => ({ id: o.id, key: `${key}.${o.id}` })), onSelect: (v) => changeControl(c, v) });
       side.append(h('div', { class: 'ctl-row ctl-label', 'data-k': key }, t(key)));
     } else if (c.type === 'toggle') {
-      widgets[c.id] = toggle({ id: `${spec.id}-${c.id}`.replace(/\./g, '-'), labelKey: key, checked: S[c.id], onChange: (v) => { S[c.id] = v; draw(); } });
+      widgets[c.id] = toggle({ id: `${spec.id}-${c.id}`.replace(/\./g, '-'), labelKey: key, checked: S[c.id], onChange: (v) => changeControl(c, v) });
     }
     side.append(widgets[c.id].root);
   }
 
+  function changeControl(control, value) {
+    S[control.id] = value;
+    // A preset can change several related controls; keep every widget synchronized.
+    if (control.afterChange) { control.afterChange(S, value); sync(); }
+    else draw();
+  }
   function sync() {
     for (const c of spec.controls) {
       const w = widgets[c.id];
@@ -174,6 +182,7 @@ export function createLab(spec, themeId, { onDraw, onSpot, skipAuto3d = false } 
         } else if (primary.type === 'toggle') {
           S[primary.id] = !S[primary.id];
         }
+        primary.afterChange?.(S, S[primary.id]);
         sync();
       }, 950);
     },

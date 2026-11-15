@@ -21,6 +21,7 @@ jobs:
       - run: npm run test:t03
       - run: npm run test:t04
       - run: npm run test:t05
+      - run: npm run test:t06
       - run: npm run a11y
       - run: npm run smoke
       - run: npm run smoke:mobile

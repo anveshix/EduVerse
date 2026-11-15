@@ -1253,16 +1253,16 @@
      "id": "freeVote",
      "type": "toggle",
      "label": {
-      "en": "Universal free & fair vote",
-      "hi": "सार्वभौमिक स्वतंत्र व निष्पक्ष मतदान"
+      "en": "Universal vote with equal weight",
+      "hi": "सार्वभौमिक मत और समान मूल्य"
      }
     },
     {
      "id": "multipleParties",
      "type": "toggle",
      "label": {
-      "en": "Real choice of opposition parties",
-      "hi": "विपक्षी दलों का वास्तविक विकल्प"
+      "en": "Free election with real opposition choice",
+      "hi": "स्वतंत्र चुनाव व विपक्ष का वास्तविक विकल्प"
      }
     },
     {
@@ -1363,7 +1363,7 @@
     "en": "Compare how the executive and the legislature are related in a parliamentary and a presidential system, and what happens when the government loses the legislature’s support.",
     "hi": "संसदीय और अध्यक्षीय प्रणालियों में कार्यपालिका और विधायिका के संबंध की तुलना करें, और सरकार के विधायिका का समर्थन खोने पर क्या होता है।"
    },
-   "provenance": "documented",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "system",
@@ -1385,8 +1385,8 @@
      "id": "vote",
      "type": "toggle",
      "label": {
-      "en": "Hold a vote of no confidence",
-      "hi": "अविश्वास प्रस्ताव पर मतदान कराएँ"
+      "en": "Hold a vote of confidence in the government",
+      "hi": "सरकार में विश्वास पर मतदान कराएँ"
      }
     }
    ],

@@ -55,9 +55,12 @@ export const TEACHER = {
   },
   T06: {
     flow: [
-      b('Case Assessor & Early Traditions (12 min): test the 4 democratic criteria and read the 920 CE Uttaramerur Kudavolai rules.', 'लोकतंत्र जांच व प्रारंभिक परंपराएँ (12 मिनट): 4 मानदंड परखें और उत्तरमेरूर अभिलेख देखें।'),
-      b('Parliamentary vs Presidential & Country Atlas (18 min): run a no-confidence vote and compare India, USA, France, Canada, and Russia.', 'संसदीय बनाम अध्यक्षीय व विश्व तुलना (18 मिनट): अविश्वास मत चलाएँ और देशों की तुलना करें।'),
+      b('Classroom tally (10 min): use invented totals to discuss equal participation, plurality, ties, abstention and rights. It is not a real or secret ballot.', 'कक्षा गिनती (10 मिनट): काल्पनिक संख्याओं से समान भागीदारी, सर्वाधिक मत, बराबरी, मत से विरत रहने और अधिकारों पर चर्चा करें। यह असली या गुप्त मतदान नहीं है।'),
+      b('Panchayati Raj (12 min): distinguish the Gram Sabha from elected panchayats at village, intermediate and district levels; discuss varying state powers and historical limits.', 'पंचायती राज (12 मिनट): ग्राम सभा को ग्राम, मध्यवर्ती व जिला स्तर की निर्वाचित पंचायतों से अलग समझें; राज्यों के अलग अधिकारों और ऐतिहासिक सीमाओं पर चर्चा करें।'),
+      b('Systems comparison (18 min): run a simplified confidence motion with all 100 members voting, then compare parliamentary and presidential structures.', 'प्रणाली तुलना (18 मिनट): सभी 100 सदस्यों के मतदान वाला सरल विश्वास प्रस्ताव चलाएँ और संसदीय व अध्यक्षीय संरचनाओं की तुलना करें।'),
     ],
+    prompts: [b('How could a community hear those who were absent or lost a vote without treating the vote as permission to ignore their rights?', 'समुदाय अनुपस्थित या मत में हारने वाले लोगों की बात कैसे सुने, बिना उनके अधिकारों को नज़रअंदाज़ किए?')],
+    misconceptions: [b('A Gram Sabha is not the same as its elected Gram Panchayat, and one tally alone cannot establish that a process is democratic.', 'ग्राम सभा अपनी निर्वाचित ग्राम पंचायत के समान नहीं है, और एक गिनती अकेले प्रक्रिया का लोकतांत्रिक होना सिद्ध नहीं करती।')],
   },
   T07: {
     flow: [
@@ -122,7 +125,7 @@ export const LIMITS = {
   T03: b('Station values are illustrative, not official climate normals. Diary entries are learner observations stored locally, not verified station data. Monsoon arrows, catchment and carbon models are simplified; none is a weather forecast.', 'केंद्र के मान उदाहरण हैं, आधिकारिक जलवायु औसत नहीं। डायरी स्थानीय रूप से सहेजे विद्यार्थी प्रेक्षण हैं, सत्यापित केंद्र आँकड़े नहीं। मानसून तीर, जलग्रहण व कार्बन मॉडल सरल हैं; इनमें कोई मौसम पूर्वानुमान नहीं है।'),
   T04: b('Detective records are fictional; the tour is a composite, not a site survey. The large platform’s function is disputed. Settlement numbers and rates are invented; dates and cultural bands vary by region. Notes remain local and Hindi needs teacher review.', 'जासूस केस काल्पनिक हैं; यात्रा मिश्रित मॉडल है, स्थल सर्वेक्षण नहीं। बड़े चबूतरे का उपयोग विवादित है। बस्ती की संख्याएँ और दरें काल्पनिक हैं; तिथियाँ व काल क्षेत्रानुसार बदलते हैं। नोट स्थानीय रहते हैं और हिंदी की शिक्षक से जाँच चाहिए।'),
   T05: b('Schematic regional extents and simplified governance flow diagrams representing centuries of diverse change.', 'सदियों के विविध ऐतिहासिक परिवर्तनों के लिए योजनाबद्ध क्षेत्रीय विस्तार और सरलीकृत प्रशासन आरेख।'),
-  T06: b('Fictional assessment cases and concise constitutional summaries; real democracies involve many evolving institutions.', 'काल्पनिक परीक्षण केस और संक्षिप्त संवैधानिक तुलना; वास्तविक लोकतंत्र में कई गतिशील संस्थाएँ होती हैं।'),
+  T06: b('Class votes and case scores are invented teaching tools, not a secure ballot or complete democracy test. Panchayat roles, powers and exceptions depend on state law; real constitutional systems are more complex.', 'कक्षा मत और केस अंक काल्पनिक शिक्षण साधन हैं, सुरक्षित मतपेटी या लोकतंत्र का पूरा परीक्षण नहीं। पंचायत भूमिकाएँ, अधिकार और अपवाद राज्य के कानून पर निर्भर हैं; वास्तविक संवैधानिक प्रणालियाँ अधिक जटिल हैं।'),
   T07: b('All party names, block populations, and vote shares in the sandboxes are strictly fictional for teaching mechanics.', 'प्रयोगशालाओं में सभी दल, मत-प्रतिशत और ब्लॉक जनसंख्या केवल शिक्षण हेतु काल्पनिक हैं।'),
   T08: b('Smooth straight/curved frontier models with fictional rupee figures to demonstrate opportunity cost and safety-net arithmetic.', 'अवसर-लागत व सुरक्षा-जाल गणित दिखाने हेतु काल्पनिक रुपये और सरल वक्र मॉडल।'),
   T09: T09_LIMITS,
