@@ -257,26 +257,26 @@ export const THEME_NEP = {
     },
     tours: [
       { az: -0.6, pol: 1.05, r: 16, en: 'Step 1 · Grain vs Vegetable Plots: Resources shifted to one crop reduce the other (PPF trade-off).', hi: 'चरण 1 · अनाज बनाम सब्ज़ी: एक फसल बढ़ाने पर दूसरी घटती है (अवसर लागत)।' },
-      { az: 0.7, pol: 1.0, r: 15, en: 'Step 2 · Solar Tech House: Better technology pushes the entire production frontier outward.', hi: 'चरण 2 · सौर तकनीक घर: नई तकनीक से कुल उत्पादन क्षमता बाहर की ओर बढ़ती है।' },
+      { az: 0.7, pol: 1.0, r: 15, en: 'Step 2 · Solar Tech House: In this toy, technology raises both crop maxima; real changes may differ.', hi: 'चरण 2 · सौर तकनीक घर: मॉडल में तकनीक से दोनों अधिकतम बढ़ते हैं; वास्तविक बदलाव अलग हो सकते हैं।' },
       { az: 0.1, pol: 0.4, r: 18, en: 'Step 3 · Island Frontier View: Spot idle capacity inside vs efficient points along the edge.', hi: 'चरण 3 · सीमांत दृश्य: अप्रयुक्त क्षमता बनाम पूर्ण दक्षता बिंदु देखें।' },
     ],
     ar: {
       id: 'cbq-t08-ar',
       assertion: b('Even a wealthy household or national government faces the economic problem of scarcity.', 'धनी परिवार हो या राष्ट्रीय सरकार, सभी को दुर्लभता की आर्थिक समस्या का सामना करना पड़ता है।'),
-      reason: b('Human wants and public goals are limitless relative to the finite time, land, labour, and budgets available at any moment.', 'किसी भी समय उपलब्ध भूमि, श्रम, समय और बजट सीमित होते हैं, जबकि मानवीय आवश्यकताएँ और लक्ष्य असीमित हैं।'),
+      reason: b('Time, land, labour and budgets are limited while households and governments have competing possible uses for them.', 'भूमि, श्रम, समय और बजट सीमित हैं जबकि परिवार और सरकार उनके कई संभावित उपयोगों के बीच चुनते हैं।'),
       correct: 'A',
       explain: b('Both A and R are true and R explains A — scarcity applies whenever resources are finite against competing uses.', 'A और R दोनों सत्य हैं तथा R, A की सही व्याख्या है — सीमित संसाधनों के कारण चयन सदैव अनिवार्य है।'),
     },
     caseQ: {
       id: 'cbq-t08-case',
-      passage: b('Source Case: A farm family earns ₹14,000/month. A sudden hospital bill of ₹15,000 hits during a crop pest attack. With public health insurance + subsidised ration (PDS), 70% of the shock is absorbed.', 'स्रोत प्रसंग: एक किसान परिवार की मासिक आय ₹14,000 है। फसल नुकसान के बीच ₹15,000 का अचानक अस्पताल खर्च आता है, जिसमें सरकारी स्वास्थ्य बीमा व राशन प्रणाली (PDS) 70% बोझ संभालती है।'),
-      stem: b('How does a social safety net prevent long-term poverty in this mixed-economy example?', 'इस मिश्रित अर्थव्यवस्था के उदाहरण में सामाजिक सुरक्षा-जाल दीर्घकालिक गरीबी कैसे रोकता है?'),
+      passage: b('Fictional case: A farm family faces a ₹15,000 hospital bill. Assume a hypothetical support scheme pays 70% of this bill; other expenses and eligibility are not modelled.', 'काल्पनिक प्रसंग: किसान परिवार के सामने ₹15,000 का अस्पताल बिल है। मानें कि काल्पनिक सहायता उसका 70% चुकाती है; अन्य खर्च और पात्रता मॉडल में नहीं हैं।'),
+      stem: b('How can the assumed safety net help in this example, and what remains uncertain?', 'इस उदाहरण में मानी गई सुरक्षा सहायता कैसे मदद कर सकती है और क्या अनिश्चित रहता है?'),
       options: [
-        { id: 'debt', ...b('It prevents high-interest distress borrowing and sale of farm tools/land after a temporary shock', 'यह अस्थायी संकट के बाद उच्च ब्याज वाले कर्ज़-जाल और खेत/औज़ार बिकने से बचाता है') },
-        { id: 'ban', ...b('It bans private markets completely', 'यह निजी बाज़ारों को पूरी तरह बंद कर देता है'), why: b('Mixed-economy safety nets protect vulnerable families alongside markets.', 'सुरक्षा-जाल बाज़ारों के साथ कमज़ोर परिवारों की रक्षा करता है।') },
+        { id: 'debt', ...b('₹4,500 remains; support can reduce the burden but does not guarantee the family avoids debt', '₹4,500 बाकी है; सहायता बोझ घटा सकती है पर ऋण से बचने की गारंटी नहीं देती') },
+        { id: 'ban', ...b('₹0 remains and every family is guaranteed to avoid poverty', '₹0 बाकी है और हर परिवार की गरीबी से बचने की गारंटी है'), why: b('70% of ₹15,000 is ₹10,500, so ₹4,500 remains. The family may have other expenses and resources.', '₹15,000 का 70% ₹10,500 है, इसलिए ₹4,500 बाकी है। परिवार के अन्य खर्च और संसाधन भी हो सकते हैं।') },
       ],
       correct: 'debt',
-      explain: b('Targeted social protection preserves household assets and human capital during health or climate shocks.', 'लक्षित सामाजिक सुरक्षा संकट के समय परिवार की संपत्ति और स्वास्थ्य दोनों बचाती है।'),
+      explain: b('₹15,000 − ₹10,500 = ₹4,500. Support may reduce hardship; this example cannot predict debt, asset sales or poverty.', '₹15,000 − ₹10,500 = ₹4,500। सहायता कठिनाई घटा सकती है; यह उदाहरण ऋण, संपत्ति बिक्री या गरीबी का पूर्वानुमान नहीं देता।'),
     },
   },
 

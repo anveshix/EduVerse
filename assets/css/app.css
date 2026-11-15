@@ -315,3 +315,8 @@ ol.try{padding-left:1.3rem}ol.try li{margin:.35rem 0}.ctl-label{margin-top:.6rem
 @media(max-width:850px){.election-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:380px){.election-steps{grid-template-columns:minmax(0,1fr)}}
 #lab-T07-L3 .lab-grid,#lab-T07-L3 .lab-main{min-width:0}.t07-boundary-hint{font-size:.85em;color:var(--mut);padding:.3rem}.t07-boundary-scroll{min-width:0;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.t07-boundary-scroll .chart{min-width:640px}
+/* T08 household planning and the two-hour opportunity-cost example */
+.budget-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin:.8rem 0}.budget-row{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:.65rem;min-width:0}.budget-row-heading{display:flex;justify-content:space-between;align-items:start;gap:.5rem}.budget-row-heading label{font-weight:700}.budget-row input{width:100%}.budget-surprise{display:flex;align-items:center;gap:.6rem;min-height:44px;margin:.5rem 0}.budget-surprise input{width:22px;height:22px;flex:none}.budget-shortfall .civic-outcome{color:var(--bad)}.budget-shortfall .hi-line{color:inherit}.time-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem;margin:.7rem 0}.time-slot{border-radius:8px;border:2px solid var(--line);padding:.5rem;text-align:center;font-size:.82em;font-weight:700;min-width:0;overflow-wrap:anywhere}.time-slot.project{border-color:#1d4ed8}.time-slot.rest{border-color:#15803d}.time-frontier .civic-limit{margin-top:.9rem}
+@media(max-width:620px){.budget-rows{grid-template-columns:minmax(0,1fr)}.time-slots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.t08-systems .txt{fill:#17212b;font-size:42px}
+.t08-light-label{fill:#17212b}

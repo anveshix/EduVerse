@@ -1754,7 +1754,7 @@
     "en": "Analyse the three central problems of every economy — What to produce, How to produce (labour vs machines), and For Whom to produce.",
     "hi": "हर अर्थव्यवस्था की तीन केंद्रीय समस्याओं का विश्लेषण करें — क्या उत्पादन करें, कैसे उत्पादन करें (श्रम बनाम मशीनें), और किसके लिए उत्पादन करें।"
    },
-   "provenance": "schematic",
+   "provenance": "fictional",
    "controls": [
     {
      "id": "consumerShare",
@@ -1812,7 +1812,7 @@
     "en": "Compare free-market, centrally planned, and mixed economic systems on ownership, price signals, efficiency, and equity.",
     "hi": "स्वामित्व, मूल्य तंत्र, दक्षता और समता के आधार पर मुक्त बाज़ार, केंद्रीयकृत नियोजित और मिश्रित आर्थिक प्रणालियों की तुलना करें।"
    },
-   "provenance": "documented",
+   "provenance": "schematic",
    "controls": [
     {
      "id": "sys",
@@ -1851,8 +1851,8 @@
    "implementation": "src/modules/economics/t08-specs.js",
    "kit": "src/components/lab-kit.js",
    "objective": {
-    "en": "Test how a social safety net (health insurance, crop/disaster aid, PDS food security) prevents a sudden household shock from trapping a family in poverty debt.",
-    "hi": "जाँचें कि सामाजिक सुरक्षा-जाल (स्वास्थ्य बीमा, फसल/आपदा सहायता, राशन प्रणाली) किसी अचानक आए संकट को परिवार को कर्ज़ के जाल में फँसाने से कैसे बचाता है।"
+    "en": "Explore how an assumed share of support can reduce a fictional household’s out-of-pocket shock; discuss limits of real safety nets.",
+    "hi": "देखें कि सहायता का माना गया हिस्सा काल्पनिक परिवार का खर्च कैसे घटा सकता है और वास्तविक सुरक्षा-जाल की सीमाओं पर चर्चा करें।"
    },
    "provenance": "fictional",
    "controls": [

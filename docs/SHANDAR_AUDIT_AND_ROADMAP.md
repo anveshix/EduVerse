@@ -49,7 +49,7 @@
 | **Step 5 — T05 State & Society** | Timeline chunking (Mauryas→Guptas→Cholas), Saptanga builder | One timeline, not 516 lines | Done |
 | **Step 6 — T06 Democracy** | Panchayati Raj + classroom vote simulation | Democracy you practise daily | Done |
 | **Step 7 — T07 Elections** | Mock election (voter journey), delimitation visual, coalition builder | Vote, count, form government | Done |
-| Step 8 — T08 Economics Basics | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket |
+| **Step 8 — T08 Economics Basics** | Household budget challenge (₹100 → ₹1,000), PPF daily-life | Opportunity cost in your pocket | Done |
 | Step 9 — T09 Price Puzzle | Patna mandi prices, MSP, onion-tomato spike case | Market you see every week |
 | Step 10 — T10 Oceans | Bay of Bengal cyclones, Indian fisheries, tsunami safety | Ocean that affects Bihar |
 | Step 11 — T11 Life on Earth | Thar / Sundarbans / Western Ghats biomes, Bihar wetlands (Kanwar) | Biodiversity around you |
@@ -213,7 +213,26 @@
 
 ---
 
+## Step 8 — T08: Economics Basics
+
+### Audit and improvements
+- **Household budget (L1):** a fictional ₹1,000 available for selected weekly expenses builds on the existing ₹100 student allocation. Five keyboard-operable sliders move in ₹50 steps; an optional ₹100 surprise creates an under-, exactly- or over-allocated plan. The readout separates unallocated money from a shortfall and does not call a gap a loan. It asks students not to enter real family finances and explains that needs, prices and ability to save vary; it is neither a complete household budget nor advice.
+- **Everyday PPF (L2):** divide two imagined hours into four half-hour project/play-or-rest slots; the activity distinguishes its straight-line time trade-off from the assumed curved farm frontier and affirms the importance of rest. The farm readout now calls the opportunity-cost calculation a *frontier reference*, not a move from an interior selected point, and avoids describing a next move beyond maximum wheat. The technology shift and curve are assumptions, not predictions.
+- **Teaching claims (L3–L5 and CBQ):** the jobs and capacity numbers are labelled invented indices, not measured outcomes or forecasts. The economic-systems comparison no longer presents arbitrary numerical scores as facts; numbered prompts compare ownership, possible strengths and risks. The shock and revised case distinguish the remaining bill, assumed savings and shortfall from automatic borrowing, a poverty trap or a recovery forecast. Its coverage percentage is hypothetical, not a stated benefit of PDS or a particular health programme. Savings and shock bars now use the same scale. Revised L3/L5 predictions retain old answers under revision markers; LO and progress identifiers remain unchanged.
+- Both companions belong to existing LOs and add no catalog simulations. They save example choices locally, offer reset and warn if storage is blocked. A first offline visit requires the installed service worker. New Hindi remains **draft pending subject-teacher review**; automated checks do not replace human screen-reader review.
+
+### Teaching references
+- [NCERT Class IX, Building Blocks in Economics](https://ncert.nic.in/textbook/pdf/iest108.pdf): scarcity, choices, forgone alternatives and production possibilities for households, firms and government.
+- RBI financial education: [Financial Awareness Messages](https://www.rbi.org.in/commonman/images/FAME202426022024.pdf) and [school financial-literacy material](https://www.rbi.org.in/FinancialEducation/content/01SCHOOL20042018.pdf) discuss budgeting, needs, wants and savings. The classroom figures and coverage assumptions here are invented.
+
+### Verification
+- `npm run catalog && npm run sw`: **78/78 LOs, 79 simulations and 134 precached files**. `npm run verify` passed architecture checks and **69/69 tests**.
+- `npm run test:t08` covered allocation arithmetic, surprise cost, PPF interior and endpoints, time allocation, keyboard, 360 px layout, EN/HI/both, reset, persistence and malformed-state repair, old prediction retention, denied storage, first-open offline and 5/5 LO progress, with no network writes or JavaScript errors. Tests `test:t02`–`test:t07` also passed.
+- Targeted T08 automated accessibility and desktop/360 px smoke passed with no reported errors or page overflow; companion layouts and the systems view were visually inspected.
+
+---
+
 ## How to Continue
-1. Continue with **Step 8 — T08**, then follow the roadmap in order, one chapter at a time.
+1. Continue with **Step 9 — T09**, then follow the roadmap in order, one chapter at a time.
 2. End each step with verification and a commit on the current branch. Do not parallel-edit two chapters.
 3. New Hindi content is draft until reviewed by a subject teacher; record that limitation in the handoff.

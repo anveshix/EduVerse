@@ -72,7 +72,7 @@ export const TEACHER = {
   },
   T08: {
     flow: [
-      b('Scarcity Board & PPF (15 min): allocate ₹100, trace bowing opportunity cost on the PPF, and discuss idle capacity.', 'दुर्लभता व PPF (15 मिनट): ₹100 का विभाजन करें और बढ़ती अवसर-लागत समझें।'),
+      b('Scarcity & PPF (15 min): compare fictional ₹100 and ₹1,000 plans; contrast the two-hour straight-line example with the assumed curved farm frontier.', 'दुर्लभता व PPF (15 मिनट): काल्पनिक ₹100 व ₹1,000 योजनाएँ और दो घंटे की सीधी सीमा की कृषि वक्र से तुलना करें।'),
       b('Central Problems, Systems & Safety Net (15 min): compare market, planned, and mixed economies plus shock protection.', 'केंद्रीय समस्याएँ, प्रणालियाँ व सुरक्षा-जाल (15 मिनट): प्रणालियों और संकट-सुरक्षा की तुलना करें।'),
     ],
   },

@@ -93,6 +93,16 @@ export function scarcityAllocate({ budget = 100, books = 40, snack = 30, data = 
   return { spent, remaining, over, wellBeing, opportunityHint: books < 50 ? 'more-study' : 'balanced' };
 }
 
+/** T08.L1: arithmetic for a fictional allocation, not a recommendation or credit decision. */
+export function householdBudget({ budget, allocations, extra = 0 }) {
+  if (!Number.isInteger(budget) || budget < 0 || budget > 100000 || !Array.isArray(allocations) || !allocations.length ||
+      allocations.some((n) => !Number.isInteger(n) || n < 0 || n > budget) || !Number.isInteger(extra) || extra < 0 || extra > budget) return { valid: false };
+  const allocated = allocations.reduce((sum, value) => sum + value, 0);
+  const planned = allocated + extra;
+  const balance = budget - planned;
+  return { valid: true, budget, allocated, extra, planned, balance, shortfall: Math.max(0, -balance), unallocated: Math.max(0, balance) };
+}
+
 /** T08.L5 Household shock & social safety-net buffer (crop failure / medical bill). */
 export function householdShock({ monthlyIncome = 12000, savings = 6000, shockCost = 10000, safetyNetCoverPct = 60 }) {
   const netShock = shockCost * (1 - safetyNetCoverPct / 100);
