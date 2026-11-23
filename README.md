@@ -1,5 +1,7 @@
 # EduVerse: Class IX Social Science visualiser (CBSE 087, 2026-27)
 
+**[▶ Open the live site](https://anveshix.github.io/EduVerse/)** · [Accuracy policy](docs/ACCURACY_AND_SOURCE_POLICY.md) · [Test report](docs/TEST_REPORT.md) · [Attributions](#attributions)
+
 Interactive, bilingual (English / हिन्दी / English + हिन्दी) learning labs bound to the CBSE Class IX Social Science syllabus. Static ES modules, no bundler, no backend, no login, no ads, no tracking. Works on GitHub Pages or any static host, and offline after the first visit.
 
 ## Run
@@ -62,3 +64,29 @@ The home redesign reviewed [Education-Website](https://github.com/sujitmahapatra
 
 ## Policies
 `docs/ACCURACY_AND_SOURCE_POLICY.md`. Hindi text is draft until reviewed by a subject teacher.
+
+## Folder structure
+
+| Path | Contents |
+|---|---|
+| `index.html`, `sw.js` | Entry page and the offline service worker (`sw.js` is generated) |
+| `assets/` | CSS, fonts (with licence texts), images and theme plates |
+| `src/` | Core modules, components, engines and the lesson data |
+| `data/` | Glossary, syllabus coverage and geodata |
+| `vendor/` | Vendored three.js, D3 and Lucide with their licences |
+| `tools/` | Serve, verify, catalogue and service-worker build scripts |
+| `tests/` | Node and Chromium test suites (`npm test`, `npm run smoke`) |
+| `docs/` | Accuracy policy, curriculum coverage, audits and test reports |
+| `.github/workflows/` | CI |
+
+## Contributing
+
+Before a change to content, read [docs/ACCURACY_AND_SOURCE_POLICY.md](docs/ACCURACY_AND_SOURCE_POLICY.md). Report security issues privately as described in [SECURITY.md](SECURITY.md). See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+The project code is released under the [MIT License](LICENSE) © 2026 anveshix. Vendored libraries, fonts and geodata keep their own licences (see [Attributions](#attributions)).
+
+## Author
+
+**anveshix** — [github.com/anveshix](https://github.com/anveshix)
