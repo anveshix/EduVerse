@@ -53,7 +53,7 @@ Keyboard operable, ≥44 px touch targets, projector mode, reduced motion, low-g
 
 ## Attributions
 - **Three.js** (MIT, vendored r170, licence in `vendor/three/LICENSE`)
-- **D3 & TopoJSON** (`d3-array`, `d3-force`, `d3-geo`, `d3-path`, `d3-scale`, `d3-shape`, `topojson-client`, bundled in `vendor/d3/d3-viz.esm.js`)
+- **D3 & TopoJSON** (`d3-array`, `d3-force`, `d3-geo`, `d3-path`, `d3-scale`, `d3-shape`, `topojson-client`, bundled in `vendor/d3/d3-viz.esm.js`) — licence texts in `vendor/d3/LICENSE`: ISC (Mike Bostock, D3 and TopoJSON) and MIT-style (Charles Karney, geographic code used by d3-geo)
 - **Lucide Icons** (ISC, bundled in `vendor/lucide/lucide-icons.esm.js`)
 - **Fonts**: Plus Jakarta Sans, DM Serif Display and Noto Sans Devanagari (SIL OFL 1.1, licence texts in `assets/fonts/`).
 - **Geodata**: Natural Earth / `world-atlas` (`data/geo/countries-110m.json`, `WORLD_ATLAS_LICENSE`), `datta07/INDIAN-SHAPEFILES` simplified (`data/geo/india.simplified.json`, `INDIA_SHAPEFILES_LICENSE`), PB2002 tectonic plates (Bird 2003, ODC-By). The home globe texture is derived from the public-domain Natural Earth land data. See `data/geo/SOURCES.md`.
