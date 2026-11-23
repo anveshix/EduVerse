@@ -85,7 +85,9 @@ Before a change to content, read [docs/ACCURACY_AND_SOURCE_POLICY.md](docs/ACCUR
 
 ## License
 
-The project code is released under the [MIT License](LICENSE) © 2026 anveshix. Vendored libraries, fonts and geodata keep their own licences (see [Attributions](#attributions)).
+No licence has been chosen for this repository yet. Until one is added, the default applies: **all rights reserved** by the author (anveshix). Please ask before reusing or redistributing the code.
+
+Vendored libraries, fonts and geodata keep their own licences (see [Attributions](#attributions)).
 
 ## Author
 
